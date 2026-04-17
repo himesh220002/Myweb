@@ -117,7 +117,7 @@ export default function ContactPage() {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-foreground/60 ml-1">Subject</label>
-                                <select className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 focus:outline-none focus:bg-blue-900 focus:border-primary transition-all appearance-none cursor-pointer">
+                                <select className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-4 focus:outline-none focus:bg-dark focus:border-primary transition-all appearance-none cursor-pointer">
                                     <option>New Project Inquiry</option>
                                     <option>Career Opportunity</option>
                                     <option>Partnership</option>
