@@ -61,10 +61,10 @@ export default function Footer() {
     };
 
     return (
-        <footer className="relative pt-20 pb-10 overflow-hidden bg-[#020617]">
+        <footer className="relative pt-20 pb-10 z-10 bg-[#020617]">
             {/* Background Decorations */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-            
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20" />
+
             <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -72,9 +72,9 @@ export default function Footer() {
                 {/* Big CTA Section */}
                 <div className="relative mb-20 p-8 md:p-12 rounded-[2.5rem] bg-white/5 border border-white/10 overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                    
+
                     <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
-                        <div className="max-w-xl text-center md:text-left">
+                        <div className="max-w-3xl text-center md:text-left">
                             <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">
                                 Ready to bring your <span className="text-gradient">vision to life?</span>
                             </h2>
@@ -82,7 +82,7 @@ export default function Footer() {
                                 Let&apos;s build something extraordinary together. Our team is ready to turn your ideas into high-performance digital reality.
                             </p>
                         </div>
-                        <Link 
+                        <Link
                             href="/contact"
                             className="flex-shrink-0 group/btn relative px-8 py-4 bg-white text-[#020617] rounded-2xl font-bold text-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-2xl shadow-white/10"
                         >

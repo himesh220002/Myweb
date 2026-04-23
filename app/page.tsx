@@ -1,11 +1,51 @@
 "use client";
 
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
-import { ArrowRight, Sparkles, ChevronRight, ShieldCheck, Zap, Clock, Users } from "lucide-react";
+import { ArrowRight, Sparkles, ChevronRight, ShieldCheck, Zap, Clock, Users, Quote, Star } from "lucide-react";
 import Link from "next/link";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/data/projects";
 import { useRef, useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+
+const testimonials = [
+    {
+        id: 1,
+        name: "Sarah Jenkins",
+        role: "CEO at TechFlow",
+        quote: "CypherTech transformed our legacy CRM into a high-performance cloud solution. Their attention to detail and commitment to quality is unmatched.",
+        company: "TechFlow Inc.",
+        companyLink: "https://example.com",
+        rating: 5
+    },
+    {
+        id: 2,
+        name: "Michael Chen",
+        role: "CTO at RetailPro",
+        quote: "The team delivered a complex marketplace ahead of schedule. Their solution-oriented approach saved us months of development time.",
+        company: "RetailPro",
+        companyLink: "https://example.com",
+        rating: 5
+    },
+    {
+        id: 3,
+        name: "Elena Rodriguez",
+        role: "Founder of GreenLoop",
+        quote: "Working with CypherTech was a breeze. They understood our vision perfectly and built a scalable platform that our users love.",
+        company: "GreenLoop",
+        companyLink: "https://example.com",
+        rating: 5
+    },
+    {
+        id: 4,
+        name: "David Smith",
+        role: "Marketing Director at Nexa",
+        quote: "Their digital transformation strategy helped us scale our operations globally. Highly professional and enthusiastic team.",
+        company: "Nexa Global",
+        companyLink: "https://example.com",
+        rating: 4
+    }
+];
 
 /* ── Animated counter hook ─────────────────────────────── */
 function useCounter(target: number, duration = 2000, start = false) {
@@ -77,7 +117,7 @@ export default function Home() {
     useEffect(() => { setHeroLoaded(true); }, []);
 
     return (
-        <div className="flex flex-col overflow-hidden">
+        <div className="flex flex-col">
 
             {/* ── HERO ──────────────────────────────────────────── */}
             <section className="relative min-h-screen flex flex-col justify-center px-6 pt-16 pb-24 overflow-hidden mesh-bg">
@@ -374,6 +414,93 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            {/* ── TESTIMONIALS ──────────────────────────────────── */}
+            <section className="relative px-6 py-28">
+                <div className="orb orb-violet w-[400px] h-[400px] -top-20 left-1/2 -translate-x-1/2 opacity-15 pointer-events-none" />
+
+                <div className="max-w-7xl mx-auto">
+                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+                        <span className="text-xs font-bold uppercase tracking-widest text-secondary mb-3 block">Kind Words</span>
+                        <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+                            What Our <span className="text-gradient">Clients Say</span>
+                        </h2>
+                        <div className="h-[2px] w-16 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto" />
+                        <p className="text-foreground/40 mt-4 max-w-2xl mx-auto">Don&apos;t just take our word for it — see the impact we&apos;ve delivered for businesses worldwide.</p>
+                    </motion.div>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {testimonials.map((t, i) => (
+                            <motion.div
+                                key={t.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2 + (i * 0.1) }}
+                                className="glass-card rounded-3xl p-8 hover:border-primary/20 transition-colors relative"
+                            >
+                                <div className="absolute -top-5 left-8 w-10 h-10 rounded-full bg-gradient-to-br from-primary/15 to-secondary/15 flex items-center justify-center text-primary text-lg font-bold border-4 border-background">
+                                    {t.name.charAt(0)}
+                                </div>
+
+                                <Quote className="w-6 h-6 text-foreground/10 mb-4" />
+
+                                <p className="text-foreground/60 italic mb-6 leading-relaxed">"{t.quote}"</p>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="flex-1">
+                                        <div className="font-bold text-sm">{t.name}</div>
+                                        <div className="text-xs text-foreground/40">{t.role}</div>
+                                    </div>
+                                    <div className="flex items-center text-yellow-400">
+                                        {[...Array(t.rating)].map((_, i) => (
+                                            <Star key={i} className="w-4 h-4 fill-current" />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="mt-4">
+                                    <Link
+                                        href={t.companyLink || "#"}
+                                        target="_blank"
+                                        className={cn(
+                                            "text-xs font-semibold transition-colors inline-flex items-center gap-1",
+                                            t.companyLink ? "text-primary hover:text-primary/80" : "text-foreground/40"
+                                        )}
+                                    >
+                                        {t.company} {t.companyLink && <ArrowRight className="w-3 h-3" />}
+                                    </Link>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {/* CTA Bottom */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5 }}
+                        className="mt-20 text-center"
+                    >
+                        <div className="glass-card max-w-3xl mx-auto p-10 rounded-3xl">
+                            <h3 className="text-2xl font-display font-bold mb-4">
+                                Ready for Your Own Success Story?
+                            </h3>
+                            <p className="text-foreground/50 mb-8">Let&apos;s discuss how CypherTech can transform your business.</p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <Link href="/contact" className="btn-gradient text-white py-3.5 px-8 rounded-xl font-bold">
+                                    Get a Free Consultation
+                                </Link>
+                                <Link href="/career" className="py-3.5 px-8 rounded-xl font-bold text-sm border border-white/10 hover:border-primary/40 hover:text-primary transition-colors">
+                                    Join Our Team
+                                </Link>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
         </div>
     );
 }

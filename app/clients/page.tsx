@@ -101,7 +101,7 @@ export default function ClientsPage() {
                             {marqueeItems.map((name, i) => (
                                 <span
                                     key={i}
-                                    className="inline-flex items-center gap-3 mx-12 text-foreground/30 font-bold text-lg uppercase tracking-widest"
+                                    className="inline-flex items-center gap-3 mx-12 text-foreground/30 font-bold text-lg  tracking-widest"
                                 >
                                     <span className="w-2 h-2 rounded-full bg-primary/50" />
                                     {name}
@@ -113,7 +113,7 @@ export default function ClientsPage() {
                             {marqueeItems.map((name, i) => (
                                 <span
                                     key={i}
-                                    className="inline-flex items-center gap-3 mx-12 text-foreground/30 font-bold text-lg uppercase tracking-widest"
+                                    className="inline-flex items-center gap-3 mx-12 text-foreground/30 font-bold text-lg  tracking-widest"
                                 >
                                     <span className="w-2 h-2 rounded-full bg-primary/50" />
                                     {name}

@@ -73,7 +73,7 @@ function ProgressBar({ level, started }: { level: number; started: boolean }) {
     }, [started, level]);
 
     return (
-        <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+        <div className="w-full h-5.5 rounded-full bg-white/10 overflow-hidden">
             <div
                 className="progress-fill h-full rounded-full"
                 style={{ width: `${width}%`, transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)" }}
@@ -93,7 +93,7 @@ function SkillCard({ category, index }: { category: typeof skillCategories[0]; i
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: index * 0.12, duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative group rounded-3xl overflow-hidden glass-card p-8"
+            className="relative group rounded-3xl shadow-inner shadow-blue-300/20 overflow-hidden glass-card p-8"
         >
             {/* Corner glow on hover */}
             <div
