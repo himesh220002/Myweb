@@ -128,8 +128,8 @@ export default function CareerPage() {
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1, duration: 0.5 }}
                                 className={`relative rounded-3xl border transition-all duration-300 overflow-hidden ${job.active
-                                        ? "glass-card hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
-                                        : "bg-white/[0.01] border-white/[0.04] opacity-50 grayscale"
+                                    ? "glass-card hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+                                    : "bg-white/[0.01] border-white/[0.04] opacity-50 grayscale"
                                     }`}
                             >
                                 {/* Active gradient left bar */}

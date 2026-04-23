@@ -61,85 +61,72 @@ export default function Footer() {
     };
 
     return (
-        <footer className="relative overflow-hidden mt-auto" style={{ background: "#020617" }}>
-            {/* Gradient top border */}
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <footer className="relative pt-20 pb-10 overflow-hidden bg-[#020617]">
+            {/* Background Decorations */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
 
-            {/* Background mesh */}
-            <div
-                className="absolute inset-0 pointer-events-none opacity-30"
-                style={{
-                    backgroundImage: "linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px)",
-                    backgroundSize: "48px 48px",
-                }}
-            />
-
-            {/* Corner orbs */}
-            <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full opacity-10 pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(99,102,241,0.5), transparent 70%)", filter: "blur(60px)" }} />
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full opacity-10 pointer-events-none"
-                style={{ background: "radial-gradient(circle, rgba(34,211,238,0.5), transparent 70%)", filter: "blur(60px)" }} />
-
-            {/* Social proof strip */}
-            <div className="relative z-10 border-b border-white/[0.05] py-3">
-                <div className="max-w-7xl mx-auto px-6 flex flex-wrap justify-center md:justify-between items-center gap-4 text-xs text-white/30 font-medium">
-                    <span className="flex items-center gap-2">
-                        <span className="live-dot" />
-                        <span className="text-white/50">Systems Operational</span>
-                    </span>
-                    <div className="flex flex-wrap justify-center gap-6">
-                        {["Live since 2024", "20+ Projects delivered", "99.9% uptime SLA", "100% client satisfaction"].map((t) => (
-                            <span key={t} className="flex items-center gap-1.5">
-                                <span className="w-1 h-1 rounded-full bg-secondary/60" />
-                                {t}
-                            </span>
-                        ))}
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                {/* Big CTA Section */}
+                <div className="relative mb-20 p-8 md:p-12 rounded-[2.5rem] bg-white/5 border border-white/10 overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    
+                    <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div className="max-w-xl text-center md:text-left">
+                            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">
+                                Ready to bring your <span className="text-gradient">vision to life?</span>
+                            </h2>
+                            <p className="text-white/60 text-lg">
+                                Let&apos;s build something extraordinary together. Our team is ready to turn your ideas into high-performance digital reality.
+                            </p>
+                        </div>
+                        <Link 
+                            href="/contact"
+                            className="flex-shrink-0 group/btn relative px-8 py-4 bg-white text-[#020617] rounded-2xl font-bold text-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-2xl shadow-white/10"
+                        >
+                            Start a Project
+                            <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                        </Link>
                     </div>
                 </div>
-            </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6 pt-16 pb-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/[0.06] pb-12">
-
-                    {/* Brand column */}
-                    <div className="col-span-1">
-                        <Link href="/" className="flex items-center gap-2.5 mb-6 group">
-                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary flex items-center justify-center shadow-lg">
-                                <Zap className="w-5 h-5 text-white" />
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-white/10">
+                    {/* Brand & Socials */}
+                    <div className="lg:col-span-4">
+                        <Link href="/" className="flex items-center gap-3 mb-6 group">
+                            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary via-violet-500 to-secondary flex items-center justify-center shadow-xl group-hover:rotate-12 transition-transform duration-500">
+                                <Zap className="w-6 h-6 text-white" />
                             </div>
-                            <span className="text-xl font-display font-bold text-gradient">CypherTech</span>
+                            <span className="text-2xl font-display font-bold text-gradient">CypherTech</span>
                         </Link>
-                        <p className="text-white/40 text-sm leading-relaxed mb-6">
-                            Digital Solutions, Delivered Continuously. We build high-performance products that scale with your ambition.
+                        <p className="text-white/50 text-lg leading-relaxed mb-8 max-w-sm">
+                            Pioneering digital excellence through innovative engineering and human-centric design.
                         </p>
-                        {/* Socials */}
-                        <div className="flex gap-3">
+                        <div className="flex gap-4">
                             {socials.map((s) => (
                                 <a
                                     key={s.label}
                                     href={s.href}
-                                    target={s.href.startsWith("http") ? "_blank" : undefined}
+                                    target="_blank"
                                     rel="noopener noreferrer"
-                                    aria-label={s.label}
-                                    className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-white/40 hover:text-secondary hover:border-secondary/30 hover:bg-secondary/5 transition-all duration-200"
+                                    className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group/social"
                                 >
-                                    <s.icon size={16} />
+                                    <s.icon size={20} className="group-hover/social:scale-110 transition-transform" />
                                 </a>
                             ))}
                         </div>
                     </div>
 
-                    {/* Platform links */}
-                    <div>
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Platform</h4>
-                        <ul className="space-y-3">
+                    {/* Quick Links */}
+                    <div className="lg:col-span-2">
+                        <h4 className="text-white font-bold text-lg mb-6">Explore</h4>
+                        <ul className="space-y-4">
                             {footerLinks.Platform.map((link) => (
                                 <li key={link.name}>
-                                    <Link
-                                        href={link.href}
-                                        className="group text-sm text-white/50 hover:text-white transition-colors flex items-center gap-2"
-                                    >
-                                        <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
+                                    <Link href={link.href} className="text-white/50 hover:text-primary transition-colors flex items-center gap-2 group/link">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-primary scale-0 group-hover/link:scale-100 transition-transform" />
                                         {link.name}
                                     </Link>
                                 </li>
@@ -147,17 +134,14 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Services links */}
-                    <div>
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Services</h4>
-                        <ul className="space-y-3">
+                    {/* Services */}
+                    <div className="lg:col-span-3">
+                        <h4 className="text-white font-bold text-lg mb-6">Expertise</h4>
+                        <ul className="space-y-4">
                             {footerLinks.Services.map((link) => (
                                 <li key={link.name}>
-                                    <Link
-                                        href={link.href}
-                                        className="group text-sm text-white/50 hover:text-white transition-colors flex items-center gap-2"
-                                    >
-                                        <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
+                                    <Link href={link.href} className="text-white/50 hover:text-secondary transition-colors flex items-center gap-2 group/link">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-secondary scale-0 group-hover/link:scale-100 transition-transform" />
                                         {link.name}
                                     </Link>
                                 </li>
@@ -166,50 +150,43 @@ export default function Footer() {
                     </div>
 
                     {/* Newsletter */}
-                    <div>
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-white/30 mb-5">Stay Connected</h4>
-                        <p className="text-white/40 text-sm mb-5 leading-relaxed">
-                            Subscribe for the latest in tech, project updates, and digital strategy insights.
+                    <div className="lg:col-span-3">
+                        <h4 className="text-white font-bold text-lg mb-6">Newsletter</h4>
+                        <p className="text-white/50 mb-6 leading-relaxed">
+                            Get the latest insights on digital transformation and tech trends.
                         </p>
-                        <form onSubmit={handleSubscribe} className="space-y-2.5">
-                            <div className="flex gap-2">
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => {
-                                        setEmail(e.target.value);
-                                        if (status === "error") setStatus("idle");
-                                    }}
-                                    placeholder="your@email.com"
-                                    disabled={status === "loading" || status === "success"}
-                                    className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white w-full focus:outline-none focus:border-primary/50 transition-colors placeholder:text-white/20 disabled:opacity-50"
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={status === "loading" || status === "success"}
-                                    className="btn-gradient text-white font-bold px-4 py-2.5 rounded-xl text-sm shimmer disabled:opacity-50 min-w-[60px] flex items-center justify-center"
-                                >
-                                    {status === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join"}
-                                </button>
-                            </div>
-                            {status === "success" && (
-                                <p className="text-green-400 text-xs flex items-center gap-1.5">
-                                    <CheckCircle2 className="w-3.5 h-3.5" />
-                                    You&apos;re in! Welcome to the loop.
-                                </p>
-                            )}
-                            {status === "error" && (
-                                <p className="text-accent text-xs">{errorMsg || "Something went wrong. Try again."}</p>
-                            )}
+                        <form onSubmit={handleSubscribe} className="relative">
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email address"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-white/20"
+                            />
+                            <button
+                                type="submit"
+                                disabled={status === "loading"}
+                                className="absolute right-2 top-2 bottom-2 px-6 bg-white text-[#020617] rounded-xl font-bold text-sm hover:bg-primary hover:text-white transition-all disabled:opacity-50"
+                            >
+                                {status === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join"}
+                            </button>
                         </form>
+                        {status === "success" && (
+                            <p className="mt-3 text-green-400 text-sm flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4" /> Success!
+                            </p>
+                        )}
                     </div>
                 </div>
 
-                <div className="pt-8 flex flex-col md:flex-row justify-between items-center text-white/25 text-xs gap-4">
-                    <p>© 2026 CypherTech. Designed & Developed by <span className="text-white/40 font-medium">Himesh Satyam</span>. All rights reserved.</p>
-                    <div className="flex gap-6">
-                        <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-white/60 transition-colors">Terms of Service</Link>
+                <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <p className="text-white/30 text-sm">
+                        © 2026 CypherTech. Built by <span className="text-white/50 font-medium">Himesh Satyam</span>
+                    </p>
+                    <div className="flex gap-8">
+                        <Link href="/privacy" className="text-white/30 hover:text-white transition-colors text-sm font-medium">Privacy</Link>
+                        <Link href="/terms" className="text-white/30 hover:text-white transition-colors text-sm font-medium">Terms</Link>
+                        <Link href="/sitemap" className="text-white/30 hover:text-white transition-colors text-sm font-medium">Sitemap</Link>
                     </div>
                 </div>
             </div>
