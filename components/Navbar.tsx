@@ -30,16 +30,17 @@ export default function Navbar() {
     return (
         <nav
             className={cn(
-                "fixed top-0 w-full z-50 transition-all duration-500",
-                scrolled ? "py-4" : "py-6"
+                "fixed top-0 inset-x-0 z-50 transition-all duration-500",
+                scrolled ? "p-4" : "p-6"
             )}
+            style={{ width: '100%' }}
         >
             <div
                 className={cn(
-                    "mx-auto transition-all duration-500 flex justify-between items-center transition-all duration-300",
+                    "mx-auto w-full transition-all duration-500 flex justify-between items-center transition-all duration-300",
                     scrolled
-                        ? "max-w-5xl px-6 py-2.5 rounded-full bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-                        : "max-w-7xl px-6 py-2 bg-white/70 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg"
+                        ? "max-w-5xl px-4 py-2.5 rounded-full bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+                        : "max-w-7xl px-4 py-2 bg-white/70 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg"
                 )}
             >
                 {/* Logo */}
@@ -54,7 +55,7 @@ export default function Navbar() {
                 </Link>
 
                 {/* Desktop Nav */}
-                <div className="hidden md:flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/5">
+                <div className="hidden lg:flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/5">
                     {navLinks.map((link) => {
                         const isActive = pathname === link.href;
                         return (
@@ -83,7 +84,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Desktop CTA & Theme Toggle */}
-                <div className="hidden md:flex items-center gap-3">
+                <div className="hidden lg:flex items-center gap-3">
                     <ThemeToggle />
                     <Link
                         href="/contact"
@@ -95,7 +96,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile Actions */}
-                <div className="flex md:hidden items-center gap-2">
+                <div className="flex lg:hidden items-center gap-2">
                     <ThemeToggle />
                     <button
                         className={cn(
@@ -130,7 +131,7 @@ export default function Navbar() {
                         animate={{ opacity: 1, height: "auto", y: 0 }}
                         exit={{ opacity: 0, height: 0, y: -20 }}
                         transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-                        className="absolute top-full left-0 w-full px-6 pt-4 overflow-hidden"
+                        className="absolute top-full inset-x-0 px-6 pt-4 overflow-hidden"
                     >
                         <div className="rounded-3xl bg-white/90 dark:bg-[#020617]/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-2xl p-6 space-y-4">
                             <div className="grid gap-2">

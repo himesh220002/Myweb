@@ -60,7 +60,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="flex-grow pt-20">
+          <main className="flex-grow pt-20 overflow-x-clip">
             {children}
           </main>
           <Footer />

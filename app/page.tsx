@@ -246,7 +246,7 @@ export default function Home() {
             </section>
 
             {/* ── FEATURED PROJECTS ─────────────────────────────── */}
-            <section className="px-6 py-28 relative">
+            <section className="px-6 py-28 relative overflow-hidden">
                 <div className="orb orb-violet w-[500px] h-[500px] -bottom-40 -right-20 opacity-20 pointer-events-none" />
 
                 <div className="max-w-7xl mx-auto">
@@ -416,7 +416,7 @@ export default function Home() {
             </section>
 
             {/* ── TESTIMONIALS ──────────────────────────────────── */}
-            <section className="relative px-6 py-28">
+            <section className="relative px-6 py-28 overflow-hidden">
                 <div className="orb orb-violet w-[400px] h-[400px] -top-20 left-1/2 -translate-x-1/2 opacity-15 pointer-events-none" />
 
                 <div className="max-w-7xl mx-auto">

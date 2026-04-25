@@ -61,7 +61,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="relative pt-20 pb-10 z-10 bg-[#020617]">
+        <footer className="relative pt-20 pb-10 z-10 bg-[#020617] overflow-hidden">
             {/* Background Decorations */}
             <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20" />
 
