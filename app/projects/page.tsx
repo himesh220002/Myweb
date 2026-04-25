@@ -63,8 +63,8 @@ export default function ProjectsPage() {
                             key={tag}
                             onClick={() => setActive(tag)}
                             className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${active === tag
-                                    ? "text-white shadow-lg"
-                                    : "glass-card text-foreground/60 hover:text-foreground hover:border-primary/30"
+                                ? "text-white shadow-lg"
+                                : "glass-card text-foreground/60 hover:text-foreground hover:border-primary/30"
                                 }`}
                         >
                             {active === tag && (
@@ -99,6 +99,8 @@ export default function ProjectsPage() {
                                 image={project.image}
                                 tags={project.tags}
                                 slug={project.slug}
+                                github={project.github}
+                                problemSolverAngle={project.problemSolverAngle}
                                 index={i}
                             />
                         </motion.div>

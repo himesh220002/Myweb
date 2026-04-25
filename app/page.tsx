@@ -106,10 +106,10 @@ export default function Home() {
     const statsInView = useInView(statsRef, { once: true, margin: "-80px" });
 
     const trustItems = [
-        { title: "Continuous Delivery", desc: "We don't just ship once — we iterate, optimize and improve constantly after launch.", icon: Zap },
-        { title: "Solution Oriented", desc: "Every architectural decision and line of code is written to solve a specific client problem.", icon: ShieldCheck },
-        { title: "Scalable Architecture", desc: "Cloud-native Next.js infrastructure built to handle exponential growth without friction.", icon: Clock },
-        { title: "Professional Partnership", desc: "Transparent communication, real-time tracking and dedicated project ownership.", icon: Users },
+        { title: "Dynamic Problem Solving", desc: "Every line of code is written to solve a specific operational challenge, from inventory scaling to patient security.", icon: Zap },
+        { title: "Technical Precision", desc: "Built with elite Next.js architecture, ensuring your platform is scalable, fast, and future-proof.", icon: ShieldCheck },
+        { title: "Operational Clarity", desc: "Continuous delivery and transparent communication — you'll always know the state of your project.", icon: Clock },
+        { title: "Solution Oriented", desc: "Bridging technical depth with persuasive digital strategy to deliver impactful results.", icon: Users },
     ];
 
     const headline1 = "Digital Solutions,".split(" ");
@@ -177,8 +177,9 @@ export default function Home() {
                             transition={{ delay: 0.7, duration: 0.5 }}
                             className="text-lg md:text-xl text-foreground/55 mb-10 leading-relaxed max-w-xl"
                         >
-                            Professional. Enthusiastic. Trustworthy. We bridge complex problems
-                            and elegant, scalable digital solutions — on time, every time.
+                            Bridging complex technical architecture with human-centric solutions.
+                            From digital showrooms to healthcare platforms, I solve real operational
+                            challenges with precision and clarity.
                         </motion.p>
 
                         {/* CTAs */}
@@ -282,6 +283,8 @@ export default function Home() {
                                 image={project.image}
                                 tags={project.tags}
                                 slug={project.slug}
+                                github={project.github}
+                                problemSolverAngle={project.problemSolverAngle}
                                 index={i}
                             />
                         ))}
