@@ -39,8 +39,8 @@ export default function Navbar() {
                 className={cn(
                     "mx-auto w-full transition-all duration-500 flex justify-between items-center transition-all duration-300",
                     scrolled
-                        ? "max-w-5xl px-4 py-2.5 rounded-full bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-                        : "max-w-7xl px-4 py-2 bg-white/70 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg"
+                        ? "max-w-5xl px-4 py-2.5 rounded-full bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+                        : "max-w-7xl px-4 py-2 bg-white/70 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg border border-black/5 dark:border-white/5"
                 )}
             >
                 {/* Logo */}

@@ -17,9 +17,9 @@ export default function ProjectDetail() {
         <div className="relative min-h-screen">
             {/* Background Decorations */}
             <div className="fixed inset-0 pointer-events-none -z-10">
-                <div className="orb orb-primary w-[800px] h-[800px] -top-60 -left-40 opacity-10" />
-                <div className="orb orb-violet w-[600px] h-[600px] bottom-0 -right-40 opacity-10" />
-                <div className="absolute inset-0 mesh-bg opacity-30" />
+                <div className="orb orb-primary w-[800px] h-[800px] -top-60 -left-40 dark:opacity-10 opacity-20" />
+                <div className="orb orb-violet w-[600px] h-[600px] bottom-0 -right-40 dark:opacity-10 opacity-20" />
+                <div className="absolute inset-0 mesh-bg dark:opacity-30 opacity-50" />
             </div>
 
             <div className="max-w-6xl mx-auto px-6 py-24">
@@ -54,7 +54,7 @@ export default function ProjectDetail() {
                     </div>
 
                     {/* Metadata Bar */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-white/10 mb-16">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y dark:border-white/10 border-black/5 mb-16">
                         <div className="space-y-1">
                             <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/30">Category</span>
                             <div className="flex items-center gap-2 font-bold text-sm">
@@ -91,7 +91,7 @@ export default function ProjectDetail() {
                     </div>
 
                     {/* Media Showcase */}
-                    <div className="relative aspect-video w-full rounded-[2.5rem] overflow-hidden mb-24 glass-card border border-white/10 group">
+                    <div className="relative aspect-video w-full rounded-[2.5rem] overflow-hidden mb-24 glass-card dark:border-white/10 border-black/5 group">
                         <Image
                             src={project.image}
                             alt={project.title}
@@ -116,7 +116,7 @@ export default function ProjectDetail() {
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {project.features.map((feat, i) => (
-                                        <div key={i} className="flex items-start gap-4 p-5 rounded-2xl glass-card border border-white/5 hover:border-primary/20 transition-all">
+                                        <div key={i} className="flex items-start gap-4 p-5 rounded-2xl glass-card dark:border-white/5 border-black/5 hover:border-primary/20 transition-all">
                                             <div className="w-6 h-6 rounded-lg bg-primary/20 flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                                             </div>
@@ -135,20 +135,20 @@ export default function ProjectDetail() {
                                     <h2 className="text-2xl font-display font-bold">System Architecture</h2>
                                 </div>
                                 <div className="space-y-6">
-                                    <div className="p-6 rounded-2xl glass-card border border-white/5">
+                                    <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
                                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-secondary mb-3">
                                             <Layout className="w-4 h-4" /> Frontend Layer
                                         </div>
                                         <p className="text-foreground/70 leading-relaxed">{project.systemArchitecture.frontend}</p>
                                     </div>
-                                    <div className="p-6 rounded-2xl glass-card border border-white/5">
+                                    <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
                                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-3">
                                             <Server className="w-4 h-4" /> Backend Layer
                                         </div>
                                         <p className="text-foreground/70 leading-relaxed">{project.systemArchitecture.backend}</p>
                                     </div>
                                     {project.systemArchitecture.database && (
-                                        <div className="p-6 rounded-2xl glass-card border border-white/5">
+                                        <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
                                             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-violet-400 mb-3">
                                                 <Database className="w-4 h-4" /> Database & Storage
                                             </div>
@@ -156,7 +156,7 @@ export default function ProjectDetail() {
                                         </div>
                                     )}
                                     {project.systemArchitecture.devops && (
-                                        <div className="p-6 rounded-2xl glass-card border border-white/5">
+                                        <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
                                             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-green-400 mb-3">
                                                 <ShieldCheck className="w-4 h-4" /> DevOps & Deployment
                                             </div>
@@ -201,7 +201,7 @@ export default function ProjectDetail() {
                                         ...(project.techStack.database || []),
                                         ...(project.techStack.devops || [])
                                     ].map(tech => (
-                                        <span key={tech} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-medium hover:border-primary/40 transition-colors">
+                                        <span key={tech} className="px-3 py-1.5 rounded-lg dark:bg-white/5 dark:border-white/10 bg-black/5 border-black/5 text-xs font-medium hover:border-primary/40 transition-colors">
                                             {tech}
                                         </span>
                                     ))}
@@ -220,7 +220,7 @@ export default function ProjectDetail() {
                                 </a>
                                 <Link
                                     href="/contact"
-                                    className="flex w-full items-center justify-center gap-2 py-4 rounded-2xl font-bold glass-card border border-white/10 hover:border-primary/40 transition-all"
+                                    className="flex w-full items-center justify-center gap-2 py-4 rounded-2xl font-bold glass-card dark:border-white/10 border-black/5 hover:border-primary/40 transition-all"
                                 >
                                     Discuss Similar Project →
                                 </Link>
