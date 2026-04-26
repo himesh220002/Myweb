@@ -638,9 +638,8 @@ export default function PitchFlow() {
                     </div>
                   </div>
                 </div>
-              </div>{/* end header */}
 
-              <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
+                <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
                   <div className="prose prose-slate dark:prose-invert max-w-none">
                     <motion.div
                       key={`${currentStep.id}-${isHinglish ? "hi" : "en"}`}
@@ -697,6 +696,7 @@ export default function PitchFlow() {
                   </div>
                 </div>
               </div>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
