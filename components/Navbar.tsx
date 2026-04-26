@@ -10,6 +10,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
     { name: "Projects", href: "/projects" },
+    // { name: "Demos", href: "/demo" },
     { name: "Skills", href: "/skills" },
     { name: "Clients", href: "/clients" },
     { name: "Career", href: "/career" },
@@ -31,16 +32,16 @@ export default function Navbar() {
         <nav
             className={cn(
                 "fixed top-0 inset-x-0 z-50 transition-all duration-500",
-                scrolled ? "p-4" : "p-6"
+                scrolled ? "p-2" : "p-4"
             )}
             style={{ width: '100%' }}
         >
             <div
                 className={cn(
-                    "mx-auto w-full transition-all duration-500 flex justify-between items-center transition-all duration-300",
+                    "mx-auto w-full transition-all duration-500 flex justify-between items-center transition-all ease-in-out duration-300",
                     scrolled
-                        ? "max-w-5xl px-4 py-2.5 rounded-full bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-                        : "max-w-7xl px-4 py-2 bg-white/70 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg border border-black/5 dark:border-white/5"
+                        ? "max-w-[1600px] px-4 py-2.5 rounded-full bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+                        : "max-w-7xl px-5 py-4 bg-white/70 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg border border-black/5 dark:border-white/5"
                 )}
             >
                 {/* Logo */}
