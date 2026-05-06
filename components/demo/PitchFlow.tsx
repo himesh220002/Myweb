@@ -620,17 +620,17 @@ export default function PitchFlow() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="h-full"
           >
-            <div className="h-full glass-card p-10 md:p-12 rounded-[2.5rem] flex flex-col relative overflow-hidden group">
+            <div className="h-full glass-card p-2 sm:p-6 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] flex flex-col relative overflow-hidden group">
               {/* Background Glow */}
               <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 blur-[100px] group-hover:bg-primary/10 transition-colors duration-700" />
 
-              <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+              <div className="flex flex-col justify-between mb-10 gap-6">
                 <div className="flex items-center gap-5">
-                  <div className="p-5 rounded-[1.5rem] bg-primary/10 text-primary glow-primary ring-1 ring-primary/20">
+                  <div className="p-3 md:p-5 rounded-[1.5rem] bg-primary/10 text-primary glow-primary ring-1 ring-primary/20">
                     {currentStep.icon}
                   </div>
                   <div>
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gradient">{currentStep.label}</h2>
+                    <h2 className="text-xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gradient">{currentStep.label}</h2>
                     <div className="flex items-center gap-3 mt-1.5">
                       <p className="text-sm font-medium text-muted-foreground">Step {steps.findIndex(s => s.id === currentStep.id) + 1} of {steps.length}</p>
                       <div className="w-1 h-1 rounded-full bg-border" />
