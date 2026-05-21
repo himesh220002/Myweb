@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Zap, Globe, GitBranch, MessageSquare, Mail, Loader2, CheckCircle2, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { Logo } from "./Logo";
 
 const footerLinks = {
     Platform: [
@@ -95,14 +96,23 @@ export default function Footer() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-white/10">
                     {/* Brand & Socials */}
                     <div className="lg:col-span-4">
-                        <Link href="/" className="flex items-center gap-3 mb-6 group">
-                            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary via-violet-500 to-secondary flex items-center justify-center shadow-xl group-hover:rotate-12 transition-transform duration-500">
-                                <Zap className="w-6 h-6 text-white" />
+                        {/* Logo */}
+                        <Link href="/" className="flex items-center gap-2.5 group">
+                            <div className="relative w-9 h-9 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-transform duration-300 ease-in-out group-hover:scale-105">
+                                {/* Actual Logo */}
+                                <Logo className="w-7 h-7" />
+
+                                {/* Gradient Glow */}
+                                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-300" />
                             </div>
-                            <span className="text-2xl font-display font-bold text-gradient">CypherTech</span>
+
+                            {/* Brand Name */}
+                            <span className="text-xl font-display font-bold text-gradient shimmer hidden sm:block tracking-tight">
+                                CytherTech
+                            </span>
                         </Link>
                         <p className="text-white/50 text-lg leading-relaxed mb-8 max-w-sm">
-                            Pioneering digital excellence through innovative engineering and human-centric design.
+                            Delivering digital excellence through high-performance engineering and stunning user experience designs.
                         </p>
                         <div className="flex gap-4">
                             {socials.map((s) => (
@@ -181,7 +191,7 @@ export default function Footer() {
 
                 <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-white/30 text-sm">
-                        © 2026 CypherTech. Built by <span className="text-white/50 font-medium">Himesh Satyam</span>
+                        © 2026 CytherTech. Built by <span className="text-white/50 font-medium">Himesh Satyam</span>
                     </p>
                     <div className="flex gap-8">
                         <Link href="/privacy" className="text-white/30 hover:text-white transition-colors text-sm font-medium">Privacy</Link>

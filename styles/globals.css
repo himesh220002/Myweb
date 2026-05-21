@@ -7,25 +7,27 @@
   --color-violet: #8b5cf6;
   --color-dark: #020617;
   --color-light: #f8fafc;
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Outfit', sans-serif;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --background: #020617;
+  --foreground: #f8fafc;
   --primary: #6366f1;
   --secondary: #22d3ee;
   --violet: #8b5cf6;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-bg: rgba(2, 6, 23, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
   --glow-primary: rgba(99, 102, 241, 0.3);
   --glow-secondary: rgba(34, 211, 238, 0.3);
   --glow-violet: rgba(139, 92, 246, 0.3);
-  --card-bg: rgba(255, 255, 255, 0.4);
-  --card-border: rgba(15, 23, 42, 0.06);
-  --mesh-color: rgba(99, 102, 241, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.07);
+  --mesh-color: rgba(99, 102, 241, 0.06);
 }
 
 .dark {

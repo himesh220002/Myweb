@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { projects } from "@/lib/data/projects";
-import { 
-  Sparkles, 
-  Rocket, 
-  ExternalLink, 
-  Layout, 
+import {
+  Sparkles,
+  Rocket,
+  ExternalLink,
+  Layout,
   ArrowRight,
   Monitor,
   Smartphone,
@@ -42,11 +42,11 @@ export default function DemoIndexPage() {
               <Rocket className="w-4 h-4" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase">Interactive Laboratory</span>
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-foreground leading-none">
               Elite Project <span className="text-gradient">Demos</span>
             </h1>
-            
+
             <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto font-medium">
               A curated collection of live demonstrations, pitch flows, and technical deep-dives for our high-impact solutions.
             </p>
@@ -60,22 +60,22 @@ export default function DemoIndexPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => {
               const demo = activeDemos.find(d => d.slug === project.slug);
-              
+
               return (
-                <div 
+                <div
                   key={project.id}
                   className="group relative h-full"
                 >
                   <div className="h-full glass-card rounded-[2.5rem] overflow-hidden flex flex-col transition-all duration-500 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10">
                     {/* Thumbnail Area */}
                     <div className="relative h-56 overflow-hidden">
-                      <img 
-                        src={project.image} 
+                      <img
+                        src={project.image}
                         alt={project.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
-                      
+
                       {demo ? (
                         <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-primary/90 text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 backdrop-blur-md shadow-lg">
                           <div className="live-dot" />
@@ -97,18 +97,18 @@ export default function DemoIndexPage() {
                           </span>
                         ))}
                       </div>
-                      
+
                       <h3 className="text-2xl font-bold tracking-tight mb-3 group-hover:text-primary transition-colors">
                         {project.title}
                       </h3>
-                      
+
                       <p className="text-sm text-muted-foreground line-clamp-3 mb-8 flex-grow">
                         {project.description}
                       </p>
 
                       <div className="space-y-4">
                         {demo ? (
-                          <Link 
+                          <Link
                             href={demo.path}
                             className="w-full btn-gradient flex items-center justify-center gap-2 py-4 rounded-2xl text-white font-black text-xs uppercase tracking-widest shadow-xl active:scale-95 transition-all"
                           >
@@ -117,11 +117,11 @@ export default function DemoIndexPage() {
                           </Link>
                         ) : (
                           <div className="w-full py-4 rounded-2xl bg-muted/50 border border-border text-center">
-                             <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Demo Coming Soon</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Demo Coming Soon</span>
                           </div>
                         )}
-                        
-                        <Link 
+
+                        <Link
                           href={`/projects/${project.slug}`}
                           className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-background border border-border hover:border-primary/30 transition-all font-bold text-xs uppercase tracking-widest"
                         >
@@ -142,31 +142,31 @@ export default function DemoIndexPage() {
       <section className="mt-32">
         <div className="container mx-auto px-6">
           <div className="glass-card p-12 md:p-20 rounded-[4rem] text-center relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-             <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet/5 blur-[120px] rounded-full pointer-events-none" />
-             
-             <div className="max-w-3xl mx-auto relative z-10 space-y-8">
-                <h2 className="text-4xl md:text-6xl font-black tracking-tight">Need a custom <span className="text-gradient">demonstration</span>?</h2>
-                <p className="text-lg text-muted-foreground font-medium">
-                  We build specialized interactive flows for all our high-tier clients to ensure full alignment on technical architecture and business ROI.
-                </p>
-                <div className="flex flex-wrap justify-center gap-10 pt-4">
-                  <div className="flex flex-col items-center">
-                    <span className="text-4xl font-black text-primary">100%</span>
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2">Custom Built</span>
-                  </div>
-                  <div className="w-px h-12 bg-border hidden md:block" />
-                  <div className="flex flex-col items-center">
-                    <span className="text-4xl font-black text-primary">Real-time</span>
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2">Data Sync</span>
-                  </div>
-                  <div className="w-px h-12 bg-border hidden md:block" />
-                  <div className="flex flex-col items-center">
-                    <span className="text-4xl font-black text-primary">Secure</span>
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2">Architecture</span>
-                  </div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet/5 blur-[120px] rounded-full pointer-events-none" />
+
+            <div className="max-w-3xl mx-auto relative z-10 space-y-8">
+              <h2 className="text-4xl md:text-6xl font-black tracking-tight">Need a custom <span className="text-gradient">demonstration</span>?</h2>
+              <p className="text-lg text-muted-foreground font-medium">
+                We build specialized interactive flows for all our high-tier clients to ensure full alignment on technical architecture and business ROI.
+              </p>
+              <div className="flex flex-wrap justify-center gap-10 pt-4">
+                <div className="flex flex-col items-center">
+                  <span className="text-4xl font-black text-primary">100%</span>
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2">Custom Built</span>
                 </div>
-             </div>
+                <div className="w-px h-12 bg-border hidden md:block" />
+                <div className="flex flex-col items-center">
+                  <span className="text-4xl font-black text-primary">Real-time</span>
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2">Data Sync</span>
+                </div>
+                <div className="w-px h-12 bg-border hidden md:block" />
+                <div className="flex flex-col items-center">
+                  <span className="text-4xl font-black text-primary">Secure</span>
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2">Architecture</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

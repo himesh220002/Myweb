@@ -92,7 +92,7 @@ function ProgressBar({ level, started }: { level: number; started: boolean }) {
     }, [started, level]);
 
     return (
-        <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+        <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
             <div
                 className="progress-fill h-full rounded-full"
                 style={{ width: `${width}%`, transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)" }}
@@ -112,7 +112,7 @@ function SkillCard({ category, index }: { category: typeof skillCategories[0]; i
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: index * 0.1, duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative group rounded-3xl overflow-hidden glass-card p-8 border border-white/5 hover:border-primary/20 transition-all duration-500"
+            className="relative group rounded-3xl overflow-hidden glass-card p-8 border border-slate-200/80 dark:border-white/5 hover:border-primary/20 transition-all duration-500"
         >
             <div
                 className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
@@ -123,15 +123,15 @@ function SkillCard({ category, index }: { category: typeof skillCategories[0]; i
                 <Icon className="w-7 h-7" />
             </div>
 
-            <h3 className="text-2xl font-display font-bold mb-2">{category.title}</h3>
-            <p className="text-sm text-primary font-medium mb-8 opacity-80">{category.strength}</p>
+            <h3 className="text-2xl font-display font-bold mb-2 text-slate-900 dark:text-foreground">{category.title}</h3>
+            <p className="text-sm text-primary font-bold mb-8">{category.strength}</p>
 
             <div className="space-y-5">
                 {category.skills.map((skill) => (
                     <div key={skill.name}>
                         <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-foreground/80">{skill.name}</span>
-                            <span className="text-xs font-bold text-foreground/30">{skill.level}%</span>
+                            <span className="text-sm font-bold text-slate-700 dark:text-foreground/80">{skill.name}</span>
+                            <span className="text-xs font-bold text-slate-400 dark:text-foreground/30">{skill.level}%</span>
                         </div>
                         <ProgressBar level={skill.level} started={inView} />
                     </div>
@@ -159,14 +159,14 @@ export default function SkillsPage() {
                     transition={{ duration: 0.6 }}
                     className="mb-16 text-center"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-white/10">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-slate-200 dark:border-white/10">
                         <TrendingUp className="w-4 h-4 text-secondary" />
                         <span className="text-sm font-semibold text-secondary">Expertise & Capacity</span>
                     </div>
-                    <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 leading-[1.05]">
+                    <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 leading-[1.05] text-slate-900 dark:text-foreground">
                         Technical Depth & <span className="text-gradient">Operational Clarity</span>
                     </h1>
-                    <p className="text-foreground/50 max-w-3xl mx-auto text-xl leading-relaxed">
+                    <p className="text-slate-500 dark:text-foreground/50 max-w-3xl mx-auto text-xl leading-relaxed font-medium">
                         I bridge complex technical architecture with human-centric design and agile delivery.
                         Each category reflects my commitment to solving real-world operational challenges.
                     </p>
@@ -186,14 +186,14 @@ export default function SkillsPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="mt-24 text-center glass-card rounded-[2.5rem] p-16 relative overflow-hidden border border-white/10"
+                    className="mt-24 text-center glass-card rounded-[2.5rem] p-16 relative overflow-hidden border border-slate-200 dark:border-white/10"
                 >
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
                     <div className="orb orb-primary w-[400px] h-[400px] -top-20 left-1/2 -translate-x-1/2 opacity-20 pointer-events-none" />
-                    <h3 className="text-4xl font-display font-bold mb-6 relative z-10">
+                    <h3 className="text-4xl font-display font-bold mb-6 relative z-10 text-slate-900 dark:text-foreground">
                         Ready for <span className="text-gradient">Dynamic Problem Solving?</span>
                     </h3>
-                    <p className="text-foreground/60 mb-10 max-w-xl mx-auto relative z-10 text-lg leading-relaxed">
+                    <p className="text-slate-650 dark:text-foreground/60 mb-10 max-w-xl mx-auto relative z-10 text-lg leading-relaxed font-medium">
                         Beyond the tech stack, I focus on the problem solved. Whether it's scaling inventory or securing patient data, let's build your vision.
                     </p>
                     <a

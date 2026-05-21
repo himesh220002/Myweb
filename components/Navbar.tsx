@@ -6,15 +6,13 @@ import { useState, useEffect } from "react";
 import { Menu, X, Zap, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./ThemeToggle";
+import { Logo } from "./Logo";
 
 const navLinks = [
-    { name: "Projects", href: "/projects" },
-    // { name: "Demos", href: "/demo" },
-    { name: "Skills", href: "/skills" },
-    { name: "Clients", href: "/clients" },
-    { name: "Career", href: "/career" },
-    { name: "Contact", href: "/contact" },
+    { name: "Services", href: "/#services" },
+    { name: "Process", href: "/#process" },
+    { name: "Portfolio", href: "/projects" },
+    { name: "Pricing", href: "/pricing" },
 ];
 
 export default function Navbar() {
@@ -40,20 +38,26 @@ export default function Navbar() {
                 className={cn(
                     "mx-auto w-full transition-all duration-500 flex justify-between items-center transition-all ease-in-out duration-300",
                     scrolled
-                        ? "max-w-[1600px] px-4 py-2.5 rounded-full bg-white/70 dark:bg-[#020617]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-                        : "max-w-7xl px-5 py-4 bg-white/70 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg border border-black/5 dark:border-white/5"
+                        ? "max-w-[1600px] px-4 py-2.5 rounded-full bg-[#020617]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+                        : "max-w-7xl px-5 py-4 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg border border-black/5 dark:border-white/5"
                 )}
             >
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2.5 group">
-                    <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary flex items-center justify-center shadow-lg group-hover:shadow-primary/40 transition-all duration-300 group-hover:scale-105">
-                        <Zap className="w-5 h-5 text-white" />
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary opacity-0 group-hover:opacity-60 blur-md transition-opacity duration-300" />
+                    <div className="relative w-9 h-9 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-transform duration-300 ease-in-out group-hover:scale-105">
+                        {/* Actual Logo */}
+                        <Logo className="w-7 h-7" />
+
+                        {/* Gradient Glow */}
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-300" />
                     </div>
-                    <span className="text-xl font-display font-bold text-gradient shimmer hidden sm:block">
-                        CypherTech
+
+                    {/* Brand Name */}
+                    <span className="text-xl font-display font-bold text-gradient shimmer hidden sm:block tracking-tight">
+                        CytherTech
                     </span>
                 </Link>
+
 
                 {/* Desktop Nav */}
                 <div className="hidden lg:flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/5">
@@ -67,8 +71,7 @@ export default function Navbar() {
                                     "relative px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 group",
                                     isActive
                                         ? "text-primary"
-                                        : "text-foreground/60 hover:text-foreground",
-                                    scrolled ? "text-blue-100 hover:text-blue-400" : "text-blue-100 hover:text-green-200"
+                                        : "text-white/90 hover:text-slate-900 dark:hover:text-foreground"
                                 )}
                             >
                                 {isActive && (
@@ -84,21 +87,19 @@ export default function Navbar() {
                     })}
                 </div>
 
-                {/* Desktop CTA & Theme Toggle */}
+                {/* Desktop CTA */}
                 <div className="hidden lg:flex items-center gap-3">
-                    <ThemeToggle />
                     <Link
-                        href="/contact"
-                        className="relative h-10 px-6 flex items-center justify-center bg-foreground text-background dark:bg-white dark:text-[#020617] rounded-full text-sm font-bold hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden group"
+                        href="/#estimator"
+                        className="relative h-10 px-6 flex items-center justify-center bg-primary text-white rounded-full text-sm font-bold hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden shadow-[0_4px_20px_rgba(99,102,241,0.4)] group"
                     >
-                        <span className="relative z-10">Get a Solution</span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+                        <span className="relative z-10">Request a Quote</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
                     </Link>
                 </div>
 
                 {/* Mobile Actions */}
                 <div className="flex lg:hidden items-center gap-2">
-                    <ThemeToggle />
                     <button
                         className={cn(
                             "relative w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300",
@@ -160,11 +161,11 @@ export default function Navbar() {
                                 ))}
                             </div>
                             <Link
-                                href="/contact"
+                                href="/#estimator"
                                 onClick={() => setIsOpen(false)}
-                                className="flex items-center justify-center w-full bg-foreground text-background dark:bg-white dark:text-[#020617] py-4 rounded-2xl font-bold text-lg shadow-xl active:scale-95 transition-all"
+                                className="flex items-center justify-center w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 active:scale-95 transition-all"
                             >
-                                Get a Solution
+                                Request a Quote
                             </Link>
                         </div>
                     </motion.div>

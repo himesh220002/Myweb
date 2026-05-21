@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { projects } from "@/lib/data/projects";
 import { ArrowLeft, Calendar, Server, Layout, Database, ShieldCheck, Zap, Layers, Code2 } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function ProjectDetail() {
     const { slug } = useParams();
@@ -45,10 +44,10 @@ export default function ProjectDetail() {
                                 </span>
                             ))}
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-display font-bold mb-6 leading-tight">
+                        <h1 className="text-4xl md:text-6xl font-display font-bold mb-6 leading-tight text-slate-900 dark:text-foreground">
                             {project.title}
                         </h1>
-                        <p className="text-xl text-foreground/60 max-w-3xl leading-relaxed">
+                        <p className="text-xl text-slate-650 dark:text-foreground/60 max-w-3xl leading-relaxed font-medium">
                             {project.overview}
                         </p>
                     </div>
@@ -56,28 +55,28 @@ export default function ProjectDetail() {
                     {/* Metadata Bar */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y dark:border-white/10 border-black/5 mb-16">
                         <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/30">Category</span>
-                            <div className="flex items-center gap-2 font-bold text-sm">
+                            <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-foreground/30">Category</span>
+                            <div className="flex items-center gap-2 font-bold text-sm text-slate-700 dark:text-foreground/80">
                                 <Layers className="w-4 h-4 text-primary" />
                                 {project.tags[0]}
                             </div>
                         </div>
                         <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/30">Platform</span>
-                            <div className="flex items-center gap-2 font-bold text-sm">
+                            <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-foreground/30">Platform</span>
+                            <div className="flex items-center gap-2 font-bold text-sm text-slate-700 dark:text-foreground/80">
                                 <Server className="w-4 h-4 text-secondary" />
                                 Full-Stack App
                             </div>
                         </div>
                         <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/30">Delivered</span>
-                            <div className="flex items-center gap-2 font-bold text-sm">
+                            <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-foreground/30">Delivered</span>
+                            <div className="flex items-center gap-2 font-bold text-sm text-slate-700 dark:text-foreground/80">
                                 <Calendar className="w-4 h-4 text-violet-400" />
                                 2026
                             </div>
                         </div>
                         <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-widest font-bold text-foreground/30">Source Code</span>
+                            <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 dark:text-foreground/30">Source Code</span>
                             <a
                                 href={project.github}
                                 target="_blank"
@@ -91,12 +90,11 @@ export default function ProjectDetail() {
                     </div>
 
                     {/* Media Showcase */}
-                    <div className="relative aspect-video w-full rounded-[2.5rem] overflow-hidden mb-24 glass-card dark:border-white/10 border-black/5 group">
-                        <Image
+                    <div className="relative aspect-video w-full rounded-[2.5rem] overflow-hidden mb-24 glass-card dark:border-white/10 border-slate-200 group">
+                        <img
                             src={project.image}
                             alt={project.title}
-                            fill
-                            className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
+                            className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
                         {/* Shimmer overlay */}
@@ -112,15 +110,15 @@ export default function ProjectDetail() {
                                     <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                                         <Zap className="w-5 h-5" />
                                     </div>
-                                    <h2 className="text-2xl font-display font-bold">Core Features</h2>
+                                    <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground">Core Features</h2>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {project.features.map((feat, i) => (
-                                        <div key={i} className="flex items-start gap-4 p-5 rounded-2xl glass-card dark:border-white/5 border-black/5 hover:border-primary/20 transition-all">
+                                        <div key={i} className="flex items-start gap-4 p-5 rounded-2xl glass-card dark:border-white/5 border-slate-200/80 hover:border-primary/20 transition-all">
                                             <div className="w-6 h-6 rounded-lg bg-primary/20 flex items-center justify-center text-primary flex-shrink-0 mt-0.5">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                                             </div>
-                                            <span className="text-foreground/80 text-sm leading-relaxed font-medium">{feat}</span>
+                                            <span className="text-slate-650 dark:text-foreground/80 text-sm leading-relaxed font-medium">{feat}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -132,35 +130,35 @@ export default function ProjectDetail() {
                                     <div className="w-10 h-10 rounded-xl bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary">
                                         <Layers className="w-5 h-5" />
                                     </div>
-                                    <h2 className="text-2xl font-display font-bold">System Architecture</h2>
+                                    <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground">System Architecture</h2>
                                 </div>
                                 <div className="space-y-6">
-                                    <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
+                                    <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-slate-200/80">
                                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-secondary mb-3">
                                             <Layout className="w-4 h-4" /> Frontend Layer
                                         </div>
-                                        <p className="text-foreground/70 leading-relaxed">{project.systemArchitecture.frontend}</p>
+                                        <p className="text-slate-600 dark:text-foreground/70 leading-relaxed font-medium">{project.systemArchitecture.frontend}</p>
                                     </div>
-                                    <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
+                                    <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-slate-200/80">
                                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-3">
                                             <Server className="w-4 h-4" /> Backend Layer
                                         </div>
-                                        <p className="text-foreground/70 leading-relaxed">{project.systemArchitecture.backend}</p>
+                                        <p className="text-slate-600 dark:text-foreground/70 leading-relaxed font-medium">{project.systemArchitecture.backend}</p>
                                     </div>
                                     {project.systemArchitecture.database && (
-                                        <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
+                                        <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-slate-200/80">
                                             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-violet-400 mb-3">
                                                 <Database className="w-4 h-4" /> Database & Storage
                                             </div>
-                                            <p className="text-foreground/70 leading-relaxed">{project.systemArchitecture.database}</p>
+                                            <p className="text-slate-600 dark:text-foreground/70 leading-relaxed font-medium">{project.systemArchitecture.database}</p>
                                         </div>
                                     )}
                                     {project.systemArchitecture.devops && (
-                                        <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-black/5">
+                                        <div className="p-6 rounded-2xl glass-card dark:border-white/5 border-slate-200/80">
                                             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-green-400 mb-3">
                                                 <ShieldCheck className="w-4 h-4" /> DevOps & Deployment
                                             </div>
-                                            <p className="text-foreground/70 leading-relaxed">{project.systemArchitecture.devops}</p>
+                                            <p className="text-slate-600 dark:text-foreground/70 leading-relaxed font-medium">{project.systemArchitecture.devops}</p>
                                         </div>
                                     )}
                                 </div>
@@ -176,14 +174,14 @@ export default function ProjectDetail() {
                                     <div className="flex items-center gap-2 text-primary font-bold text-sm mb-6">
                                         <Zap className="w-4 h-4 pulse-glow" /> Dynamic Problem Solver
                                     </div>
-                                    <h3 className="text-xl font-display font-bold mb-6">The Solution Impact</h3>
+                                    <h3 className="text-xl font-display font-bold mb-6 text-slate-900 dark:text-foreground">The Solution Impact</h3>
                                     <div className="space-y-6">
                                         {project.problemSolverAngle.map((i, idx) => {
                                             const [title, desc] = i.split(": ");
                                             return (
                                                 <div key={idx} className="space-y-1">
-                                                    <div className="text-sm font-bold text-foreground/90">{title}</div>
-                                                    <div className="text-xs text-foreground/50 leading-relaxed">{desc}</div>
+                                                    <div className="text-sm font-bold text-slate-850 dark:text-foreground/90">{title}</div>
+                                                    <div className="text-xs text-slate-500 dark:text-foreground/50 leading-relaxed font-medium">{desc}</div>
                                                 </div>
                                             );
                                         })}
@@ -193,7 +191,7 @@ export default function ProjectDetail() {
 
                             {/* Tech Stack List */}
                             <section>
-                                <h3 className="text-sm font-bold uppercase tracking-widest text-foreground/30 mb-6">Tech Stack</h3>
+                                <h3 className="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-foreground/30 mb-6">Tech Stack</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {[
                                         ...project.techStack.frontend,
@@ -201,7 +199,7 @@ export default function ProjectDetail() {
                                         ...(project.techStack.database || []),
                                         ...(project.techStack.devops || [])
                                     ].map(tech => (
-                                        <span key={tech} className="px-3 py-1.5 rounded-lg dark:bg-white/5 dark:border-white/10 bg-black/5 border-black/5 text-xs font-medium hover:border-primary/40 transition-colors">
+                                        <span key={tech} className="px-3 py-1.5 rounded-lg dark:bg-white/5 dark:border-white/10 bg-slate-100 border border-slate-200/80 dark:border-white/5 text-xs font-semibold text-slate-650 dark:text-white hover:border-primary/40 transition-colors shadow-sm dark:shadow-none">
                                             {tech}
                                         </span>
                                     ))}
@@ -220,7 +218,7 @@ export default function ProjectDetail() {
                                 </a>
                                 <Link
                                     href="/contact"
-                                    className="flex w-full items-center justify-center gap-2 py-4 rounded-2xl font-bold glass-card dark:border-white/10 border-black/5 hover:border-primary/40 transition-all"
+                                    className="flex w-full items-center justify-center gap-2 py-4 rounded-2xl font-bold glass-card border-slate-200 dark:border-white/10 hover:border-primary/40 transition-all text-slate-800 dark:text-white"
                                 >
                                     Discuss Similar Project →
                                 </Link>

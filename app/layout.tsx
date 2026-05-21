@@ -13,23 +13,23 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "CypherTech | Digital Solutions & Premium Project Delivery",
-  description: "CypherTech is a premium digital agency showcasing elite project delivery, innovative client solutions, and high-impact software engineering.",
-  keywords: ["CypherTech", "Digital Solutions", "Portfolio", "Software Engineering", "Project Delivery", "Web Development"],
+  title: "CypherTech | Premium Engineering & Stunning Design",
+  description: "CypherTech is an elite digital agency delivering high-performance engineering, stunning design, and reliable software solutions for modern startups and enterprise teams.",
+  keywords: ["CypherTech", "Digital Solutions", "Portfolio", "Software Engineering", "Project Delivery", "Web Development", "Stunning Design"],
   authors: [{ name: "CypherTech Team" }],
   openGraph: {
-    title: "CypherTech | Digital Solutions & Premium Project Delivery",
-    description: "Elite digital agency showcasing innovative client solutions and high-impact engineering.",
-    url: process.env.NEXT_PUBLIC_BASE_URL || "https://cyphertech.com",
+    title: "CypherTech | Premium Engineering & Stunning Design",
+    description: "Elite digital agency showcasing high-performance engineering and stunning user experiences.",
+    url: process.env.NEXT_PUBLIC_BASE_URL || "https://CypherTech.com",
     siteName: "CypherTech",
     locale: "en_US",
     type: "website",
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://cyphertech.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://CypherTech.com"),
   twitter: {
     card: "summary_large_image",
-    title: "CypherTech | Digital Solutions",
-    description: "Elite digital agency showcasing innovative client solutions.",
+    title: "CypherTech | Premium Engineering",
+    description: "Elite digital agency showcasing high-performance engineering and stunning design.",
   },
   robots: {
     index: true,
@@ -55,8 +55,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col font-sans bg-background text-foreground transition-colors duration-300">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <Navbar />
