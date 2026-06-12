@@ -647,6 +647,51 @@ export default function Home() {
         </section>
       </ScrollAnimatedSection>
 
+      {/* === OUR ECOSYSTEM =================================== */}
+      <section id="ecosystem" className="px-6 py-28 relative overflow-hidden bg-background">
+        <div className="orb orb-primary w-[500px] h-[500px] top-0 left-0 opacity-15 pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto space-y-16">
+          <ScrollAnimatedSection className="text-center max-w-3xl mx-auto space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-primary block">Our Ecosystem</span>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-foreground">
+              Explore Our <span className="text-gradient">Projects.</span>
+            </h2>
+            <div className="h-[2.5px] w-20 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto" />
+            <p className="text-slate-550 dark:text-foreground/50 leading-relaxed font-medium">
+              A scalable micro-frontend architecture hosting our core platforms and tools across a unified network.
+            </p>
+          </ScrollAnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
+            {[
+              { id: "proj1", title: "Project Alpha", desc: "A robust client-server architecture built for scale.", link: "/proj1" },
+              { id: "proj2", title: "Project Beta", desc: "An intelligent data processing platform.", link: "/proj2" },
+              { id: "proj3", title: "Project Gamma", desc: "Next-generation analytics dashboard.", link: "/proj3" }
+            ].map((proj, idx) => (
+              <ScrollAnimatedSection key={idx} delay={idx * 0.1} className="flex">
+                <Link href={proj.link} className="p-8 rounded-3xl glass-card border-slate-200/60 dark:border-white/10 hover:border-primary/40 hover:bg-primary/5 transition-all flex flex-col space-y-5 group relative overflow-hidden w-full cursor-pointer">
+                  <div className="absolute top-0 right-0 w-24 h-24 orb orb-secondary opacity-20 group-hover:opacity-40 transition-opacity" />
+                  
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 text-primary group-hover:scale-105 transition-transform duration-300">
+                    <Globe className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-2xl font-display font-bold text-slate-800 dark:text-foreground group-hover:text-primary transition-colors">
+                    {proj.title}
+                  </h4>
+                  <p className="text-slate-550 dark:text-foreground/50 text-sm leading-relaxed font-medium flex-grow">
+                    {proj.desc}
+                  </p>
+                  <div className="pt-4 flex items-center text-sm font-bold text-primary gap-2">
+                    Launch Application <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              </ScrollAnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* === TESTIMONIALS ==================================== */}
       <section className="px-6 py-28 relative overflow-hidden bg-background">
         <div className="orb orb-secondary w-[600px] h-[600px] -bottom-40 -right-20 opacity-15 pointer-events-none" />

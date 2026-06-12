@@ -1,0 +1,18 @@
+Context: oneDomainMultiProject
+When assisting with this codebase, please adhere to the following architectural guidelines for the cypherTech.online ecosystem.
+
+1. Domain & Routing Hub (MyWeb)
+The root domain (cypherTech.online) is managed by the Next.js application named MyWeb hosted on Vercel.
+MyWeb acts as the primary API Gateway and frontend reverse proxy.
+We do NOT use NGINX. Vercel's Edge Network handles routing.
+2. Frontend Micro-Apps
+Additional client applications (e.g., proj1, proj2) are hosted as independent Next.js/React projects on Vercel.
+They are exposed under path-based routes (e.g., cypherTech.online/proj1).
+This routing is handled natively via Next.js rewrites() in MyWeb's next.config.ts.
+3. Backend APIs (Render)
+Backend services (e.g., Node.js/Express) are hosted on Render.
+Instead of path-based routing, backends use dedicated subdomains natively managed via DNS CNAME records pointing to Render (e.g., api2.cypherTech.online).
+Cross-Origin Resource Sharing (CORS) must be configured on all Render Express apps to allow requests from https://cypherTech.online.
+4. UI / Ecosystem
+The MyWeb homepage (app/page.tsx) contains the "Our Ecosystem" section which dynamically links users to these micro-apps.
+Maintain the premium, dark-mode, high-performance aesthetic across all integrated ecosystem projects.
