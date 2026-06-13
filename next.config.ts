@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      // ----- Project 1: Trading Skill Site -----
       {
         source: '/digitskill',
         destination: 'https://trading-skill-site.vercel.app/digitskill',
@@ -25,13 +26,19 @@ const nextConfig: NextConfig = {
         source: '/digitskill/:path*',
         destination: 'https://trading-skill-site.vercel.app/digitskill/:path*',
       },
+
+      // ----- Project 2: Yamaha Bike Showroom -----
       {
-        // Proxies requests from cypherTech.online/proj2 to the Vercel app for project 2
-        source: '/proj2/:path*',
-        destination: 'https://proj2-placeholder.vercel.app/:path*', // TODO: Replace with real URL
+        source: '/yamahabikes',
+        destination: 'https://bike-showroom-client.vercel.app/yamahabikes',
       },
       {
-        // Proxies requests from cypherTech.online/proj3 to the Vercel app for project 3
+        source: '/yamahabikes/:path*',
+        destination: 'https://bike-showroom-client.vercel.app/yamahabikes/:path*',
+      },
+
+      // ----- Project 3: Placeholder -----
+      {
         source: '/proj3/:path*',
         destination: 'https://proj3-placeholder.vercel.app/:path*', // TODO: Replace with real URL
       }
