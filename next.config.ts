@@ -40,11 +40,11 @@ const nextConfig: NextConfig = {
       // ----- Project 3: Placeholder -----
       {
         source: '/codeforge',
-        destination: 'https://code-forge-lilac-eight.vercel.app/:path*',
+        destination: 'https://code-forge-lilac-eight.vercel.app/codeforge',
       },
       {
         source: '/codeforge/:path*',
-        destination: 'https://code-forge-lilac-eight.vercel.app/:path*',
+        destination: 'https://code-forge-lilac-eight.vercel.app/codeforge/:path*',
       }
     ];
   },
