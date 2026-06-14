@@ -282,6 +282,8 @@ export default function Home() {
   const [country, setCountry] = useState("India");
   const [projectType, setProjectType] = useState("Web Apps");
   const [budget, setBudget] = useState("₹1,00,000 - ₹2,00,000");
+  const [companyName, setCompanyName] = useState("");
+  const [timeline, setTimeline] = useState("1-3 Months");
   const [message, setMessage] = useState("");
 
   const budgetOptions = {
@@ -377,6 +379,8 @@ export default function Home() {
         setFormStatus("success");
         setName("");
         setEmail("");
+        setCompanyName("");
+        setTimeline("1-3 Months");
         setMessage("");
         setSelectedAddons([]);
       } else {
@@ -390,7 +394,13 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* === HERO ============================================ */}
-      <section className="relative min-h-[92vh] flex flex-col justify-center px-6 pt-16 pb-24 overflow-hidden mesh-bg">
+      <section className="relative min-h-[100vh] flex flex-col justify-center px-6 pt-28 sm:pt-32 pb-24 overflow-hidden mesh-bg bg-[#050511] dark text-foreground">
+        <div className="bg-streaks">
+          <div className="streak" style={{ left: '10%', animationDelay: '0s' }} />
+          <div className="streak" style={{ left: '30%', animationDelay: '2s' }} />
+          <div className="streak" style={{ left: '60%', animationDelay: '1s' }} />
+          <div className="streak" style={{ left: '85%', animationDelay: '3s' }} />
+        </div>
         {/* Glow orbs */}
         <div className="orb orb-primary w-[750px] h-[750px] -top-36 left-1/2 -translate-x-1/2 opacity-35" style={{ animation: "float-up 9s ease-in-out infinite" }} />
         <div className="orb orb-violet w-[450px] h-[450px] top-1/3 -left-36 opacity-30" style={{ animation: "float-up 11s ease-in-out infinite 1s" }} />
@@ -404,22 +414,22 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full glass-card border-slate-200/50 dark:border-white/10 text-sm font-semibold"
+              className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full glass-card border border-primary/40 dark:border-white/20 text-sm font-semibold shadow-[0_0_15px_rgba(139,92,246,0.5)]"
               style={{ animation: "badge-glow 3s ease-in-out infinite" }}
             >
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-gradient">Next-Gen Engineering Studio</span>
+              <span className="text-gradient-vibrant">Next-Gen Studio</span>
               <span className="w-1.5 h-1.5 rounded-full bg-secondary pulse-glow" />
             </motion.div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-6xl xl:text-7xl font-display font-bold leading-[1.08] tracking-tight">
+            <h1 className="text-4xl md:text-5xl text-center md:text-left md:text-6xl xl:text-7xl font-display font-bold leading-[1.08] tracking-tight">
               We Build Websites <br />
               <span className="text-gradient">That Scale With You.</span>
             </h1>
 
             {/* Description */}
-            <p className="text-lg md:text-xl text-slate-600 dark:text-foreground/60 leading-relaxed max-w-2xl font-medium">
+            <p className="text-md md:text-lg lg:text-xl text-center md:text-left text-slate-600 dark:text-foreground/60 leading-relaxed max-w-2xl font-medium">
               High-performance engineering, stunning design, and reliable delivery for modern startups and enterprise teams. We bridge tech architecture with human-centric solutions.
             </p>
 
@@ -427,7 +437,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link
                 href="/projects"
-                className="group btn-gradient text-white px-8 py-4.5 rounded-2xl font-bold flex items-center justify-center gap-2 shimmer shadow-lg shadow-primary/20"
+                className="group btn-vibrant text-white px-8 py-4.5 rounded-2xl font-bold flex items-center justify-center gap-2 shimmer shadow-[0_0_30px_rgba(236,72,153,0.4)]"
               >
                 View Projects
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -458,11 +468,11 @@ export default function Home() {
               {/* Stats Grid */}
               <div className="grid grid-cols-1 gap-6 pt-2">
                 {[
-                  { val: "20+", label: "Projects Delivered", desc: "Production-grade codebases running globally", color: "text-primary border-primary/20" },
-                  { val: "2+ Years", label: "Core Experience", desc: "Specialized Next.js & Node.js architecture", color: "text-secondary border-secondary/20" },
-                  { val: "98%", label: "Client Satisfaction", desc: "Long-term partnerships and ongoing support", color: "text-green-400 border-green-500/20" }
+                  { val: "20+", label: "Projects Delivered", desc: "Production-grade codebases running globally", color: "text-secondary border-secondary/20", neonClass: "neon-border-cyan" },
+                  { val: "2+ Years", label: "Core Experience", desc: "Specialized Next.js & Node.js architecture", color: "text-pink-400 border-pink-500/20", neonClass: "neon-border-pink" },
+                  { val: "98%", label: "Client Satisfaction", desc: "Long-term partnerships and ongoing support", color: "text-orange-400 border-orange-500/20", neonClass: "neon-border-orange" }
                 ].map((stat, idx) => (
-                  <div key={idx} className="p-5 rounded-2xl bg-slate-500/5 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 flex items-start gap-4 hover:bg-slate-500/10 dark:hover:bg-white/10 transition-colors">
+                  <div key={idx} className={`p-5 rounded-2xl bg-slate-500/5 dark:bg-[#080816] border border-slate-200/50 dark:border-white/5 flex items-start gap-4 hover:scale-[1.02] transition-all duration-300 neon-border ${stat.neonClass} relative z-10`}>
                     <div className="w-12 h-12 rounded-xl bg-slate-500/5 dark:bg-white/5 flex items-center justify-center flex-shrink-0 font-display font-bold text-lg text-primary border border-slate-200/60 dark:border-white/10">
                       {idx + 1}
                     </div>
@@ -483,7 +493,7 @@ export default function Home() {
       <section id="process" className="px-6 py-28 relative overflow-hidden bg-slate-50 dark:bg-[#020617] border-y border-slate-200/60 dark:border-white/5">
         <div className="orb orb-violet w-[600px] h-[600px] -bottom-40 -left-20 opacity-20 pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
           <ScrollAnimatedSection className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-secondary block">Our Process</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-foreground">
@@ -499,7 +509,7 @@ export default function Home() {
             {/* Left timeline buttons */}
             <div className="lg:col-span-5 space-y-4 relative">
               {/* Vertical connecting line */}
-              <div className="absolute left-5 top-10 bottom-8 w-[2px] bg-gradient-to-b from-primary via-violet-500 to-secondary opacity-25" />
+              <div className="absolute left-[42px] top-10 bottom-8 w-[2px] bg-gradient-to-b from-primary via-violet-500 to-secondary opacity-25" />
 
               {timelineSteps.map((step, idx) => (
                 <button
@@ -512,15 +522,17 @@ export default function Home() {
                       : "bg-transparent border-transparent hover:bg-slate-200/40 dark:hover:bg-white/2"
                   )}
                 >
-                  <div
-                    className={cn(
-                      "w-11 h-11 rounded-full flex items-center justify-center font-display font-bold border transition-all duration-300",
-                      activeStep === idx
-                        ? "bg-primary text-white border-primary shadow-[0_0_15px_rgba(99,102,241,0.4)]"
-                        : "bg-slate-200/50 dark:bg-white/5 text-slate-500 dark:text-foreground/40 border-slate-200/80 dark:border-white/10"
-                    )}
-                  >
-                    {step.num}
+                  <div className="relative z-10 rounded-full bg-slate-50 dark:bg-[#020617]">
+                    <div
+                      className={cn(
+                        "w-11 h-11 rounded-full flex items-center justify-center font-display font-bold border transition-all duration-300",
+                        activeStep === idx
+                          ? "bg-primary text-white border-primary shadow-[0_0_15px_rgba(99,102,241,0.4)]"
+                          : "bg-slate-200/50 dark:bg-white/5 text-slate-500 dark:text-foreground/40 border-slate-200/80 dark:border-white/10"
+                      )}
+                    >
+                      {step.num}
+                    </div>
                   </div>
                   <div className="flex-1 space-y-0.5">
                     <h4 className={cn("font-bold transition-colors", activeStep === idx ? "text-primary" : "text-slate-700 dark:text-foreground/60")}>
@@ -582,7 +594,7 @@ export default function Home() {
       <section id="services" className="px-6 py-28 relative overflow-hidden bg-background">
         <div className="orb orb-primary w-[500px] h-[500px] -top-20 -right-20 opacity-15 pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
           <ScrollAnimatedSection className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary block">Core Capabilities</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-foreground">
@@ -651,7 +663,7 @@ export default function Home() {
       <section id="ecosystem" className="px-6 py-28 relative overflow-hidden bg-background">
         <div className="orb orb-primary w-[500px] h-[500px] top-0 left-0 opacity-15 pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
           <ScrollAnimatedSection className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary block">Our Ecosystem</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-foreground">
@@ -665,14 +677,14 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
             {[
-              { id: "proj1", title: "Project Alpha", desc: "A robust client-server architecture built for scale.", link: "/proj1" },
-              { id: "proj2", title: "Project Beta", desc: "An intelligent data processing platform.", link: "/proj2" },
-              { id: "proj3", title: "Project Gamma", desc: "Next-generation analytics dashboard.", link: "/proj3" }
+              { id: "digitskill", title: "DigitSkill", desc: "Trading and skill development platform.", link: "/digitskill" },
+              { id: "rag-pipeline", title: "AI RAG Pipeline", desc: "Intelligent document querying and ATS processing.", link: "/rag-pipeline" },
+              { id: "yamahabikes", title: "Yamaha Showroom", desc: "Dynamic vehicle inventory and showroom application.", link: "/yamahabikes" }
             ].map((proj, idx) => (
               <ScrollAnimatedSection key={idx} delay={idx * 0.1} className="flex">
-                <Link href={proj.link} className="p-8 rounded-3xl glass-card border-slate-200/60 dark:border-white/10 hover:border-primary/40 hover:bg-primary/5 transition-all flex flex-col space-y-5 group relative overflow-hidden w-full cursor-pointer">
+                <a href={proj.link} className="p-8 rounded-3xl glass-card border-slate-200/60 dark:border-white/10 hover:border-primary/40 hover:bg-primary/5 transition-all flex flex-col space-y-5 group relative overflow-hidden w-full cursor-pointer">
                   <div className="absolute top-0 right-0 w-24 h-24 orb orb-secondary opacity-20 group-hover:opacity-40 transition-opacity" />
-                  
+
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 text-primary group-hover:scale-105 transition-transform duration-300">
                     <Globe className="w-6 h-6" />
                   </div>
@@ -685,7 +697,7 @@ export default function Home() {
                   <div className="pt-4 flex items-center text-sm font-bold text-primary gap-2">
                     Launch Application <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
-                </Link>
+                </a>
               </ScrollAnimatedSection>
             ))}
           </div>
@@ -696,7 +708,7 @@ export default function Home() {
       <section className="px-6 py-28 relative overflow-hidden bg-background">
         <div className="orb orb-secondary w-[600px] h-[600px] -bottom-40 -right-20 opacity-15 pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
           <ScrollAnimatedSection className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-secondary block">Testimonials</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-foreground">
@@ -745,10 +757,10 @@ export default function Home() {
       </section>
 
       {/* === START YOUR PROJECT (ESTIMATOR + FORM) ============= */}
-      <section id="estimator" className="px-6 py-28 relative overflow-hidden bg-slate-50 dark:bg-[#020617] border-t border-slate-200/60 dark:border-white/5">
+      <section id="estimator" className=" px-4 sm:px-6 py-12 md:py-28 relative overflow-hidden bg-slate-50 dark:bg-[#020617] border-t border-slate-200/60 dark:border-white/5">
         <div className="orb orb-primary w-[700px] h-[700px] top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 opacity-15 pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto space-y-16 relative z-10">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16 relative z-10">
           <ScrollAnimatedSection className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-primary block">Start Your Project</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-white">
@@ -791,9 +803,9 @@ export default function Home() {
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/60">Select Your Plan</label>
                     <div className="grid grid-cols-3 gap-3">
                       {[
-                        { id: "starter", name: "Starter", prices: { USD: "$2,499", INR: "₹49,999" } },
-                        { id: "growth", name: "Growth", prices: { USD: "$6,999", INR: "₹1,49,999" } },
-                        { id: "enterprise", name: "Enterprise", prices: { USD: "$14,999", INR: "₹2,99,999" } }
+                        { id: "starter", name: "Starter", prices: { USD: "$2,499", INR: "₹50K" } },
+                        { id: "growth", name: "Growth", prices: { USD: "$6,999", INR: "₹150K" } },
+                        { id: "enterprise", name: "Enterprise", prices: { USD: "$14,999", INR: "₹250K+" } }
                       ].map((plan) => (
                         <button
                           key={plan.id}
@@ -918,7 +930,7 @@ export default function Home() {
                             setBudget("$5,000 - $10,000");
                           }
                         }}
-                        className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
+                        className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-2 py-3.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
                       >
                         <option value="United States" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">United States (USD)</option>
                         <option value="India" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">India (INR)</option>
@@ -933,7 +945,7 @@ export default function Home() {
                       <select
                         value={projectType}
                         onChange={(e) => setProjectType(e.target.value)}
-                        className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
+                        className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-2 py-3.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
                       >
                         <option value="Web Apps" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">Web Apps</option>
                         <option value="E-Commerce" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">E-Commerce</option>
@@ -946,13 +958,39 @@ export default function Home() {
                       <select
                         value={budget}
                         onChange={(e) => setBudget(e.target.value)}
-                        className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
+                        className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-2 py-3.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
                       >
                         {budgetOptions[currency].map((opt) => (
                           <option key={opt} value={opt} className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">
                             {opt}
                           </option>
                         ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Company Name</label>
+                      <input
+                        type="text"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="Acme Corp (Optional)"
+                        className="w-full bg-slate-100 dark:bg-white/3 border border-slate-200 dark:border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-slate-400 dark:placeholder:text-white/20"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Desired Timeline</label>
+                      <select
+                        value={timeline}
+                        onChange={(e) => setTimeline(e.target.value)}
+                        className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-2 py-3.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
+                      >
+                        <option value="ASAP" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">ASAP</option>
+                        <option value="1-3 Months" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">1-3 Months</option>
+                        <option value="3-6 Months" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">3-6 Months</option>
+                        <option value="Flexible" className="text-slate-800 dark:text-white bg-white dark:bg-[#0c1527]">Flexible</option>
                       </select>
                     </div>
                   </div>

@@ -98,9 +98,9 @@ export default function Footer() {
                     <div className="lg:col-span-4">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-2.5 group">
-                            <div className="relative w-9 h-9 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-transform duration-300 ease-in-out group-hover:scale-105">
+                            <div className="relative w-11 h-11 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-transform duration-300 ease-in-out group-hover:scale-105">
                                 {/* Actual Logo */}
-                                <Logo className="w-7 h-7" />
+                                <Logo className="w-10 h-10 rounded-full" />
 
                                 {/* Gradient Glow */}
                                 <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-300" />

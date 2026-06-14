@@ -30,7 +30,7 @@ export default function Navbar() {
         <nav
             className={cn(
                 "fixed top-0 inset-x-0 z-50 transition-all duration-500",
-                scrolled ? "p-2" : "p-4"
+                scrolled ? "px-2" : "p-2"
             )}
             style={{ width: '100%' }}
         >
@@ -38,22 +38,22 @@ export default function Navbar() {
                 className={cn(
                     "mx-auto w-full transition-all duration-500 flex justify-between items-center transition-all ease-in-out duration-300",
                     scrolled
-                        ? "max-w-[1600px] px-4 py-2.5 rounded-full bg-[#020617]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
-                        : "max-w-7xl px-5 py-4 dark:bg-[#020617]/70 rounded-full backdrop-blur-lg border border-black/5 dark:border-white/5"
+                        ? "max-w-[1600px] px-4 py-1 rounded-t-sm rounded-b-3xl bg-[#020617]/70 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+                        : "max-w-7xl px-5 py-2 dark:bg-[#f20617]/20 rounded-full backdrop-blur-lg border border-black/5 dark:border-white/5"
                 )}
             >
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2.5 group">
-                    <div className="relative w-9 h-9 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-transform duration-300 ease-in-out group-hover:scale-105">
+                    <div className="relative w-11 h-11 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-transform duration-300 ease-in-out group-hover:scale-105">
                         {/* Actual Logo */}
-                        <Logo className="w-7 h-7" />
+                        <Logo className="w-10 h-10 rounded-full" />
 
                         {/* Gradient Glow */}
                         <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-300" />
                     </div>
 
                     {/* Brand Name */}
-                    <span className="text-xl font-display font-bold text-gradient shimmer hidden sm:block tracking-tight">
+                    <span className="text-xl font-display font-bold text-gradient shimmer tracking-tight">
                         CytherTech
                     </span>
                 </Link>

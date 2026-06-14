@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Check, X, Sparkles, ChevronDown, HelpCircle, ArrowRight, Zap, Shield, Laptop, 
+import {
+  Check, X, Sparkles, ChevronDown, HelpCircle, ArrowRight, Zap, Shield, Laptop,
   Search, BarChart2, ShoppingCart, Layout, Mail, Lock, ChevronRight
 } from "lucide-react";
 import Link from "next/link";
@@ -96,23 +96,23 @@ export default function PricingPage() {
     {
       name: "Starter",
       sub: "STARTER",
+      tag: "ESSENTIAL",
       price: currency === "USD"
         ? (billingPeriod === "project" ? 2499 : 1999)
         : (billingPeriod === "project" ? 49999 : 39999),
       desc: "Perfect for landing pages, portfolios, and small business sites.",
       features: [
-        { text: "Up to 5 pages", included: true },
-        { text: "Responsive design (mobile + desktop)", included: true },
-        { text: "Basic SEO setup", included: true },
-        { text: "Domain configuration", included: true },
-        { text: "SSL certificate", included: true },
-        { text: "Vercel deployment", included: true },
+        { text: "Up to 5 pages / routes", included: true },
+        { text: "Responsive design & mobile-first", included: true },
+        { text: "Custom database architecture", included: false },
+        { text: "Authentication & User Roles", included: false },
+        { text: "Basic SEO & domain setup", included: true },
+        { text: "E-commerce integration", included: false },
+        { text: "CMS for content management", included: false },
+        { text: "Serverless Cloud deployment", included: true },
         { text: "1 round of revisions", included: true },
         { text: "30-day post-launch support", included: true },
-        { text: "Authentication system", included: false },
-        { text: "Database / backend", included: false },
-        { text: "CMS integration", included: false },
-        { text: "Custom animations", included: false }
+        { text: "Custom animations & WebGL", included: false }
       ],
       btnText: "GET STARTED",
       ctaHref: "/#estimator",
@@ -121,46 +121,46 @@ export default function PricingPage() {
     {
       name: "Growth",
       sub: "GROWTH",
+      tag: "MOST POPULAR",
       price: currency === "USD"
         ? (billingPeriod === "project" ? 6999 : 5599)
         : (billingPeriod === "project" ? 149999 : 119999),
       desc: "Full-stack web apps with auth, database, and production deployment.",
       features: [
         { text: "Up to 20 pages / routes", included: true },
-        { text: "Full-stack (React + Node.js)", included: true },
-        { text: "Authentication (OAuth + JWT)", included: true },
-        { text: "PostgreSQL database", included: true },
-        { text: "Advanced SEO + sitemap", included: true },
-        { text: "Cloud hosting (AWS or Vercel)", included: true },
-        { text: "CI/CD pipeline setup", included: true },
+        { text: "Responsive design & mobile-first", included: true },
+        { text: "Custom database architecture", included: true },
+        { text: "Authentication & User Roles", included: true },
+        { text: "Advanced SEO & sitemaps", included: true },
+        { text: "E-commerce integration", included: false },
+        { text: "CMS for content management", included: true },
+        { text: "Serverless Cloud deployment", included: true },
         { text: "3 rounds of revisions", included: true },
         { text: "90-day post-launch support", included: true },
-        { text: "Performance optimization", included: true },
-        { text: "E-commerce integration", included: false },
-        { text: "Custom dashboard", included: false }
+        { text: "Custom animations & WebGL", included: false }
       ],
       btnText: "START PROJECT",
       ctaHref: "/#estimator",
       popular: true
     },
     {
-      name: "Custom",
+      name: "Enterprise",
       sub: "ENTERPRISE",
+      tag: "SCALABLE",
       price: "Custom",
       desc: "Complex platforms, SaaS products, and multi-tenant systems.",
       features: [
         { text: "Unlimited pages / routes", included: true },
-        { text: "Full-stack architecture", included: true },
-        { text: "Advanced auth + RBAC", included: true },
-        { text: "Custom database design", included: true },
+        { text: "Responsive design & mobile-first", included: true },
+        { text: "Custom database architecture", included: true },
+        { text: "Authentication & User Roles", included: true },
+        { text: "Enterprise SEO optimization", included: true },
         { text: "E-commerce integration", included: true },
-        { text: "Custom analytics dashboard", included: true },
-        { text: "Dedicated project manager", included: true },
+        { text: "CMS for content management", included: true },
+        { text: "Serverless Cloud deployment", included: true },
         { text: "Unlimited revisions", included: true },
         { text: "6-month post-launch support", included: true },
-        { text: "SLA guarantee", included: true },
-        { text: "Priority bugfixes", included: true },
-        { text: "Onboarding & documentation", included: true }
+        { text: "Custom animations & WebGL", included: true }
       ],
       btnText: "REQUEST A QUOTE",
       ctaHref: "/#estimator",
@@ -185,7 +185,7 @@ export default function PricingPage() {
         <div className="absolute inset-0 mesh-bg dark:opacity-20 opacity-40" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-24 space-y-24">
+      <div className="max-w-7xl mx-auto px-6 py-32 space-y-24">
         {/* Header */}
         <div className="text-center space-y-6 max-w-3xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-widest text-primary block">Transparent Pricing</span>
@@ -248,29 +248,35 @@ export default function PricingPage() {
             >
               {/* Popular Badge / Orb */}
               {plan.popular && (
-                <>
-                  <div className="absolute top-0 right-0 w-32 h-32 orb orb-primary opacity-20" />
-                  <div className="absolute top-6 right-6 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider shadow-lg">
-                    MOST POPULAR
-                  </div>
-                </>
+                <div className="absolute top-0 right-0 w-32 h-32 orb orb-primary opacity-20" />
               )}
 
               <div className="space-y-6">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary block">{plan.sub}</span>
-                  <h3 className="text-3xl font-display font-bold text-slate-900 dark:text-foreground">{plan.name}</h3>
-                </div>
-
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-display font-bold text-slate-900 dark:text-foreground">
-                    {formatVal(plan.price)}
-                  </span>
-                  {typeof plan.price === "number" && (
-                    <span className="text-xs text-slate-500 dark:text-foreground/45 font-semibold">
-                      {billingPeriod === "project" ? "/ flat fee" : "/ month"}
+                <div className="flex justify-between items-start gap-4 border-b border-slate-100 dark:border-white/5 pb-6">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary block">{plan.sub}</span>
+                      {plan.tag && (
+                        <span className={cn(
+                          "text-[8px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase",
+                          plan.popular ? "bg-primary text-white shadow-sm" : "bg-slate-200 dark:bg-white/10 text-slate-500 dark:text-foreground/60"
+                        )}>
+                          {plan.tag}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-3xl font-display font-bold text-slate-900 dark:text-foreground">{plan.name}</h3>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-3xl font-display font-bold text-slate-900 dark:text-foreground">
+                      {formatVal(plan.price)}
                     </span>
-                  )}
+                    {typeof plan.price === "number" && (
+                      <span className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-foreground/45 font-bold mt-1">
+                        {billingPeriod === "project" ? "flat fee" : "per month"}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <p className="text-sm text-slate-500 dark:text-foreground/50 leading-relaxed font-medium">
@@ -407,10 +413,10 @@ export default function PricingPage() {
             <div className="absolute top-0 right-0 w-48 h-48 orb orb-primary opacity-15" />
 
             <h3 className="text-3xl font-display font-bold text-slate-900 dark:text-foreground">
-              Still have <span className="text-gradient">questions?</span>
+              Ready to bring your <span className="text-gradient">project to life?</span>
             </h3>
             <p className="text-slate-500 dark:text-foreground/50 text-sm max-w-2xl mx-auto leading-relaxed font-medium">
-              Book a free 30-minute discovery call. We'll scope your project, answer every question, and send a detailed proposal — no pressure.
+              Let's build something exceptional together. Book a free discovery call to discuss your vision, and we'll craft a detailed technical roadmap.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">

@@ -60,29 +60,51 @@ export default function ProjectsPage() {
         <div className="absolute inset-0 mesh-bg dark:opacity-20 opacity-40" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-24 space-y-16">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="space-y-6 max-w-3xl"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-              <Layers className="w-5 h-5" />
+      <div className="max-w-7xl mx-auto px-6 py-32 space-y-16">
+        {/* Header Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          {/* Header Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6 max-w-3xl"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                <Layers className="w-5 h-5" />
+              </div>
+              <span className="text-sm font-bold uppercase tracking-widest text-secondary">Our Portfolio</span>
             </div>
-            <span className="text-sm font-bold uppercase tracking-widest text-secondary">Our Portfolio</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight tracking-tight text-slate-900 dark:text-foreground">
-            Projects That <br />
-            <span className="text-gradient">Ship and Scale.</span>
-          </h1>
-          <p className="text-slate-500 dark:text-foreground/50 text-lg leading-relaxed font-medium">
-            20+ projects delivered across startups, SMBs, and enterprise teams. Each one built to production standards from day one.
-          </p>
-          <div className="h-[2.5px] w-20 bg-gradient-to-r from-primary to-secondary rounded-full" />
-        </motion.div>
+            <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight tracking-tight text-slate-900 dark:text-foreground">
+              Projects That <br />
+              <span className="text-gradient">Ship and Scale.</span>
+            </h1>
+            <p className="text-slate-500 dark:text-foreground/50 text-lg leading-relaxed font-medium">
+              20+ projects delivered across startups, SMBs, and enterprise teams. Each one built to production standards from day one.
+            </p>
+            <div className="h-[2.5px] w-20 bg-gradient-to-r from-primary to-secondary rounded-full" />
+          </motion.div>
+
+          {/* Header Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative hidden lg:block"
+          >
+            <div className="relative aspect-video xl:aspect-[4/3] w-full rounded-[2.5rem] overflow-hidden glass-card border border-slate-200/80 dark:border-white/10 shadow-2xl group">
+              <img
+                src="/portfolio-header.png"
+                alt="Scaling Infrastructure and Software Engineering"
+                className="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#020617]/40 via-transparent to-transparent opacity-80" />
+            </div>
+            {/* Decorative Orbs behind the image */}
+            <div className="absolute -z-10 top-1/2 -right-12 w-64 h-64 orb orb-secondary opacity-30 transform -translate-y-1/2" />
+          </motion.div>
+        </div>
 
         {/* Filter Tabs */}
         <motion.div
@@ -96,8 +118,8 @@ export default function ProjectsPage() {
               key={category}
               onClick={() => setActiveTab(category)}
               className={`relative px-5 py-2.5 rounded-full text-xs font-bold tracking-wider transition-all duration-300 ${activeTab === category
-                  ? "text-white shadow-lg shadow-primary/20"
-                  : "glass-card text-slate-500 dark:text-foreground/50 hover:text-slate-800 dark:hover:text-foreground hover:border-slate-350 dark:hover:border-white/20 border-slate-200/80 dark:border-white/10"
+                ? "text-white shadow-lg shadow-primary/20"
+                : "glass-card text-slate-500 dark:text-foreground/50 hover:text-slate-800 dark:hover:text-foreground hover:border-slate-350 dark:hover:border-white/20 border-slate-200/80 dark:border-white/10"
                 }`}
             >
               {activeTab === category && (
