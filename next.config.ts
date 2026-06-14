@@ -39,8 +39,12 @@ const nextConfig: NextConfig = {
 
       // ----- Project 3: Placeholder -----
       {
-        source: '/proj3/:path*',
-        destination: 'https://proj3-placeholder.vercel.app/:path*', // TODO: Replace with real URL
+        source: '/codeforge',
+        destination: 'https://code-forge-lilac-eight.vercel.app/:path*',
+      },
+      {
+        source: '/codeforge/:path*',
+        destination: 'https://code-forge-lilac-eight.vercel.app/:path*',
       }
     ];
   },
