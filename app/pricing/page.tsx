@@ -224,7 +224,9 @@ export default function PricingPage() {
 
             {/* Region Selector Dropdown */}
             <div className="flex items-center gap-2">
+              <label htmlFor="currency" className="text-xs font-bold text-foreground/50 uppercase tracking-widest">Currency *</label>
               <select
+                id="currency"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value as any)}
                 className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-4 py-2.5 text-xs text-slate-800 dark:text-white focus:outline-none font-bold shadow-sm"

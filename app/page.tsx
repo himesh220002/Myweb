@@ -396,15 +396,15 @@ export default function Home() {
       {/* === HERO ============================================ */}
       <section className="relative min-h-[100vh] flex flex-col justify-center px-6 pt-28 sm:pt-32 pb-24 overflow-hidden mesh-bg bg-[#050511] dark text-foreground">
         <div className="bg-streaks">
-          <div className="streak" style={{ left: '10%', animationDelay: '0s' }} />
-          <div className="streak" style={{ left: '30%', animationDelay: '2s' }} />
-          <div className="streak" style={{ left: '60%', animationDelay: '1s' }} />
-          <div className="streak" style={{ left: '85%', animationDelay: '3s' }} />
+          <div className="streak left-[10%] [animation-delay:0s]" />
+          <div className="streak left-[30%] [animation-delay:2s]" />
+          <div className="streak left-[60%] [animation-delay:1s]" />
+          <div className="streak left-[85%] [animation-delay:3s]" />
         </div>
         {/* Glow orbs */}
-        <div className="orb orb-primary w-[750px] h-[750px] -top-36 left-1/2 -translate-x-1/2 opacity-35" style={{ animation: "float-up 9s ease-in-out infinite" }} />
-        <div className="orb orb-violet w-[450px] h-[450px] top-1/3 -left-36 opacity-30" style={{ animation: "float-up 11s ease-in-out infinite 1s" }} />
-        <div className="orb orb-secondary w-[400px] h-[400px] top-1/4 -right-24 opacity-25" style={{ animation: "float-up 10s ease-in-out infinite 2s" }} />
+        <div className="orb orb-primary w-[750px] h-[750px] -top-36 left-1/2 -translate-x-1/2 opacity-35 animate-[float-up_9s_ease-in-out_infinite]" />
+        <div className="orb orb-violet w-[450px] h-[450px] top-1/3 -left-36 opacity-30 animate-[float-up_11s_ease-in-out_infinite_1s]" />
+        <div className="orb orb-secondary w-[400px] h-[400px] top-1/4 -right-24 opacity-25 animate-[float-up_10s_ease-in-out_infinite_2s]" />
 
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
           {/* Left Text */}
@@ -414,8 +414,7 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full glass-card border border-primary/40 dark:border-white/20 text-sm font-semibold shadow-[0_0_15px_rgba(139,92,246,0.5)]"
-              style={{ animation: "badge-glow 3s ease-in-out infinite" }}
+              className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full glass-card border border-primary/40 dark:border-white/20 text-sm font-semibold shadow-[0_0_15px_rgba(139,92,246,0.5)] animate-[badge-glow_3s_ease-in-out_infinite]"
             >
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-gradient-vibrant">Next-Gen Studio</span>
@@ -786,7 +785,9 @@ export default function Home() {
 
                     {/* Geolocation currency toggle */}
                     <div className="flex items-center gap-2">
+                      <label htmlFor="currency" className="text-xs font-bold text-foreground/50 uppercase tracking-widest">Currency *</label>
                       <select
+                        id='currency'
                         value={currency}
                         onChange={(e) => setCurrency(e.target.value as any)}
                         className="bg-slate-200/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-white focus:outline-none font-bold"
@@ -916,8 +917,9 @@ export default function Home() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Country / Region</label>
+                      <label htmlFor="country" className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Country / Region</label>
                       <select
+                        id='country'
                         value={country}
                         onChange={(e) => {
                           const val = e.target.value;
@@ -941,8 +943,9 @@ export default function Home() {
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Project Type</label>
+                      <label htmlFor='projectType' className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Project Type</label>
                       <select
+                        id='projectType'
                         value={projectType}
                         onChange={(e) => setProjectType(e.target.value)}
                         className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-2 py-3.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
@@ -954,8 +957,9 @@ export default function Home() {
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Select Budget</label>
+                      <label htmlFor='budget' className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Select Budget</label>
                       <select
+                        id='budget'
                         value={budget}
                         onChange={(e) => setBudget(e.target.value)}
                         className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-2 py-3.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"
@@ -981,8 +985,9 @@ export default function Home() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Desired Timeline</label>
+                      <label htmlFor='timeline' className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-foreground/40">Desired Timeline</label>
                       <select
+                        id='timeline'
                         value={timeline}
                         onChange={(e) => setTimeline(e.target.value)}
                         className="w-full bg-slate-100 dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-2xl px-2 py-3.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:border-primary/50 transition-all"

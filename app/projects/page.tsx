@@ -143,12 +143,7 @@ export default function ProjectsPage() {
             className="p-8 rounded-[2.5rem] glass-card border-slate-200 dark:border-white/10 shadow-2xl relative overflow-hidden group grid grid-cols-1 lg:grid-cols-12 gap-8 items-center cursor-crosshair"
           >
             {/* Hover glow */}
-            <div className="absolute inset-0 rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-              style={{
-                background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(34,211,238,0.06))",
-                boxShadow: "0 0 50px rgba(99,102,241,0.1)",
-              }}
-            />
+            <div className="absolute inset-0 rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[linear-gradient(135deg,rgba(99,102,241,0.06),rgba(34,211,238,0.06))] shadow-[0_0_50px_rgba(99,102,241,0.1)]" />
 
             {/* Featured Visual Image */}
             <div className="lg:col-span-6 relative aspect-video w-full rounded-3xl overflow-hidden bg-[#0d0d1a] border border-slate-200 dark:border-white/5 scanline">
@@ -223,11 +218,7 @@ export default function ProjectsPage() {
                 className="p-6 rounded-[2rem] glass-card border-slate-200 dark:border-white/10 hover:border-primary/20 transition-all flex flex-col justify-between space-y-6 relative overflow-hidden group cursor-crosshair"
               >
                 {/* Hover gradient glow */}
-                <div className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(99,102,241,0.04), rgba(34,211,238,0.04))",
-                  }}
-                />
+                <div className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[linear-gradient(135deg,rgba(99,102,241,0.04),rgba(34,211,238,0.04))]" />
 
                 <div className="space-y-4">
                   {/* Card Visual Image */}

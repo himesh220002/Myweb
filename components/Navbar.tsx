@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, Zap, ArrowRight } from "lucide-react";
+import { Menu, X, Zap, ArrowRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
@@ -13,6 +13,15 @@ const navLinks = [
     { name: "Process", href: "/#process" },
     { name: "Portfolio", href: "/projects" },
     { name: "Pricing", href: "/pricing" },
+    {
+        name: "More",
+        dropdown: [
+            { name: "Career", href: "/career" },
+            { name: "Skills", href: "/skills" },
+            { name: "Clients", href: "/clients" },
+            { name: "Contact", href: "/contact" },
+        ]
+    }
 ];
 
 export default function Navbar() {
@@ -29,10 +38,9 @@ export default function Navbar() {
     return (
         <nav
             className={cn(
-                "fixed top-0 inset-x-0 z-50 transition-all duration-500",
+                "fixed top-0 inset-x-0 z-50 transition-all duration-500 w-full",
                 scrolled ? "px-2" : "p-2"
             )}
-            style={{ width: '100%' }}
         >
             <div
                 className={cn(
@@ -62,11 +70,50 @@ export default function Navbar() {
                 {/* Desktop Nav */}
                 <div className="hidden lg:flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-black/5 dark:border-white/5">
                     {navLinks.map((link) => {
-                        const isActive = pathname === link.href;
+                        const isActive = link.href ? pathname === link.href : false;
+
+                        if (link.dropdown) {
+                            return (
+                                <div key={link.name} className="relative group">
+                                    <button
+                                        className={cn(
+                                            "flex items-center gap-1 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300",
+                                            "text-white/90 hover:text-slate-900 dark:hover:text-foreground"
+                                        )}
+                                    >
+                                        <span className="relative z-10">{link.name}</span>
+                                        <ChevronDown className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:-rotate-180" />
+                                    </button>
+                                    
+                                    <div className="absolute top-full right-0 pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                                        <div className="bg-white/90 dark:bg-[#020617]/90 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl shadow-xl p-2 w-48 flex flex-col gap-1">
+                                            {link.dropdown.map((dropLink) => {
+                                                const isDropActive = pathname === dropLink.href;
+                                                return (
+                                                    <Link
+                                                        key={dropLink.name}
+                                                        href={dropLink.href}
+                                                        className={cn(
+                                                            "px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-300",
+                                                            isDropActive
+                                                                ? "bg-primary/10 text-primary"
+                                                                : "text-foreground/70 dark:text-white/70 hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground dark:hover:text-white"
+                                                        )}
+                                                    >
+                                                        {dropLink.name}
+                                                    </Link>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        }
+
                         return (
                             <Link
                                 key={link.name}
-                                href={link.href}
+                                href={link.href!}
                                 className={cn(
                                     "relative px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 group",
                                     isActive
@@ -125,18 +172,17 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Nav */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0, y: -20 }}
-                        animate={{ opacity: 1, height: "auto", y: 0 }}
-                        exit={{ opacity: 0, height: 0, y: -20 }}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-                        className="absolute top-full inset-x-0 px-6 pt-4 overflow-hidden"
+                        className="fixed inset-0 z-40 bg-white/95 dark:bg-[#020617]/95 backdrop-blur-3xl pt-[100px] px-6 overflow-y-auto pb-6"
                     >
-                        <div className="rounded-3xl bg-white/90 dark:bg-[#020617]/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-2xl p-6 space-y-4">
-                            <div className="grid gap-2">
+                        <div className="flex flex-col min-h-full justify-between gap-8 max-w-md mx-auto">
+                            <div className="flex flex-col gap-3">
                                 {navLinks.map((link, i) => (
                                     <motion.div
                                         key={link.name}
@@ -144,26 +190,49 @@ export default function Navbar() {
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: i * 0.1 }}
                                     >
-                                        <Link
-                                            href={link.href}
-                                            onClick={() => setIsOpen(false)}
-                                            className={cn(
-                                                "flex items-center justify-between px-5 py-4 rounded-2xl font-bold text-lg transition-all",
-                                                pathname === link.href
-                                                    ? "bg-primary/10 text-primary border border-primary/20"
-                                                    : "text-foreground/70 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5"
-                                            )}
-                                        >
-                                            {link.name}
-                                            <ArrowRight className={cn("w-5 h-5 transition-transform", pathname === link.href ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0")} />
-                                        </Link>
+                                        {link.dropdown ? (
+                                            <div className="flex flex-col gap-2 rounded-3xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 p-5">
+                                                <div className="text-sm font-bold text-foreground/50 dark:text-white/50 px-2 mb-1">{link.name}</div>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    {link.dropdown.map((dropLink) => (
+                                                        <Link
+                                                            key={dropLink.name}
+                                                            href={dropLink.href}
+                                                            onClick={() => setIsOpen(false)}
+                                                            className={cn(
+                                                                "flex items-center justify-between px-4 py-3 rounded-2xl font-bold text-sm transition-all",
+                                                                pathname === dropLink.href
+                                                                    ? "bg-primary/10 text-primary border border-primary/20"
+                                                                    : "text-foreground/80 dark:text-white/80 hover:bg-black/5 dark:hover:bg-white/5 bg-white/50 dark:bg-black/20"
+                                                            )}
+                                                        >
+                                                            {dropLink.name}
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <Link
+                                                href={link.href!}
+                                                onClick={() => setIsOpen(false)}
+                                                className={cn(
+                                                    "flex items-center justify-between px-5 py-4 rounded-3xl font-bold text-xl transition-all",
+                                                    pathname === link.href
+                                                        ? "bg-primary/5 text-primary border border-primary/10"
+                                                        : "text-foreground/80 dark:text-white/80 hover:bg-black/5 dark:hover:bg-white/5 border border-transparent"
+                                                )}
+                                            >
+                                                {link.name}
+                                                <ArrowRight className={cn("w-6 h-6 transition-transform", pathname === link.href ? "translate-x-0 opacity-100 text-primary" : "-translate-x-4 opacity-0")} />
+                                            </Link>
+                                        )}
                                     </motion.div>
                                 ))}
                             </div>
                             <Link
                                 href="/#estimator"
                                 onClick={() => setIsOpen(false)}
-                                className="flex items-center justify-center w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 active:scale-95 transition-all"
+                                className="flex items-center justify-center w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 active:scale-95 transition-all mt-auto"
                             >
                                 Request a Quote
                             </Link>

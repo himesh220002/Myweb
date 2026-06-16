@@ -77,7 +77,7 @@ export default function ContactPage() {
     ];
 
     return (
-        <div className="relative min-h-screen overflow-hidden">
+        <div className="relative min-h-screen pt-16 overflow-hidden">
             {/* Orbs */}
             <div className="fixed inset-0 pointer-events-none -z-10">
                 <div className="orb orb-primary w-[600px] h-[600px] -top-40 -right-40 opacity-20" />
@@ -128,8 +128,8 @@ export default function ContactPage() {
                                     className="group flex gap-5 items-center p-5 rounded-2xl glass-card hover:border-primary/30 transition-all duration-300"
                                 >
                                     <div
-                                        className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                                        style={{ boxShadow: `0 8px 24px ${card.glow}` }}
+                                        className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${card.gradient} shadow-glow flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}
+
                                     >
                                         <card.icon className="w-5 h-5" />
                                     </div>
@@ -171,12 +171,7 @@ export default function ContactPage() {
                         className="relative neon-border rounded-3xl"
                     >
                         <div
-                            className="p-8 md:p-10 rounded-3xl relative overflow-hidden shimmer"
-                            style={{
-                                background: "linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.05) 50%, rgba(34,211,238,0.06) 100%)",
-                                backdropFilter: "blur(20px)",
-                                border: "1px solid rgba(99,102,241,0.15)",
-                            }}
+                            className="p-8 md:p-10 rounded-3xl relative overflow-hidden shimmer bg-[linear-gradient(135deg,rgba(99,102,241,0.08)_0%,rgba(139,92,246,0.05)_50%,rgba(34,211,238,0.06)_100%)] backdrop-blur-[20px] border border-[rgba(99,102,241,0.15)]"
                         >
                             <AnimatePresence mode="wait">
                                 {success ? (
@@ -294,8 +289,9 @@ export default function ContactPage() {
 
                                         {/* Subject */}
                                         <div className="space-y-1.5">
-                                            <label className="text-xs font-bold text-foreground/50 uppercase tracking-widest">Subject *</label>
+                                            <label htmlFor="subject" className="text-xs font-bold text-foreground/50 uppercase tracking-widest">Subject *</label>
                                             <select
+                                                id='subject'
                                                 name="subject"
                                                 value={form.subject}
                                                 onChange={handleChange}

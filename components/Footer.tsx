@@ -71,15 +71,15 @@ export default function Footer() {
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 {/* Big CTA Section */}
-                <div className="relative mb-20 p-8 md:p-12 rounded-[2.5rem] bg-white/5 border border-white/10 overflow-hidden group">
+                <div className="relative mb-20 p-4 md:p-8 rounded-[2.5rem] bg-white/5 border border-white/10 overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                     <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
                         <div className="max-w-3xl text-center md:text-left">
-                            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">
+                            <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-4">
                                 Ready to bring your <span className="text-gradient">vision to life?</span>
                             </h2>
-                            <p className="text-white/60 text-lg">
+                            <p className="text-white/60 text-md">
                                 Let&apos;s build something extraordinary together. Our team is ready to turn your ideas into high-performance digital reality.
                             </p>
                         </div>
@@ -121,6 +121,7 @@ export default function Footer() {
                                     href={s.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    aria-label={s.label}
                                     className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group/social"
                                 >
                                     <s.icon size={20} className="group-hover/social:scale-110 transition-transform" />
