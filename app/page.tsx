@@ -677,7 +677,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
             {[
               { id: "digitskill", title: "DigitSkill", desc: "Trading and skill development platform.", link: "/digitskill" },
-              { id: "rag-pipeline", title: "AI RAG Pipeline", desc: "Intelligent document querying and ATS processing.", link: "/rag-pipeline" },
+              { id: "codeforge", title: "AI RAG Pipeline", desc: "Intelligent document querying and ATS processing.", link: "/codeforge" },
               { id: "yamahabikes", title: "Yamaha Showroom", desc: "Dynamic vehicle inventory and showroom application.", link: "/yamahabikes" }
             ].map((proj, idx) => (
               <ScrollAnimatedSection key={idx} delay={idx * 0.1} className="flex">
