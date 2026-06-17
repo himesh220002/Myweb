@@ -165,7 +165,7 @@ body {
 }
 
 .btn-vibrant {
-  background: linear-gradient(135deg, #a855f7, #ec4899, #06b6d4);
+  background: linear-gradient(135deg, #a855f7, #73ddcd, #06b6d4);
   background-size: 200% auto;
   animation: gradient-shift 4s linear infinite;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
