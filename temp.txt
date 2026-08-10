@@ -1,0 +1,127 @@
+1-"bmirun" Public
+body mass index -> body improvement tips -> profetional training -> Dier Calorie planner -> fitness tracker
+gym
+bmi-calculator
+fitness-tracker
+calorie-tracker
+ Astro Updated 11 minutes ago
+2-"javaRev" Public
+ HTML Updated 2 weeks ago
+
+3-"CSVgenerator" Public
+ Python Updated on Jun 24
+4-"MovieRecomendation" Public
+ Python Updated on Jun 23
+5-"ImageClassifier" Public
+ HTML Updated on Jun 23
+6-"StudentIntelligence" Public
+ Python Updated on Jun 21
+7-"DataCleanup" Public
+data cleanup machine
+data
+analysis
+cleanup
+ Python Updated on Jun 21
+8"codeForge" Public
+ TypeScript Updated on Jun 18
+9"TradingSkillSite" Public
+ TypeScript Updated on Jun 17
+10"bikeShowroom" Public
+ TypeScript Updated on Jun 17
+11"Myweb" Public
+https://cyphertech.online
+ TypeScript Updated on Jun 17
+spec-kit Public
+Forked from github/spec-kit
+💫 Toolkit to help you get started with Spec-Driven Development
+ Python  1 MIT License Updated on Jun 6
+h4cker Public
+Forked from The-Art-of-Hacking/h4cker
+This repository is maintained by Omar Santos (@santosomar) and includes thousands of resources related to ethical hacking, bug bounties, digital forensics and incident response (DFIR), AI security,…
+ Jupyter Notebook MIT License Updated on May 28
+12"myCVs" Private
+ HTML Updated on May 24
+13"dentalProject" Public
+dental clinic nextjs
+ TypeScript  1 MIT License Updated on May 19
+14"Trading-skill-training" Public
+ HTML Updated on May 7
+Himesh220002 Public
+Updated on Apr 11
+bikeShowArch Public
+ HTML Updated on Mar 21
+My-Portfolio Public
+My portfolio
+ HTML  1 Updated on Mar 12
+15"notebuilder" Public
+ TypeScript Updated on Feb 16
+16"PyLearn" Public
+python learning platform
+ TypeScript  1 Updated on Feb 14
+17"car-marketplace-web-app" Public
+ TypeScript  1 Updated on Jan 27
+problemsolving Public
+ JavaScript Updated on Jan 17
+18"dBank" Public
+A decentralized banking and investment platform built on the Internet Computer. Features a comprehensive asset marketplace, portfolio tracking with real-time charts, and secure PIN-protected transa…
+ JavaScript Updated on Dec 31, 2025
+19"TechNitro" Public
+ TypeScript  1 Updated on Dec 29, 2025
+20"MyAPI" Public
+ TypeScript Updated on Dec 29, 2025
+21"tech-deal" Public
+ JavaScript Updated on Sep 18, 2025
+22"My-Notes" Public
+my notes
+ HTML Updated on Sep 16, 2025
+23"Chat-Bot" Public
+A full-stack real-time Chatbot application built with React, TailwindCSS, GraphQL, Nhost (Auth + Database), and Apollo Client. Supports authentication, live chat via subscriptions, and deployment o…
+react
+graphql
+real-time
+authentication
+apollo-client
+websocket
+netlify ,,,
+
+
+only marked those project with numbers which i think may be we can use it in portfolio of learn/work/Development driven
+
+,,,,
+
+similar to these skills but its actually more than this - 💻 Tech Stack
+🎨 UI / Frontend
+HTML5 CSS3 JavaScript TypeScript React Next JS Vite TailwindCSS Bootstrap Chart.js React Router jQuery
+
+🗄️ Database / Storage
+MongoDB MySQL Postgres Redis Supabase Firebase Prisma
+
+⚙️ Server / Backend
+NodeJS Express.js FastAPI Python Java C# Socket.io JWT Nodemon
+
+🔧 DevOps / Utilities
+Git GitHub GitHub Actions NPM Yarn Postman ESLint Jest Vitest Bitwarden Notion
+
+🤖 ML / AI & Data Science
+TensorFlow PyTorch Keras NumPy Pandas Matplotlib Plotly mlflow
+
+🎨 Design / Creative Tools
+Adobe Creative Cloud Adobe Illustrator Blender Canva
+
+🎮 Other Tools & Platforms
+Riot Games nVIDIA Steam Unity ,,,, may be i have not added many more like astro, python, pytorch, imean like expanded towards data science tools as well back in these project - CSVgenerator Public
+ Python Updated on Jun 24
+MovieRecomendation Public
+ Python Updated on Jun 23
+ImageClassifier Public
+ HTML Updated on Jun 23
+StudentIntelligence Public
+ Python Updated on Jun 21
+DataCleanup Public
+data cleanup machine
+data
+analysis
+cleanup
+ 
+
+
