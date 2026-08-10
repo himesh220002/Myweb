@@ -1,183 +1,122 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { Globe, Layers, Layout, Server, TrendingUp, Code2, ShieldCheck, Zap } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { TrendingUp, Layers, Server, ShieldCheck, Globe, Layout } from "lucide-react";
 
 const skillCategories = [
     {
         title: "Frontend Development",
         icon: Layout,
-        gradient: "from-primary to-violet-500",
-        glow: "rgba(99,102,241,0.3)",
         strength: "Modern UI/UX with premium theme-aware styling",
-        skills: [
-            { name: "React", level: 95 },
-            { name: "Next.js", level: 95 },
-            { name: "TypeScript", level: 90 },
-            { name: "Tailwind CSS", level: 92 },
-            { name: "Framer Motion", level: 85 },
-            { name: "Redux Toolkit", level: 80 },
-        ]
+        image: "/skills_frontend_bg.png",
+        skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Redux Toolkit"]
     },
     {
         title: "Backend & Cloud",
         icon: Server,
-        gradient: "from-secondary to-blue-500",
-        glow: "rgba(34,211,238,0.3)",
         strength: "Secure APIs, scalable microservices, real-time communication",
-        skills: [
-            { name: "Node.js", level: 90 },
-            { name: "Express.js", level: 88 },
-            { name: "MongoDB", level: 85 },
-            { name: "PostgreSQL", level: 82 },
-            { name: "JWT & Security", level: 88 },
-            { name: "Socket.io", level: 80 },
-        ]
+        image: "/performance_bg.png",
+        skills: ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "JWT & Security", "Socket.io", "GraphQL"]
     },
     {
         title: "DevOps & Utilities",
         icon: ShieldCheck,
-        gradient: "from-violet-500 to-purple-700",
-        glow: "rgba(139,92,246,0.3)",
         strength: "Automated deployments and operational transparency",
-        skills: [
-            { name: "Git / GitHub", level: 92 },
-            { name: "GitHub Actions", level: 80 },
-            { name: "CI/CD Pipelines", level: 78 },
-            { name: "Postman", level: 90 },
-            { name: "ESLint / Jest", level: 82 },
-            { name: "AWS / Vercel", level: 85 },
-        ]
+        image: "/security_bg.png",
+        skills: ["Git / GitHub", "GitHub Actions", "CI/CD Pipelines", "Docker", "Postman", "AWS", "Vercel"]
     },
     {
         title: "Solutions & Architecture",
         icon: Layers,
-        gradient: "from-orange-500 to-rose-500",
-        glow: "rgba(249,115,22,0.3)",
         strength: "Workflow optimization and role-based systems",
-        skills: [
-            { name: "CRM Development", level: 94 },
-            { name: "Inventory Systems", level: 88 },
-            { name: "Service Dashboards", level: 90 },
-            { name: "System Design", level: 85 },
-            { name: "Database Schema", level: 88 },
-            { name: "Auth Architecture", level: 90 },
-        ]
+        image: "/design_bg.png",
+        skills: ["CRM Development", "Inventory Systems", "Service Dashboards", "System Design", "Database Schema", "Auth Architecture"]
     },
     {
         title: "Digital Strategy",
         icon: Globe,
-        gradient: "from-green-400 to-secondary",
-        glow: "rgba(34,197,94,0.3)",
         strength: "Bridging technical architecture with persuasive communication",
-        skills: [
-            { name: "SEO & Ranking", level: 88 },
-            { name: "Agile Delivery", level: 92 },
-            { name: "UX Strategy", level: 85 },
-            { name: "Stakeholder Mgmt", level: 90 },
-            { name: "Product Roadmap", level: 82 },
-            { name: "Tech Writing", level: 85 },
-        ]
+        image: "/growth_bg.png",
+        skills: ["SEO & Ranking", "Agile Delivery", "UX Strategy", "Stakeholder Mgmt", "Product Roadmap", "Tech Writing"]
     }
 ];
 
-function ProgressBar({ level, started }: { level: number; started: boolean }) {
-    const [width, setWidth] = useState(0);
-    useEffect(() => {
-        if (started) {
-            const t = setTimeout(() => setWidth(level), 150);
-            return () => clearTimeout(t);
-        }
-    }, [started, level]);
-
-    return (
-        <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
-            <div
-                className="progress-fill h-full rounded-full"
-                style={{ width: `${width}%`, transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)" }}
-            />
-        </div>
-    );
-}
-
-function SkillCard({ category, index }: { category: typeof skillCategories[0]; index: number }) {
-    const ref = useRef(null);
-    const inView = useInView(ref, { once: true, margin: "-60px" });
-    const Icon = category.icon;
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 28 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: index * 0.1, duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative group rounded-3xl overflow-hidden glass-card p-8 border border-slate-200/80 dark:border-white/5 hover:border-primary/20 transition-all duration-500"
-        >
-            <div
-                className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                style={{ background: `radial-gradient(circle, ${category.glow}, transparent 70%)`, filter: "blur(40px)" }}
-            />
-
-            <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center text-white mb-6 shadow-xl shadow-black/20 group-hover:scale-110 transition-transform duration-300`}>
-                <Icon className="w-7 h-7" />
-            </div>
-
-            <h3 className="text-2xl font-display font-bold mb-2 text-slate-900 dark:text-foreground">{category.title}</h3>
-            <p className="text-sm text-primary font-bold mb-8">{category.strength}</p>
-
-            <div className="space-y-5">
-                {category.skills.map((skill) => (
-                    <div key={skill.name}>
-                        <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-bold text-slate-700 dark:text-foreground/80">{skill.name}</span>
-                            <span className="text-xs font-bold text-slate-400 dark:text-foreground/30">{skill.level}%</span>
-                        </div>
-                        <ProgressBar level={skill.level} started={inView} />
-                    </div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
-
 export default function SkillsPage() {
     return (
-        <div className="relative min-h-screen overflow-hidden">
-            {/* Orbs */}
-            <div className="fixed inset-0 pointer-events-none -z-10">
-                <div className="orb orb-violet w-[800px] h-[800px] -top-60 -right-60 opacity-20" />
-                <div className="orb orb-secondary w-[600px] h-[600px] bottom-0 -left-40 opacity-15" />
-                <div className="absolute inset-0 mesh-bg opacity-40" />
-            </div>
-
-            <div className="max-w-7xl mx-auto px-6 py-24">
+        <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative">
+            <div className="max-w-7xl mx-auto px-6 py-32 space-y-24 relative z-10">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="mb-16 text-center"
+                    className="text-center"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-slate-200 dark:border-white/10">
-                        <TrendingUp className="w-4 h-4 text-secondary" />
-                        <span className="text-sm font-semibold text-secondary">Expertise & Capacity</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 mb-6 border border-slate-200 shadow-sm">
+                        <TrendingUp className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-bold tracking-widest uppercase text-slate-700">Expertise & Capacity</span>
                     </div>
-                    <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 leading-[1.05] text-slate-900 dark:text-foreground">
-                        Technical Depth & <span className="text-gradient">Operational Clarity</span>
+                    <h1 className="text-5xl md:text-7xl font-display font-extrabold mb-6 leading-[1.05] text-slate-900 tracking-tight">
+                        Technical Depth & <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Operational Clarity</span>
                     </h1>
-                    <p className="text-slate-500 dark:text-foreground/50 max-w-3xl mx-auto text-xl leading-relaxed font-medium">
+                    <p className="text-slate-600 max-w-3xl mx-auto text-xl leading-relaxed font-medium">
                         I bridge complex technical architecture with human-centric design and agile delivery.
                         Each category reflects my commitment to solving real-world operational challenges.
                     </p>
-                    <div className="mt-8 h-[2.5px] w-24 mx-auto bg-gradient-to-r from-primary to-secondary rounded-full" />
                 </motion.div>
 
-                {/* Skill Cards Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                    {skillCategories.map((category, idx) => (
-                        <SkillCard key={idx} category={category} index={idx} />
-                    ))}
+                {/* Big Visual Skill Sections */}
+                <div className="space-y-12">
+                    {skillCategories.map((category, idx) => {
+                        const Icon = category.icon;
+                        return (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 40 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-100px" }}
+                                transition={{ duration: 0.7 }}
+                                className="relative w-full rounded-[3rem] overflow-hidden border border-slate-200 bg-slate-900 group"
+                            >
+                                {/* Background Image */}
+                                <img 
+                                    src={category.image} 
+                                    alt={category.title} 
+                                    className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen group-hover:scale-105 transition-transform duration-[2s]" 
+                                />
+                                {/* Overlay Gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-b from-blue-900 via-slate-900/40 to-transparent" />
+
+                                <div className="relative p-10 md:p-16 flex flex-col justify-between min-h-[400px]">
+                                    <div className="max-w-2xl">
+                                        <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white mb-8 shadow-xl group-hover:scale-110 transition-transform duration-500">
+                                            <Icon className="w-8 h-8" />
+                                        </div>
+                                        <h2 className="text-4xl md:text-5xl font-display font-extrabold text-white mb-4">
+                                            {category.title}
+                                        </h2>
+                                        <p className="text-xl text-white/70 font-medium mb-12">
+                                            {category.strength}
+                                        </p>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">Core Technologies</h3>
+                                        <div className="flex flex-wrap gap-3">
+                                            {category.skills.map(skill => (
+                                                <span 
+                                                    key={skill}
+                                                    className="px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-sm shadow-lg hover:bg-white/20 hover:border-white/40 transition-colors"
+                                                >
+                                                    {skill}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
 
                 {/* Bottom CTA */}
@@ -186,19 +125,18 @@ export default function SkillsPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="mt-24 text-center glass-card rounded-[2.5rem] p-16 relative overflow-hidden border border-slate-200 dark:border-white/10"
+                    className="text-center bg-slate-50 border border-slate-200 rounded-[3rem] p-16 relative overflow-hidden shadow-sm"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
-                    <div className="orb orb-primary w-[400px] h-[400px] -top-20 left-1/2 -translate-x-1/2 opacity-20 pointer-events-none" />
-                    <h3 className="text-4xl font-display font-bold mb-6 relative z-10 text-slate-900 dark:text-foreground">
-                        Ready for <span className="text-gradient">Dynamic Problem Solving?</span>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-secondary/5 pointer-events-none" />
+                    <h3 className="text-4xl font-display font-bold mb-6 relative z-10 text-slate-900">
+                        Ready for <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Dynamic Problem Solving?</span>
                     </h3>
-                    <p className="text-slate-650 dark:text-foreground/60 mb-10 max-w-xl mx-auto relative z-10 text-lg leading-relaxed font-medium">
+                    <p className="text-slate-600 mb-10 max-w-xl mx-auto relative z-10 text-lg leading-relaxed font-medium">
                         Beyond the tech stack, I focus on the problem solved. Whether it's scaling inventory or securing patient data, let's build your vision.
                     </p>
                     <a
                         href="/contact"
-                        className="inline-flex btn-gradient text-white px-10 py-5 rounded-2xl font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-primary/20"
+                        className="inline-flex bg-slate-900 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl shadow-slate-900/20 relative z-10"
                     >
                         Start a Conversation →
                     </a>

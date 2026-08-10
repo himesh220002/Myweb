@@ -1,204 +1,78 @@
-"use client";
-
 import Link from "next/link";
-import { Zap, Globe, GitBranch, MessageSquare, Mail, Loader2, CheckCircle2, ArrowRight } from "lucide-react";
-import { useState } from "react";
-import { Logo } from "./Logo";
-
-const footerLinks = {
-    Platform: [
-        { name: "Showcase", href: "/projects" },
-        { name: "Expertise", href: "/skills" },
-        { name: "Success Stories", href: "/clients" },
-        { name: "Join Us", href: "/career" },
-    ],
-    Services: [
-        { name: "Full-stack Development", href: "/contact" },
-        { name: "CRM Solutions", href: "/contact" },
-        { name: "Cloud Architecture", href: "/contact" },
-        { name: "Digital Transformation", href: "/contact" },
-    ],
-};
-
-const socials = [
-    { icon: Globe, href: "https://www.linkedin.com/in/himesh-satyam/", label: "LinkedIn" },
-    { icon: GitBranch, href: "https://github.com/Himesh220002", label: "GitHub" },
-    { icon: MessageSquare, href: "#", label: "WhatsApp" },
-    { icon: Mail, href: "mailto:satyamhimesh@gmail.com", label: "Email" },
-];
+import { Mail, MapPin, Phone, ArrowRight } from "lucide-react";
 
 export default function Footer() {
-    const [email, setEmail] = useState("");
-    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-    const [errorMsg, setErrorMsg] = useState("");
-
-    const handleSubscribe = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!email || !email.includes("@")) {
-            setStatus("error");
-            setErrorMsg("Please enter a valid email address.");
-            return;
-        }
-        setStatus("loading");
-        setErrorMsg("");
-        try {
-            const res = await fetch("/api/subscribe", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
-            });
-            if (res.ok) {
-                setStatus("success");
-                setEmail("");
-            } else {
-                const data = await res.json();
-                setStatus("error");
-                setErrorMsg(data.message || "Something went wrong. Please try again.");
-            }
-        } catch {
-            setStatus("error");
-            setErrorMsg("Network error. Please try again.");
-        }
-    };
-
     return (
-        <footer className="relative pt-20 pb-10 z-10 bg-[#020617] overflow-hidden">
-            {/* Background Decorations */}
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent z-20" />
-
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
-
-            <div className="max-w-7xl mx-auto px-6 relative z-10">
-                {/* Big CTA Section */}
-                <div className="relative mb-20 p-4 md:p-8 rounded-[2.5rem] bg-white/5 border border-white/10 overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-                    <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
-                        <div className="max-w-3xl text-center md:text-left">
-                            <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-4">
-                                Ready to bring your <span className="text-gradient">vision to life?</span>
-                            </h2>
-                            <p className="text-white/60 text-md">
-                                Let&apos;s build something extraordinary together. Our team is ready to turn your ideas into high-performance digital reality.
-                            </p>
-                        </div>
-                        <Link
-                            href="/contact"
-                            className="flex-shrink-0 group/btn relative px-8 py-4 bg-white text-[#020617] rounded-2xl font-bold text-lg hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 shadow-2xl shadow-white/10"
-                        >
-                            Start a Project
-                            <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-white/10">
-                    {/* Brand & Socials */}
-                    <div className="lg:col-span-4">
-                        {/* Logo */}
-                        <Link href="/" className="flex items-center gap-2.5 group">
-                            <div className="relative w-11 h-11 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-transform duration-300 ease-in-out group-hover:scale-105">
-                                {/* Actual Logo */}
-                                <Logo className="w-10 h-10 rounded-full" />
-
-                                {/* Gradient Glow */}
-                                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary via-violet-500 to-secondary opacity-0 group-hover:opacity-10 blur-md transition-opacity duration-300" />
-                            </div>
-
-                            {/* Brand Name */}
-                            <span className="text-xl font-display font-bold text-gradient shimmer hidden sm:block tracking-tight">
-                                CytherTech
-                            </span>
-                        </Link>
-                        <p className="text-white/50 text-lg leading-relaxed mb-8 max-w-sm">
-                            Delivering digital excellence through high-performance engineering and stunning user experience designs.
-                        </p>
-                        <div className="flex gap-4">
-                            {socials.map((s) => (
-                                <a
-                                    key={s.label}
-                                    href={s.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={s.label}
-                                    className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group/social"
-                                >
-                                    <s.icon size={20} className="group-hover/social:scale-110 transition-transform" />
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Quick Links */}
-                    <div className="lg:col-span-2">
-                        <h4 className="text-white font-bold text-lg mb-6">Explore</h4>
-                        <ul className="space-y-4">
-                            {footerLinks.Platform.map((link) => (
-                                <li key={link.name}>
-                                    <Link href={link.href} className="text-white/50 hover:text-primary transition-colors flex items-center gap-2 group/link">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-primary scale-0 group-hover/link:scale-100 transition-transform" />
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Services */}
-                    <div className="lg:col-span-3">
-                        <h4 className="text-white font-bold text-lg mb-6">Expertise</h4>
-                        <ul className="space-y-4">
-                            {footerLinks.Services.map((link) => (
-                                <li key={link.name}>
-                                    <Link href={link.href} className="text-white/50 hover:text-secondary transition-colors flex items-center gap-2 group/link">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-secondary scale-0 group-hover/link:scale-100 transition-transform" />
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Newsletter */}
-                    <div className="lg:col-span-3">
-                        <h4 className="text-white font-bold text-lg mb-6">Newsletter</h4>
-                        <p className="text-white/50 mb-6 leading-relaxed">
-                            Get the latest insights on digital transformation and tech trends.
-                        </p>
-                        <form onSubmit={handleSubscribe} className="relative">
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Email address"
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-white/20"
-                            />
-                            <button
-                                type="submit"
-                                disabled={status === "loading"}
-                                className="absolute right-2 top-2 bottom-2 px-6 bg-white text-[#020617] rounded-xl font-bold text-sm hover:bg-primary hover:text-white transition-all disabled:opacity-50"
-                            >
-                                {status === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join"}
-                            </button>
-                        </form>
-                        {status === "success" && (
-                            <p className="mt-3 text-green-400 text-sm flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4" /> Success!
-                            </p>
-                        )}
-                    </div>
-                </div>
-
-                <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p className="text-white/30 text-sm">
-                        © 2026 CytherTech. Built by <span className="text-white/50 font-medium">Himesh Satyam</span>
+        <footer className="bg-slate-900 text-slate-400 py-20 px-6 border-t border-slate-800 rounded-t-[3rem] mt-24">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div className="md:col-span-1 space-y-6">
+                    <h2 className="text-3xl font-display font-bold text-white tracking-tight">CypherTech</h2>
+                    <p className="text-sm font-medium leading-relaxed">
+                        Building high-performance digital products that scale and delight.
                     </p>
-                    <div className="flex gap-8">
-                        <Link href="/privacy" className="text-white/30 hover:text-white transition-colors text-sm font-medium">Privacy</Link>
-                        <Link href="/terms" className="text-white/30 hover:text-white transition-colors text-sm font-medium">Terms</Link>
-                        <Link href="/sitemap" className="text-white/30 hover:text-white transition-colors text-sm font-medium">Sitemap</Link>
+                    <div className="flex gap-4">
+                        <a href="#" aria-label="GitHub" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-primary/20 hover:text-primary transition-colors">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-primary/20 hover:text-primary transition-colors">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-primary/20 hover:text-primary transition-colors">
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd" />
+                            </svg>
+                        </a>
                     </div>
+                </div>
+
+                <div className="space-y-6">
+                    <h3 className="text-lg font-bold text-white">Company</h3>
+                    <ul className="space-y-3 font-medium text-sm">
+                        <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+                        <li><Link href="/services" className="hover:text-primary transition-colors">Services</Link></li>
+                        <li><Link href="/projects" className="hover:text-primary transition-colors">Portfolio</Link></li>
+                        <li><Link href="/career" className="hover:text-primary transition-colors">Careers</Link></li>
+                    </ul>
+                </div>
+
+                <div className="space-y-6">
+                    <h3 className="text-lg font-bold text-white">Resources</h3>
+                    <ul className="space-y-3 font-medium text-sm">
+                        <li><Link href="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
+                        <li><Link href="/skills" className="hover:text-primary transition-colors">Skills & Tech</Link></li>
+                        <li><Link href="/clients" className="hover:text-primary transition-colors">Clients</Link></li>
+                        <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+                    </ul>
+                </div>
+
+                <div className="space-y-6">
+                    <h3 className="text-lg font-bold text-white">Get in Touch</h3>
+                    <ul className="space-y-4 text-sm font-medium">
+                        <li className="flex items-center gap-3">
+                            <Mail className="w-4 h-4 text-primary" />
+                            <span>hello@cyphertech.com</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <Phone className="w-4 h-4 text-primary" />
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <MapPin className="w-4 h-4 text-primary" />
+                            <span>123 Innovation Drive, SF, CA</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold uppercase tracking-widest text-slate-500">
+                <p>&copy; {new Date().getFullYear()} CypherTech. All rights reserved.</p>
+                <div className="flex gap-6">
+                    <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                    <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
                 </div>
             </div>
         </footer>

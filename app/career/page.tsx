@@ -1,174 +1,161 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, MapPin, Clock, ArrowRight, Rocket, Heart, Lightbulb, Shield } from "lucide-react";
+import { Briefcase, MapPin, Calendar, ArrowRight, Target, Users, Zap, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
-const openings = [
+const roles = [
     {
-        title: "Full-stack Developer",
-        location: "Remote / Hybrid",
+        id: 1,
+        title: "Senior Frontend Architect",
+        department: "Engineering",
+        location: "Remote / San Francisco",
         type: "Full-time",
-        tech: "Next.js · Node.js · PostgreSQL",
-        description: "Looking for an enthusiastic React/Node.js developer to join our continuous delivery team. You'll own features end-to-end — from design decisions to production deployment.",
-        active: true
+        experience: "5+ years",
+        description: "Lead the frontend architecture of our core platform using Next.js, React Server Components, and advanced animation techniques.",
+        requirements: ["Expert in React & Next.js", "Deep understanding of UI/UX", "Experience with Framer Motion", "Performance optimization"],
+        tags: ["React", "Architecture", "UI/UX"],
+        color: "from-blue-500 to-cyan-500"
     },
     {
-        title: "UI/UX Designer",
-        location: "Remote",
-        type: "Contract",
-        tech: "Figma · Framer · Design Systems",
-        description: "Help us design professional, premium interfaces that wow our clients. You'll work directly with clients to translate complex workflows into elegant, intuitive experiences.",
-        active: true
+        id: 2,
+        title: "Backend Systems Engineer",
+        department: "Engineering",
+        location: "Remote / New York",
+        type: "Full-time",
+        experience: "4+ years",
+        description: "Design and implement highly scalable microservices, manage complex databases, and ensure robust API performance.",
+        requirements: ["Strong Node.js/TypeScript", "PostgreSQL & Redis", "System Design", "AWS Infrastructure"],
+        tags: ["Node.js", "Databases", "AWS"],
+        color: "from-violet-500 to-purple-500"
     },
     {
-        title: "Project Coordinator",
-        location: "On-site",
+        id: 3,
+        title: "Product Designer (UI/UX)",
+        department: "Design",
+        location: "Remote / London",
         type: "Full-time",
-        tech: "Jira · Notion · Agile",
-        description: "Ensure smooth delivery and communication between clients and our technical team. Own timelines, manage expectations, and keep every project on track.",
-        active: false
+        experience: "3+ years",
+        description: "Create stunning, intuitive interfaces. Bridge the gap between complex functionality and beautiful, accessible design.",
+        requirements: ["Figma Mastery", "Prototyping", "Design Systems", "User Research"],
+        tags: ["Figma", "UX Strategy", "Visual Design"],
+        color: "from-pink-500 to-rose-500"
     }
-];
-
-const culture = [
-    {
-        icon: Lightbulb,
-        title: "Innovation First",
-        desc: "We experiment, iterate, and push boundaries. Every project is an opportunity to try a better approach.",
-        gradient: "from-yellow-500 to-orange-500",
-    },
-    {
-        icon: Heart,
-        title: "People Over Process",
-        desc: "We value autonomy, trust, and open communication over rigid hierarchies and bureaucratic processes.",
-        gradient: "from-pink-500 to-accent",
-    },
-    {
-        icon: Shield,
-        title: "Own Your Impact",
-        desc: "Everyone here ships real work with real impact. No busy work, no hand-holding — just meaningful contribution.",
-        gradient: "from-primary to-violet-500",
-    },
 ];
 
 export default function CareerPage() {
     return (
-        <div className="relative min-h-screen overflow-hidden">
-            {/* Orbs */}
-            <div className="fixed inset-0 pointer-events-none -z-10">
-                <div className="orb orb-violet w-[600px] h-[600px] -top-40 -right-40 opacity-20" />
-                <div className="orb orb-primary w-[400px] h-[400px] bottom-20 -left-40 opacity-15" />
-                <div className="absolute inset-0 mesh-bg opacity-40" />
-            </div>
-
-            <div className="max-w-7xl mx-auto px-6 py-24">
-
+        <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative">
+            <div className="max-w-7xl mx-auto px-6 py-32 space-y-32 relative z-10">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="mb-20"
+                    className="text-center"
                 >
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-violet-500 flex items-center justify-center text-white shadow-lg">
-                            <Rocket className="w-5 h-5" />
-                        </div>
-                        <span className="text-sm font-bold uppercase tracking-widest text-secondary">Join the Team</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 mb-6 shadow-sm">
+                        <Briefcase className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-bold tracking-widest uppercase text-slate-700">Join the Team</span>
                     </div>
-                    <h1 className="text-4xl md:text-6xl xl:text-7xl font-display font-bold mb-6 leading-[1.05]">
-                        Build the <span className="text-gradient">Future</span>
-                        <br />With Us
+                    <h1 className="text-5xl md:text-7xl font-display font-extrabold mb-6 leading-[1.05] text-slate-900 tracking-tight">
+                        Build the Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Digital Products</span>
                     </h1>
-                    <p className="text-foreground/50 max-w-2xl text-lg leading-relaxed">
-                        Join CypherTech and be part of a team that values innovation,
-                        professional growth, and the pursuit of digital excellence.
+                    <p className="text-slate-600 max-w-2xl mx-auto text-xl leading-relaxed font-medium">
+                        We are a collective of engineers, designers, and strategists. We don't just write code; we solve complex business problems.
                     </p>
-                    <div className="mt-6 h-[2px] w-16 bg-gradient-to-r from-primary to-secondary rounded-full" />
                 </motion.div>
 
-                {/* Culture pillars */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="mb-20"
-                >
-                    <h2 className="text-2xl font-display font-bold mb-8 text-foreground/80">Our Culture</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {culture.map((c, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1, duration: 0.5 }}
-                                className="group glass-card rounded-2xl p-7 hover:border-primary/30 transition-all"
-                            >
-                                <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${c.gradient} flex items-center justify-center text-white mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                                    <c.icon className="w-5 h-5" />
-                                </div>
-                                <h3 className="font-bold text-lg mb-2">{c.title}</h3>
-                                <p className="text-sm text-foreground/50 leading-relaxed">{c.desc}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </motion.div>
+                {/* Values Section */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {[
+                        { icon: Target, title: "Impact Driven", desc: "We focus on outcomes, not output. Every line of code should serve a business goal." },
+                        { icon: Users, title: "Collaborative Excellence", desc: "We elevate each other. Ego is left at the door in pursuit of the best solution." },
+                        { icon: Zap, title: "Continuous Evolution", desc: "Technology moves fast. We actively invest in learning and adopting new paradigms." },
+                    ].map((value, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="bg-slate-50 border border-slate-200 rounded-3xl p-8 shadow-sm hover:shadow-md transition-shadow"
+                        >
+                            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-primary mb-6 shadow-sm border border-slate-200">
+                                <value.icon className="w-6 h-6" />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">{value.title}</h3>
+                            <p className="text-slate-600 font-medium leading-relaxed">{value.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
 
-                {/* Job Openings */}
+                {/* Open Positions */}
                 <div>
-                    <h2 className="text-2xl font-display font-bold mb-8 text-foreground/80">Open Positions</h2>
-                    <div className="space-y-5">
-                        {openings.map((job, idx) => (
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                        <div>
+                            <h2 className="text-4xl font-display font-bold text-slate-900 mb-4">Open Positions</h2>
+                            <p className="text-slate-600 font-medium max-w-xl">Find your next role and help us shape the future of software development.</p>
+                        </div>
+                        <div className="flex gap-3">
+                            <span className="px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-sm font-bold shadow-inner">Engineering</span>
+                            <span className="px-4 py-2 bg-slate-50 text-slate-500 hover:text-slate-700 hover:bg-slate-100 cursor-pointer rounded-full text-sm font-bold transition-colors border border-slate-200">Design</span>
+                        </div>
+                    </div>
+
+                    <div className="space-y-6">
+                        {roles.map((role, idx) => (
                             <motion.div
-                                key={idx}
+                                key={role.id}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                                className={`relative rounded-3xl border transition-all duration-300 overflow-hidden ${job.active
-                                    ? "glass-card hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
-                                    : "bg-white/[0.01] border-white/[0.04] opacity-50 grayscale"
-                                    }`}
+                                transition={{ delay: idx * 0.1 }}
+                                className="group bg-white border border-slate-200 rounded-[2rem] p-8 md:p-10 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-500"
                             >
-                                {/* Active gradient left bar */}
-                                {job.active && (
-                                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-violet-500 to-secondary rounded-l-3xl" />
-                                )}
-
-                                <div className="p-8 pl-10">
-                                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                                        <div className="flex-grow">
-                                            <div className="flex items-center flex-wrap gap-3 mb-3">
-                                                <h3 className="text-xl md:text-2xl font-bold font-display">{job.title}</h3>
-                                                {job.active ? (
-                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-widest">
-                                                        <span className="live-dot w-1.5 h-1.5" /> Actively Hiring
-                                                    </span>
-                                                ) : (
-                                                    <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-foreground/30 text-[10px] font-bold uppercase tracking-widest">
-                                                        Closed
-                                                    </span>
-                                                )}
+                                <div className="flex flex-col lg:flex-row gap-8 justify-between">
+                                    <div className="flex-1 space-y-6">
+                                        <div>
+                                            <div className="flex flex-wrap items-center gap-3 mb-4">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r ${role.color}`}>
+                                                    {role.department}
+                                                </span>
+                                                <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-500">
+                                                    <MapPin className="w-4 h-4" /> {role.location}
+                                                </span>
+                                                <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-500">
+                                                    <Calendar className="w-4 h-4" /> {role.type}
+                                                </span>
                                             </div>
-                                            <div className="flex flex-wrap gap-5 text-sm text-foreground/40 mb-4 font-medium">
-                                                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{job.location}</span>
-                                                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{job.type}</span>
-                                                <span className="flex items-center gap-1.5"><Briefcase className="w-3.5 h-3.5" />{job.tech}</span>
-                                            </div>
-                                            <p className="text-foreground/55 leading-relaxed max-w-2xl text-sm">{job.description}</p>
+                                            <h3 className="text-3xl font-display font-bold text-slate-900 mb-4">{role.title}</h3>
+                                            <p className="text-slate-600 font-medium leading-relaxed max-w-2xl">{role.description}</p>
                                         </div>
 
-                                        {job.active && (
-                                            <Link
-                                                href="/contact?type=career"
-                                                className="group/btn btn-gradient text-white px-7 py-3.5 rounded-2xl font-bold flex items-center gap-2 whitespace-nowrap shimmer flex-shrink-0"
-                                            >
-                                                Apply Now
-                                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                                            </Link>
-                                        )}
+                                        <div className="flex flex-wrap gap-2 pt-2">
+                                            {role.tags.map(tag => (
+                                                <span key={tag} className="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-600 rounded-lg text-sm font-semibold">
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col justify-between items-start lg:items-end border-t lg:border-t-0 lg:border-l border-slate-100 pt-6 lg:pt-0 lg:pl-8 min-w-[250px]">
+                                        <div className="space-y-3 mb-8 w-full">
+                                            <h4 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-4">Key Requirements</h4>
+                                            {role.requirements.map((req, i) => (
+                                                <div key={i} className="flex items-start gap-2">
+                                                    <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+                                                    <span className="text-sm font-semibold text-slate-700">{req}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <Link
+                                            href={`/career/${role.id}`}
+                                            className="w-full lg:w-auto inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold shadow-md hover:bg-slate-800 transition-colors"
+                                        >
+                                            Apply Now <ArrowRight className="w-4 h-4" />
+                                        </Link>
                                     </div>
                                 </div>
                             </motion.div>
@@ -176,25 +163,23 @@ export default function CareerPage() {
                     </div>
                 </div>
 
-                {/* Bottom CTA */}
+                {/* Culture CTA */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-20 text-center glass-card rounded-3xl p-12 relative overflow-hidden neon-border"
+                    className="relative rounded-[3rem] overflow-hidden bg-slate-900 p-16 text-center shadow-2xl"
                 >
-                    <div className="orb orb-primary w-[300px] h-[300px] -top-20 left-1/2 -translate-x-1/2 opacity-15 pointer-events-none" />
-                    <h3 className="text-2xl md:text-3xl font-display font-bold mb-4 relative z-10">
-                        Don&apos;t see the right role?
-                    </h3>
-                    <p className="text-foreground/50 mb-8 max-w-lg mx-auto relative z-10">
-                        We&apos;re always open to exceptional talent. Send us your resume and tell us how you&apos;d add value to CypherTech.
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent pointer-events-none opacity-50" />
+                    <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 relative z-10">Don't see a fit?</h2>
+                    <p className="text-white/70 max-w-xl mx-auto mb-10 relative z-10 text-lg leading-relaxed font-medium">
+                        We're always looking for exceptional talent. Send us your resume and tell us how you can make an impact.
                     </p>
                     <Link
-                        href="/contact?type=career"
-                        className="inline-flex btn-gradient text-white px-8 py-4 rounded-2xl font-bold shimmer"
+                        href="/contact"
+                        className="inline-flex bg-white text-slate-900 px-10 py-5 rounded-2xl font-bold text-lg shadow-xl hover:scale-105 transition-transform relative z-10"
                     >
-                        Get in Touch →
+                        Pitch Yourself →
                     </Link>
                 </motion.div>
             </div>
