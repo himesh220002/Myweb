@@ -6,8 +6,10 @@ export async function POST(req: Request) {
         const contentType = req.headers.get("content-type") || "";
         let name, email, phone, message, company;
         let attachments: any[] = [];
+        let isCareer = false;
 
         if (contentType.includes("multipart/form-data")) {
+            isCareer = true;
             const formData = await req.formData();
             name = formData.get("name") as string;
             email = formData.get("email") as string;
@@ -32,12 +34,15 @@ export async function POST(req: Request) {
         console.log("Contact form submission:", { name, email });
 
         if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+            const subject = isCareer ? `CYPTECH Career Candidate - ${name}` : `New Portfolio Inquiry - ${name}`;
+            const heading = isCareer ? `CYPTECH Career Candidate` : `New Portfolio Inquiry`;
+            
             await sendEmail({
                 to: "satyamhimesh@gmail.com",
-                subject: `New Portfolio Inquiry - ${name}`,
+                subject: subject,
                 html: `
                     <div style="font-family: sans-serif; padding: 20px; color: #333; max-width: 600px; border: 1px solid #eee; border-radius: 10px;">
-                        <h2 style="color: #6366f1; border-bottom: 2px solid #6366f1; padding-bottom: 10px;">New Portfolio Inquiry</h2>
+                        <h2 style="color: #6366f1; border-bottom: 2px solid #6366f1; padding-bottom: 10px;">${heading}</h2>
                         <p><strong>Name:</strong> ${name}</p>
                         <p><strong>Email:</strong> ${email}</p>
                         <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
