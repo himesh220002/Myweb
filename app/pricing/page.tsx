@@ -24,13 +24,13 @@ const addonsData = [
   },
   {
     title: "E-Commerce Integration",
-    prices: { USD: 1499, INR: 29999 },
+    prices: { USD: 1499, INR: 39999 },
     icon: ShoppingCart,
     desc: "Stripe payments, product catalog, inventory management, order processing, and tax/shipping configurations."
   },
   {
     title: "Custom Dashboard",
-    prices: { USD: 2499, INR: 49999 },
+    prices: { USD: 1299, INR: 29999 },
     icon: Layout,
     desc: "Bespoke admin panel with real-time charts, user management, data export, and role-based access control."
   },
@@ -120,7 +120,7 @@ export default function PricingPage() {
     {
       name: "Growth",
       sub: "GROWTH",
-      tag: "MOST POPULAR",
+      tag: "POPULAR",
       price: currency === "USD"
         ? (billingPeriod === "project" ? 6999 : 5599)
         : (billingPeriod === "project" ? 149999 : 119999),
@@ -178,7 +178,7 @@ export default function PricingPage() {
   return (
     <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative">
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-32 space-y-16 md:space-y-24 relative z-10">
-        
+
         {/* Header */}
         <div className="text-center space-y-6 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 mb-6 shadow-sm">
@@ -199,7 +199,7 @@ export default function PricingPage() {
               <button
                 type="button"
                 onClick={() => setBillingPeriod("project")}
-                className={`relative px-6 py-3 rounded-full text-sm font-bold tracking-wider transition-all ${billingPeriod === "project" ? "text-white" : "text-slate-600 hover:text-slate-900"}`}
+                className={`relative px-6 py-3 rounded-full text-sm font-bold tracking-wider transition-all ${billingPeriod === "project" ? "text-blue-400 bg-gray-100 rounded-3xl" : "text-slate-600 hover:text-slate-900"}`}
               >
                 {billingPeriod === "project" && (
                   <motion.span layoutId="billing-pill" className="absolute inset-0 rounded-full bg-slate-900 -z-10" />
@@ -209,7 +209,7 @@ export default function PricingPage() {
               <button
                 type="button"
                 onClick={() => setBillingPeriod("retainer")}
-                className={`relative px-6 py-3 rounded-full text-sm font-bold tracking-wider transition-all flex items-center gap-2 ${billingPeriod === "retainer" ? "text-white" : "text-slate-600 hover:text-slate-900"}`}
+                className={`relative px-6 py-3 rounded-full text-sm font-bold tracking-wider transition-all flex items-center gap-2 ${billingPeriod === "retainer" ? "text-blue-400 bg-gray-100 rounded-3xl" : "text-slate-600 hover:text-slate-900"}`}
               >
                 {billingPeriod === "retainer" && (
                   <motion.span layoutId="billing-pill" className="absolute inset-0 rounded-full bg-slate-900 -z-10" />
@@ -240,9 +240,9 @@ export default function PricingPage() {
             <div
               key={idx}
               className={cn(
-                "p-8 md:p-10 rounded-[3rem] border flex flex-col justify-between space-y-10 relative overflow-hidden transition-all duration-500 bg-white group",
-                plan.popular 
-                  ? "border-primary/30 shadow-2xl scale-100 lg:scale-[1.04] ring-4 ring-primary/5" 
+                "p-8 md:p-10 rounded-[2rem] border flex flex-col justify-between space-y-10 relative overflow-hidden transition-all duration-500 bg-white group",
+                plan.popular
+                  ? "border-primary/30 shadow-2xl scale-100 lg:scale-[1.04] ring-4 ring-primary/5"
                   : "border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300"
               )}
             >
@@ -385,7 +385,7 @@ export default function PricingPage() {
                 >
                   <span>{faq.q}</span>
                   <div className={cn("w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all", activeFaq === fIdx ? "bg-primary text-white" : "bg-slate-100 text-slate-500")}>
-                      <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${activeFaq === fIdx ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${activeFaq === fIdx ? "rotate-180" : ""}`} />
                   </div>
                 </button>
 
@@ -412,7 +412,7 @@ export default function PricingPage() {
         <div className="pt-16">
           <div className="p-8 md:p-20 rounded-[3rem] bg-slate-900 text-white relative overflow-hidden group text-center space-y-8 shadow-2xl">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20 opacity-50 pointer-events-none" />
-            
+
             <h3 className="text-4xl md:text-5xl font-display font-extrabold relative z-10">
               Ready to bring your <span className="text-primary">vision to life?</span>
             </h3>

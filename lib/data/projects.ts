@@ -9,6 +9,7 @@ export interface Project {
     featured?: boolean;
     overview: string;
     features: string[];
+    elaborations?: string[];
     category: string;
     lastUpdated: string;
 }
@@ -108,7 +109,12 @@ export const projects: Project[] = [
         category: "Web Development / Utilities",
         lastUpdated: "Jun 18",
         overview: "A demonstration of advanced, highly-modular code architecture principles using TypeScript and Node.js for scalable backend utilities.",
-        features: ["Modular Architecture", "Type-safe Utilities", "Scalable Design"]
+        features: ["Modular Architecture", "Type-safe Utilities", "Scalable Design"],
+        elaborations: [
+            "Designed an advanced data ingestion and vectorization pipeline using NVIDIA NIM (llama-nemotron-embed) and ChromaDB Cloud Cluster for RAG-based semantic retrieval.",
+            "Implemented high-performance vector search and augmentation workflows utilizing nvidia/llama-nemotron-rerank-1b-v2 for precise match scaling and meta/llama-3.3-70b-instruct for custom strategy generation.",
+            "Built a dynamic React UI for instant partial streaming of generated contextual reports, seamlessly parsing large CSV datasets to extract text features."
+        ]
     },
     {
         id: 9,

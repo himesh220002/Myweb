@@ -4,44 +4,7 @@ import { motion } from "framer-motion";
 import { Briefcase, MapPin, Calendar, ArrowRight, Target, Users, Zap, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
-const roles = [
-    {
-        id: 1,
-        title: "Senior Frontend Architect",
-        department: "Engineering",
-        location: "Remote / San Francisco",
-        type: "Full-time",
-        experience: "5+ years",
-        description: "Lead the frontend architecture of our core platform using Next.js, React Server Components, and advanced animation techniques.",
-        requirements: ["Expert in React & Next.js", "Deep understanding of UI/UX", "Experience with Framer Motion", "Performance optimization"],
-        tags: ["React", "Architecture", "UI/UX"],
-        color: "from-blue-500 to-cyan-500"
-    },
-    {
-        id: 2,
-        title: "Backend Systems Engineer",
-        department: "Engineering",
-        location: "Remote / New York",
-        type: "Full-time",
-        experience: "4+ years",
-        description: "Design and implement highly scalable microservices, manage complex databases, and ensure robust API performance.",
-        requirements: ["Strong Node.js/TypeScript", "PostgreSQL & Redis", "System Design", "AWS Infrastructure"],
-        tags: ["Node.js", "Databases", "AWS"],
-        color: "from-violet-500 to-purple-500"
-    },
-    {
-        id: 3,
-        title: "Product Designer (UI/UX)",
-        department: "Design",
-        location: "Remote / London",
-        type: "Full-time",
-        experience: "3+ years",
-        description: "Create stunning, intuitive interfaces. Bridge the gap between complex functionality and beautiful, accessible design.",
-        requirements: ["Figma Mastery", "Prototyping", "Design Systems", "User Research"],
-        tags: ["Figma", "UX Strategy", "Visual Design"],
-        color: "from-pink-500 to-rose-500"
-    }
-];
+import { roles } from "@/lib/data/roles";
 
 export default function CareerPage() {
     return (

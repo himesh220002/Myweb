@@ -21,7 +21,7 @@ const caseStudies = [
         client: "Global Logistics",
         industry: "Supply Chain",
         quote: "CypherTech delivered a complex enterprise dashboard that increased our operational efficiency by 400%. The technical debt was eliminated entirely.",
-        author: "Elena Rodriguez, COO",
+        author: "Cypher harley, COO",
         metrics: [
             { label: "Efficiency Increase", value: "400%", icon: TrendingUp },
             { label: "Query Load Time", value: "<2s", icon: Zap },
@@ -33,7 +33,7 @@ const caseStudies = [
         client: "Vertex Fin",
         industry: "FinTech",
         quote: "Our payment processing gateway needed absolute precision and zero-latency architecture. They delivered a system that securely processes millions in volume daily.",
-        author: "James Chen, CTO",
+        author: "Himesh satyam, CTO",
         metrics: [
             { label: "Tx Volume", value: "$50M+", icon: TrendingUp },
             { label: "Latency", value: "<50ms", icon: Zap },
@@ -47,7 +47,7 @@ export default function ClientsPage() {
     return (
         <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 py-16 md:py-32 space-y-16 md:space-y-32 relative z-10">
-                
+
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 24 }}
@@ -68,7 +68,7 @@ export default function ClientsPage() {
                 </motion.div>
 
                 {/* Infinite Marquee of Logos */}
-                <div className="relative w-full flex overflow-x-hidden py-10 bg-slate-50 border-y border-slate-200">
+                <div className="relative w-[100vw] left-[-28%] flex overflow-x-hidden py-6 bg-slate-50 border-y border-slate-200">
                     <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-50 to-transparent z-10" />
                     <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-50 to-transparent z-10" />
 
@@ -103,7 +103,7 @@ export default function ClientsPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="bg-white rounded-[3rem] p-8 md:p-16 border border-slate-200 shadow-xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative overflow-hidden group"
+                                className="bg-white rounded-[3rem] p-8 md:p-16 border border-slate-200 shadow-xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-start relative overflow-hidden group"
                             >
                                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-slate-50 rounded-full blur-[80px] -z-10 group-hover:bg-primary/5 transition-colors duration-1000" />
 
@@ -112,7 +112,7 @@ export default function ClientsPage() {
                                         <span className="px-4 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold tracking-widest uppercase shadow-md">{study.client}</span>
                                         <span className="text-sm font-bold text-slate-500 uppercase tracking-widest">{study.industry}</span>
                                     </div>
-                                    <h3 className="text-xl md:text-3xl font-display font-extrabold leading-tight text-slate-900">
+                                    <h3 className="text-xl md:text-3xl font-display font-extrabold leading-tight text-slate-500">
                                         "{study.quote}"
                                     </h3>
                                     <div className="flex items-center gap-4">

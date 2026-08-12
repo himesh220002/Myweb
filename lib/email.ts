@@ -8,12 +8,13 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
+export async function sendEmail({ to, subject, html, attachments }: { to: string; subject: string; html: string; attachments?: any[] }) {
     const mailOptions = {
         from: `"CypherTech" <${process.env.EMAIL_USER}>`,
         to,
         subject,
         html,
+        attachments,
     };
 
     return transporter.sendMail(mailOptions);

@@ -3,10 +3,33 @@ import { sendEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
-        const { name, email, phone, message, company } = body;
+        const contentType = req.headers.get("content-type") || "";
+        let name, email, phone, message, company;
+        let attachments: any[] = [];
 
-        console.log("Contact form submission:", body);
+        if (contentType.includes("multipart/form-data")) {
+            const formData = await req.formData();
+            name = formData.get("name") as string;
+            email = formData.get("email") as string;
+            phone = formData.get("phone") as string;
+            company = formData.get("company") as string;
+            message = formData.get("message") as string;
+            
+            const cv = formData.get("cv") as File | null;
+            if (cv) {
+                const bytes = await cv.arrayBuffer();
+                const buffer = Buffer.from(bytes);
+                attachments.push({
+                    filename: cv.name,
+                    content: buffer
+                });
+            }
+        } else {
+            const body = await req.json();
+            ({ name, email, phone, message, company } = body);
+        }
+
+        console.log("Contact form submission:", { name, email });
 
         if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
             await sendEmail({
@@ -21,13 +44,12 @@ export async function POST(req: Request) {
                         <p><strong>Company:</strong> ${company || "N/A"}</p>
                         <br/>
                         <p><strong>Message:</strong></p>
-                        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #6366f1; white-space: pre-wrap;">
-                            ${message}
-                        </div>
+                        <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #6366f1; white-space: pre-wrap;">${message}</div>
                         <br/>
                         <p style="font-size: 12px; color: #999;">Sent from CypherTech Portfolio Contact Form</p>
                     </div>
                 `,
+                attachments,
             });
         } else {
             console.warn("SMTP credentials missing. Logging submission to console only.");
