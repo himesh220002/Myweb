@@ -21,7 +21,7 @@ export default function ProjectsPage() {
   return (
     <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative">
       <div className="max-w-7xl mx-auto px-6 py-32 space-y-16 relative z-10">
-        
+
         {/* Header Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           <motion.div
@@ -51,7 +51,7 @@ export default function ProjectsPage() {
           >
             <div className="relative aspect-video xl:aspect-[4/3] w-full rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-2xl group bg-slate-100">
               <img
-                src={featuredProject.image}
+                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200"
                 alt="Scaling Infrastructure and Software Engineering"
                 className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105"
               />
@@ -71,11 +71,10 @@ export default function ProjectsPage() {
             <button
               key={category}
               onClick={() => setActiveTab(category)}
-              className={`relative px-6 py-3 rounded-full text-xs font-bold tracking-wider transition-all duration-300 shadow-sm ${
-                activeTab === category
+              className={`relative px-6 py-3 rounded-full text-xs font-bold tracking-wider transition-all duration-300 shadow-sm ${activeTab === category
                 ? "text-white"
                 : "bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200"
-              }`}
+                }`}
             >
               {activeTab === category && (
                 <motion.span
@@ -97,7 +96,7 @@ export default function ProjectsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ delay: 0.1, duration: 0.5 }}
-              className="p-8 rounded-[2.5rem] bg-white border border-slate-200 shadow-xl relative overflow-hidden group grid grid-cols-1 lg:grid-cols-12 gap-8 items-center cursor-pointer transition-all hover:shadow-2xl hover:border-primary/20"
+              className="p-8 rounded-[2.5rem] bg-white border border-slate-200 shadow-xl relative overflow-hidden group grid grid-cols-1 lg:grid-cols-12 gap-8 items-center cursor-crosshair transition-all hover:shadow-2xl hover:border-primary/20"
             >
               <div className="lg:col-span-7 relative aspect-[16/10] w-full rounded-3xl overflow-hidden bg-slate-100 border border-slate-200">
                 <img
@@ -161,7 +160,7 @@ export default function ProjectsPage() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
                 key={project.id}
-                className="p-6 rounded-[2rem] bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between space-y-6 relative overflow-hidden group cursor-pointer hover:border-primary/30"
+                className="p-6 rounded-[2rem] bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between space-y-6 relative overflow-hidden group cursor-crosshair hover:border-primary/30"
               >
                 <div className="space-y-4 relative z-10">
                   <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">

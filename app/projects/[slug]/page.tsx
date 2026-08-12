@@ -152,15 +152,18 @@ export default function ProjectDetail() {
                                     <div className="flex items-center gap-4">
                                         <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center text-primary shadow-sm">
                                             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                             </svg>
                                         </div>
                                         <h2 className="text-4xl font-display font-bold text-slate-900">Deep Dive & Impact</h2>
                                     </div>
                                     <div className="space-y-6">
                                         {project.elaborations.map((elaboration, i) => (
-                                            <div key={i} className="p-8 rounded-[2rem] bg-white border border-slate-200 shadow-sm relative overflow-hidden group">
-                                                <div className="absolute top-0 left-0 w-2 h-full bg-primary" />
+                                            <div key={i} className="p-6 rounded-[1rem] bg-white border border-slate-200 shadow-inner relative overflow-hidden group">
+                                                <div className="absolute top-2 left-2 w-1 h-full bg-gray-50" />
+                                                <div className="absolute top-2 left-0 w-full h-1 bg-gray-50" />
+                                                <div className="absolute bottom-2 right-2 w-1 h-full bg-gray-50" />
+                                                <div className="absolute bottom-2 right-0 w-full h-1 bg-gray-50" />
                                                 <p className="text-slate-700 text-lg leading-relaxed font-medium pl-4">{elaboration}</p>
                                             </div>
                                         ))}

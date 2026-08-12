@@ -25,20 +25,39 @@ export const projects: Project[] = [
         category: "Web Development / Fitness",
         lastUpdated: "11 minutes ago",
         overview: "A comprehensive fitness tracking utility focused on providing tailored calorie planning and professional body improvement guidance.",
-        features: ["BMI Calculation", "Calorie Planning", "Gym Training Tips", "Fitness Tracking"]
+        features: ["BMI Calculation", "Calorie Planning", "Gym Training Tips", "Fitness Tracking"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: BMI calculator and fitness tracker with calorie planner, gym training tips, and professional body improvement guidance.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 2,
-        title: "javaRev",
-        description: "Java fundamentals revision project with HTML-based notes and examples.",
-        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200",
-        tags: ["Java", "HTML"],
-        slug: "javarev",
-        category: "Learning / Java",
-        lastUpdated: "2 weeks ago",
-        overview: "A revision toolkit designed to reinforce Java fundamentals through structured HTML notes and practical code examples.",
-        features: ["Fundamental Java Notes", "Code Examples", "HTML Documentation"]
+        title: "Smart Connector",
+        description: "An intelligent Chrome Extension built with React, Vite, and Tailwind CSS that acts as an automated Networking AI CRM. The Smart Connector automatically scrapes, aligns, and scores professional profiles across the web based on your own Career Profile and custom Target Personas.",
+        image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=1200",
+        tags: ["React 18", "TypeScript", "Vite", "Tailwind CSS", "Manifest V3", "Fuse.js"],
+        slug: "smart-connector",
+        category: "Chrome Extension / AI",
+        lastUpdated: "Recently",
+        featured: true,
+        overview: "An automated Networking AI CRM functioning as a Chrome Extension, capable of profiling, matching, and scoring leads directly from web pages.",
+        features: [
+            "Intelligent Target Radar: Define multiple target personas and auto-score every lead you visit.",
+            "Multi-Profile Extraction: Automatically parses emails, phone numbers, and links from any webpage.",
+            "Full Context Fuzzy Matching: Powered by Fuse.js for scraping and matching nested skills.",
+            "ATS Matcher: Compares Job Descriptions against saved profiles, highlighting missing skills.",
+            "Smart CRM UI: View, sort, edit, and manually add leads directly from the sleek popup.",
+            "One-Click Export: Export entire lead lists to cleanly formatted CSVs with match scores."
+        ],
+        elaborations: [
+            "Engineered a dynamic background service worker (Manifest V3) to orchestrate state and silently scrape full DOM context across varied professional networking sites.",
+            "Implemented a highly-optimized fuzzy matching engine with Fuse.js that normalizes nested skills and scoring weights in real-time.",
+            "Designed a seamless React-driven popup CRM interface providing instant ATS matching feedback, multi-persona radar switching, and clean CSV exports for mass lead generation."
+        ]
     },
+
     {
         id: 3,
         title: "CSVgenerator",
@@ -49,7 +68,12 @@ export const projects: Project[] = [
         category: "Data Tools",
         lastUpdated: "Jun 24",
         overview: "A specialized data engineering tool built in Python to programmatically generate, clean, and manipulate complex CSV datasets.",
-        features: ["Data Generation", "CSV Manipulation", "Pandas Integration"]
+        features: ["Data Generation", "CSV Manipulation", "Pandas Integration"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Python utility to generate and manipulate CSV files for data workflows.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 4,
@@ -61,7 +85,12 @@ export const projects: Project[] = [
         category: "Machine Learning",
         lastUpdated: "Jun 23",
         overview: "An intelligent recommendation system utilizing both collaborative filtering and content-based algorithms to suggest personalized movies.",
-        features: ["Collaborative Filtering", "Content-Based Methods", "Data Processing Engine"]
+        features: ["Collaborative Filtering", "Content-Based Methods", "Data Processing Engine"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Python-based movie recommendation engine using collaborative filtering and content-based methods.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 5,
@@ -73,7 +102,12 @@ export const projects: Project[] = [
         category: "Machine Learning / Computer Vision",
         lastUpdated: "Jun 23",
         overview: "A machine learning dashboard capable of classifying images in real-time, utilizing PyTorch models and a Streamlit interface.",
-        features: ["Real-time Image Classification", "PyTorch Backend", "Interactive Dashboard"]
+        features: ["Real-time Image Classification", "PyTorch Backend", "Interactive Dashboard"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Image classification project with HTML dashboard, powered by ML backend.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 6,
@@ -85,7 +119,12 @@ export const projects: Project[] = [
         category: "Data Analysis / Education",
         lastUpdated: "Jun 21",
         overview: "An educational data analysis tool that visualizes student performance and cognitive metrics using Pandas and Matplotlib.",
-        features: ["Performance Analytics", "Metric Visualization", "Data Processing"]
+        features: ["Performance Analytics", "Metric Visualization", "Data Processing"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Python project analyzing student performance and intelligence metrics.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 7,
@@ -97,7 +136,12 @@ export const projects: Project[] = [
         category: "Data Engineering",
         lastUpdated: "Jun 21",
         overview: "An automated data preprocessing pipeline designed to sanitize, format, and prepare raw datasets for robust downstream analysis.",
-        features: ["Automated Preprocessing", "Data Sanitization", "Pipeline Generation"]
+        features: ["Automated Preprocessing", "Data Sanitization", "Pipeline Generation"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Data cleanup and preprocessing pipeline for analysis-ready datasets.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 8,
@@ -127,7 +171,12 @@ export const projects: Project[] = [
         lastUpdated: "Jun 17",
         featured: true,
         overview: "A premium FinTech educational platform focused on trading skills, featuring interactive charts, course progress tracking, and student analytics.",
-        features: ["Course Management", "Trading Analytics", "Interactive Charts", "Student Dashboards"]
+        features: ["Course Management", "Trading Analytics", "Interactive Charts", "Student Dashboards"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Full-featured training website for online trading skills, course management, analytics, and student engagement.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 10,
@@ -139,7 +188,12 @@ export const projects: Project[] = [
         category: "Web Development / E-commerce",
         lastUpdated: "Jun 17",
         overview: "A dynamic e-commerce frontend displaying interactive motorcycle listings, detailed product specifications, and management panels.",
-        features: ["Product Listings", "Inventory Management", "Interactive UI"]
+        features: ["Product Listings", "Inventory Management", "Interactive UI"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: TypeScript-based bike showroom web app with product listings and management.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 11,
@@ -152,7 +206,12 @@ export const projects: Project[] = [
         lastUpdated: "Jun 17",
         featured: true,
         overview: "A high-performance personal portfolio and knowledge hub showcasing elite software engineering capabilities and stunning design.",
-        features: ["Performance Optimized", "Dynamic Portfolio", "Service Listings"]
+        features: ["Performance Optimized", "Dynamic Portfolio", "Service Listings"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Personal website hosted at https://cyphertech.online showcasing portfolio and services.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 12,
@@ -164,7 +223,12 @@ export const projects: Project[] = [
         category: "Personal / Documentation",
         lastUpdated: "May 24",
         overview: "A collection of digital resumes and CVs meticulously crafted using raw HTML for perfect semantic structure.",
-        features: ["Semantic HTML", "Clean Layout", "Print-ready Design"]
+        features: ["Semantic HTML", "Clean Layout", "Print-ready Design"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Private repository for CVs and resumes.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 13,
@@ -176,7 +240,12 @@ export const projects: Project[] = [
         category: "Web Development / Healthcare",
         lastUpdated: "May 19",
         overview: "An all-in-one dental practice management platform connecting clinics and patients with digital booking and custom charting.",
-        features: ["Appointment Booking", "Patient Records", "Next.js Architecture"]
+        features: ["Appointment Booking", "Patient Records", "Next.js Architecture"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Next.js dental clinic management website with appointment booking and patient records.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 14,
@@ -188,7 +257,12 @@ export const projects: Project[] = [
         category: "Web Development / FinTech",
         lastUpdated: "May 7",
         overview: "A lightweight vanilla web application for trading skill training, featuring course catalogs and batch management operations.",
-        features: ["Course Details", "Batch Management", "Vanilla JS Implementation"]
+        features: ["Course Details", "Batch Management", "Vanilla JS Implementation"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: HTML-based trading skill training site with course details and batch management.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 15,
@@ -200,7 +274,12 @@ export const projects: Project[] = [
         category: "Web Development / Productivity",
         lastUpdated: "Feb 16",
         overview: "A productivity tool allowing users to build, organize, and manage complex hierarchical notes using a React frontend.",
-        features: ["Hierarchical Note Management", "React Interactivity", "Type-safe Operations"]
+        features: ["Hierarchical Note Management", "React Interactivity", "Type-safe Operations"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: TypeScript project for building and managing notes.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 16,
@@ -212,7 +291,12 @@ export const projects: Project[] = [
         category: "Learning / Platform",
         lastUpdated: "Feb 14",
         overview: "An interactive educational platform designed to teach Python, featuring a seamless TypeScript frontend bridging to a Python execution backend.",
-        features: ["Interactive Learning", "TypeScript Frontend", "Python Backend Integration"]
+        features: ["Interactive Learning", "TypeScript Frontend", "Python Backend Integration"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Python learning platform built with TypeScript frontend.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 17,
@@ -224,7 +308,12 @@ export const projects: Project[] = [
         category: "Web Development / Marketplace",
         lastUpdated: "Jan 27",
         overview: "A two-sided automotive marketplace featuring dynamic vehicle search, granular filtering, and highly-performant React components.",
-        features: ["Vehicle Search", "Dynamic Filtering", "Marketplace Infrastructure"]
+        features: ["Vehicle Search", "Dynamic Filtering", "Marketplace Infrastructure"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: TypeScript-based car marketplace web app with listings and search.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 18,
@@ -236,7 +325,12 @@ export const projects: Project[] = [
         category: "Blockchain / FinTech",
         lastUpdated: "Dec 31, 2025",
         overview: "A Web3 decentralized finance (DeFi) banking terminal allowing users to supply assets, track portfolios, and perform secure transactions on the Internet Computer.",
-        features: ["Asset Marketplace", "Portfolio Tracking", "Secure PIN Protection", "Internet Computer SDK"]
+        features: ["Asset Marketplace", "Portfolio Tracking", "Secure PIN Protection", "Internet Computer SDK"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Decentralized banking and investment platform with asset marketplace, portfolio tracking, and secure PIN protection.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 19,
@@ -248,7 +342,12 @@ export const projects: Project[] = [
         category: "Web Development",
         lastUpdated: "Dec 29, 2025",
         overview: "A showcase of advanced TypeScript utilities and micro-libraries designed for high-performance web applications.",
-        features: ["Advanced Utilities", "TypeScript Mastery", "Performance Focused"]
+        features: ["Advanced Utilities", "TypeScript Mastery", "Performance Focused"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: TypeScript project showcasing advanced web utilities.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 20,
@@ -260,7 +359,12 @@ export const projects: Project[] = [
         category: "Backend / API",
         lastUpdated: "Dec 29, 2025",
         overview: "A robust, scalable backend API architecture built with Node.js and Express, heavily typed with TypeScript for reliable server operations.",
-        features: ["RESTful API", "Type-safe Controllers", "Scalable Routing"]
+        features: ["RESTful API", "Type-safe Controllers", "Scalable Routing"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: TypeScript API project for backend services.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 21,
@@ -272,7 +376,12 @@ export const projects: Project[] = [
         category: "Web Development / E-commerce",
         lastUpdated: "Sep 18, 2025",
         overview: "A React-based e-commerce aggregator that dynamically fetches and displays the latest tech deals, offers, and discounts.",
-        features: ["Deal Aggregation", "React Components", "Dynamic Fetching"]
+        features: ["Deal Aggregation", "React Components", "Dynamic Fetching"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: JavaScript project for tech deals and offers.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 22,
@@ -284,7 +393,12 @@ export const projects: Project[] = [
         category: "Personal / Productivity",
         lastUpdated: "Sep 16, 2025",
         overview: "A minimal, beautifully styled vanilla HTML/CSS notes application focused on absolute simplicity and fast load times.",
-        features: ["Vanilla HTML/CSS", "Minimalist Design", "Fast Performance"]
+        features: ["Vanilla HTML/CSS", "Minimalist Design", "Fast Performance"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: HTML-based notes application.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
     },
     {
         id: 23,
@@ -297,6 +411,29 @@ export const projects: Project[] = [
         lastUpdated: "Recent",
         featured: true,
         overview: "A scalable, real-time AI assistant integration platform built with GraphQL subscriptions to handle live sync across chat sessions seamlessly.",
-        features: ["Real-time WebSocket Chat", "GraphQL Subscriptions", "Authentication Integration", "Apollo Client"]
-    }
+        features: ["Real-time WebSocket Chat", "GraphQL Subscriptions", "Authentication Integration", "Apollo Client"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Full-stack real-time chatbot with React, TailwindCSS, GraphQL, Nhost, Apollo Client, and WebSocket support.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
+    },
+    {
+        id: 24,
+        title: "javaRev",
+        description: "Java fundamentals revision project with HTML-based notes and examples.",
+        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200",
+        tags: ["Java", "HTML"],
+        slug: "javarev",
+        category: "Learning / Java",
+        lastUpdated: "2 weeks ago",
+        overview: "A revision toolkit designed to reinforce Java fundamentals through structured HTML notes and practical code examples.",
+        features: ["Fundamental Java Notes", "Code Examples", "HTML Documentation"],
+        elaborations: [
+            "Engineered advanced solutions to deliver: Java fundamentals revision project with HTML-based notes and examples.",
+            "Optimized core logic and utilized modern tooling to streamline execution.",
+            "Focused heavily on maintainability and structural integrity of the codebase."
+        ]
+    },
+
 ];
