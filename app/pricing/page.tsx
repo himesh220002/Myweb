@@ -177,7 +177,7 @@ export default function PricingPage() {
 
   return (
     <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative">
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-32 space-y-16 md:space-y-24 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-6 py-16 md:py-32 space-y-16 md:space-y-24 relative z-10">
 
         {/* Header */}
         <div className="text-center space-y-6 max-w-3xl mx-auto">
@@ -251,11 +251,11 @@ export default function PricingPage() {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[60px] pointer-events-none -z-10" />
               )}
 
-              <div className="space-y-8">
-                <div className="flex justify-between items-start gap-4 border-b border-slate-100 pb-8">
-                  <div className="space-y-2">
+              <div className="space-y-6">
+                <div className="flex flex-col justify-between items-center gap-4 pb-4 border-b-[1px] border-slate-200">
+                  <div className="flex flex-col items-center gap-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold uppercase tracking-widest text-primary block">{plan.sub}</span>
+                      {/* <span className="text-xs font-bold uppercase tracking-widest text-primary block">{plan.sub}</span> */}
                       {plan.tag && (
                         <span className={cn(
                           "text-[9px] font-bold px-2.5 py-1 rounded-full tracking-widest uppercase border",
@@ -264,18 +264,19 @@ export default function PricingPage() {
                           {plan.tag}
                         </span>
                       )}
+
                     </div>
                     <h3 className="text-4xl font-display font-extrabold text-slate-900">{plan.name}</h3>
                   </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-4xl font-display font-extrabold text-slate-900">
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-2xl font-display font-extrabold text-slate-900">
                       {formatVal(plan.price)}
                     </span>
-                    {typeof plan.price === "number" && (
-                      <span className="text-xs uppercase tracking-widest text-slate-500 font-bold mt-2">
+                    {/* {typeof plan.price === "number" && (
+                      <span className="text-xs uppercase tracking-widest text-slate-500 font-bold">
                         {billingPeriod === "project" ? "flat fee" : "per month"}
                       </span>
-                    )}
+                    )} */}
                   </div>
                 </div>
 

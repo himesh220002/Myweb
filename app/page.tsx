@@ -38,13 +38,13 @@ export default function Home() {
   // 3. Perfect SVG Math Blueprint
   // Map x-range (10 to 150) straight onto the SVG view width (0 to 200)
   const svgX = ((scope - 10) / (150 - 10)) * 200;
-  
+
   // Map budget range ($500 to $11k) onto the inverted SVG view height (100 to 0)
   const getSvgY = (calculatedBudget: number) => {
     const minBudget = 500;
     const maxBudget = 11000;
     const percentage = (calculatedBudget - minBudget) / (maxBudget - minBudget);
-    return 100 - (percentage * 100); 
+    return 100 - (percentage * 100);
   };
 
   const svgY = getSvgY(budget);
@@ -215,7 +215,7 @@ export default function Home() {
 
       {/* --- ESTIMATOR / REQUEST A QUOTE --- */}
       <section id="estimator" className="px-6 py-32 relative border-t border-slate-200 bg-slate-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10 items-center">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10 items-start">
 
           {/* Left Text */}
           <div className="lg:col-span-5 space-y-8">
@@ -237,7 +237,7 @@ export default function Home() {
               </p>
               <div className="flex items-center gap-4 mt-2">
                 <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden border border-slate-300">
-                   <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Sarah" alt="Sarah" />
+                  <img src="https://api.dicebear.com/9.x/notionists/svg?seed=Sarah" alt="Sarah" />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-900 uppercase tracking-widest">Sarah Jenkins</p>
@@ -250,11 +250,11 @@ export default function Home() {
           {/* Right Estimator Tool */}
           <Reveal delay={0.3} className="lg:col-span-7">
             <div className="bg-[#1a1c23] rounded-[2rem] p-6 md:p-10 shadow-2xl relative overflow-hidden text-slate-300 font-sans border border-slate-800/60">
-              
+
               {/* Highly Optimized SVG Live Chart Area */}
-              <div className="h-[280px] w-[calc(100%-3rem)] ml-12 relative mb-12 border-b border-l border-slate-800/80 pr-2 pt-4 pb-4 mt-4">
+              <div className="h-[280px] w-[calc(100%-3rem)] ml-4 relative mb-12 border-b border-l border-slate-800/80 pr-2 pt-4 pb-4 mt-4">
                 <svg className="w-full h-full overflow-visible text-slate-500 font-sans" preserveAspectRatio="none" viewBox="0 0 200 100">
-                  
+
                   {/* Y-Axis Value Indicators */}
                   <text x="-4" y="0" fill="currentColor" fontSize="4.5" textAnchor="end" alignmentBaseline="middle">$11k</text>
                   <text x="-4" y="33.3" fill="currentColor" fontSize="4.5" textAnchor="end" alignmentBaseline="middle">$7.5k</text>
@@ -270,7 +270,7 @@ export default function Home() {
                   <line x1="0" y1="0" x2="200" y2="0" stroke="#334155" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.4" />
                   <line x1="0" y1="33.3" x2="200" y2="33.3" stroke="#334155" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.4" />
                   <line x1="0" y1="66.6" x2="200" y2="66.6" stroke="#334155" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.4" />
-                  
+
                   <line x1="0" y1="0" x2="0" y2="100" stroke="#334155" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.2" />
                   <line x1="100" y1="0" x2="100" y2="100" stroke="#334155" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.2" />
                   <line x1="200" y1="0" x2="200" y2="100" stroke="#334155" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.2" />
@@ -282,26 +282,26 @@ export default function Home() {
                   <path d={`M0,${getSvgY(planConfig.growth.baseCost + (10 * planConfig.growth.multiplier))} L200,${getSvgY(planConfig.growth.baseCost + (150 * planConfig.growth.multiplier))}`} fill="none" stroke="#10b981" strokeWidth="0.75" opacity="0.25" />
                   {/* Enterprise Path */}
                   <path d={`M0,${getSvgY(planConfig.enterprise.baseCost + (10 * planConfig.enterprise.multiplier))} L200,${getSvgY(planConfig.enterprise.baseCost + (150 * planConfig.enterprise.multiplier))}`} fill="none" stroke="#f59e0b" strokeWidth="0.75" opacity="0.25" />
-                  
+
                   {/* Main Dynamic Active Focus Line */}
-                  <path 
-                    d={`M0,${getSvgY(currentPlan.baseCost + (10 * currentPlan.multiplier))} L200,${getSvgY(currentPlan.baseCost + (150 * currentPlan.multiplier))}`} 
-                    fill="none" 
-                    stroke="#3b82f6" 
-                    strokeWidth="2" 
+                  <path
+                    d={`M0,${getSvgY(currentPlan.baseCost + (10 * currentPlan.multiplier))} L200,${getSvgY(currentPlan.baseCost + (150 * currentPlan.multiplier))}`}
+                    fill="none"
+                    stroke="#3b82f6"
+                    strokeWidth="2"
                     style={{ transition: 'd 0.3s ease' }}
                   />
-                  
+
                   {/* Self-Anchoring Graph Target Crosshair & Node Marker */}
                   <g style={{ transform: `translate(${svgX}px, ${svgY}px)`, transition: 'transform 0.15s ease-out' }}>
                     {/* Horizontal Crosshair Ray */}
                     <line x1={-svgX} y1="0" x2={200 - svgX} y2="0" stroke="#3b82f6" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.5" />
                     {/* Vertical Crosshair Ray */}
                     <line x1="0" y1={-svgY} x2="0" y2={100 - svgY} stroke="#3b82f6" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.5" />
-                    
+
                     {/* Core High-Contrast Target Point */}
                     <circle cx="0" cy="0" r="4" fill="#3b82f6" stroke="#1a1c23" strokeWidth="2" />
-                    
+
                     {/* Context-Aware Floating Information Label */}
                     <g transform={`translate(${svgX > 120 ? -65 : 10}, ${svgY > 80 ? -12 : 12})`}>
                       <rect width="60" height="14" rx="4" fill="#272a35" stroke="#3b82f6" strokeWidth="0.5" opacity="0.95" />
@@ -315,69 +315,69 @@ export default function Home() {
 
               {/* Stats Row */}
               <div className="grid grid-cols-3 gap-4 pb-8 mb-8 border-b border-slate-800/80 text-center">
-                 <div>
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Project budget</p>
-                    <p className="text-xl md:text-2xl font-bold text-white">${budget.toLocaleString()}</p>
-                 </div>
-                 <div>
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Business lift</p>
-                    <p className="text-xl md:text-2xl font-bold text-emerald-400">+{liftPercent}% lift</p>
-                 </div>
-                 <div>
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Projected ROI</p>
-                    <p className="text-xl md:text-2xl font-bold text-blue-500">${projectedRoi.toLocaleString()}</p>
-                 </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Project budget</p>
+                  <p className="text-xl md:text-2xl font-bold text-white">${budget.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Business lift</p>
+                  <p className="text-xl md:text-2xl font-bold text-emerald-400">+{liftPercent}% lift</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Projected ROI</p>
+                  <p className="text-xl md:text-2xl font-bold text-blue-500">${projectedRoi.toLocaleString()}</p>
+                </div>
               </div>
 
               {/* Framework Selector */}
               <div className="space-y-3 mb-8">
-                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Select operation scale framework</label>
-                 <div className="flex bg-[#272a35] rounded-full p-1 border border-slate-700/50">
-                    {(["startup", "growth", "enterprise"] as const).map(p => (
-                       <button key={p} onClick={() => setBasePlan(p)} className={`flex-1 py-2 rounded-full text-sm font-bold capitalize transition-all duration-300 ${basePlan === p ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}>
-                         {p}
-                       </button>
-                    ))}
-                 </div>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Select operation scale framework</label>
+                <div className="flex bg-[#272a35] rounded-full p-1 border border-slate-700/50">
+                  {(["startup", "growth", "enterprise"] as const).map(p => (
+                    <button key={p} onClick={() => setBasePlan(p)} className={`flex-1 py-2 rounded-full text-sm font-bold capitalize transition-all duration-300 ${basePlan === p ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}>
+                      {p}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Slider */}
               <div className="space-y-4 mb-8">
-                 <div className="flex justify-between items-center">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Adjust target monthly users</label>
-                    <span className="text-sm font-bold text-white">{scope}k users</span>
-                 </div>
-                 <input 
-                    type="range" min="10" max="150" value={scope} onChange={(e) => setScope(parseInt(e.target.value))}
-                    className="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                 />
+                <div className="flex justify-between items-center">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Adjust target monthly users</label>
+                  <span className="text-sm font-bold text-white">{scope}k users</span>
+                </div>
+                <input
+                  type="range" min="10" max="150" value={scope} onChange={(e) => setScope(parseInt(e.target.value))}
+                  className="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                />
               </div>
 
               {/* Features & Deliverables */}
               <div className="bg-[#272a35]/40 rounded-xl p-5 mb-8 border border-slate-800/80">
-                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Included Features & Deliverables</p>
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
-                    {currentPlan.features.map((f, i) => (
-                       <div key={i} className="flex items-center gap-2 text-xs text-slate-300 font-medium">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                          {f}
-                       </div>
-                    ))}
-                 </div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Included Features & Deliverables</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+                  {currentPlan.features.map((f, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-slate-300 font-medium">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                      {f}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Footer */}
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                 <div className="text-[10px] text-slate-400 font-medium space-y-1.5">
-                    <p className="font-bold text-slate-300 uppercase tracking-widest mb-2">Trusted validation performance</p>
-                    <p><span className="text-blue-500 text-sm leading-none mr-1">•</span> Vortex Analytics: $2.4M pipeline added</p>
-                    <p><span className="text-blue-500 text-sm leading-none mr-1">•</span> Acme Scale: +34% checkout efficiency</p>
-                    <p><span className="text-blue-500 text-sm leading-none mr-1">•</span> CloudFlow: Launched platform in 14 days</p>
-                 </div>
-                 
-                 <Link href="/contact" className="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-sm font-bold shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all flex items-center justify-center gap-2">
-                    Initialize Project Scope <ArrowRight className="w-4 h-4" />
-                 </Link>
+                <div className="text-[10px] text-slate-400 font-medium space-y-1.5">
+                  <p className="font-bold text-slate-300 uppercase tracking-widest mb-2">Trusted validation performance</p>
+                  <p><span className="text-blue-500 text-sm leading-none mr-1">•</span> Vortex Analytics: $2.4M pipeline added</p>
+                  <p><span className="text-blue-500 text-sm leading-none mr-1">•</span> Acme Scale: +34% checkout efficiency</p>
+                  <p><span className="text-blue-500 text-sm leading-none mr-1">•</span> CloudFlow: Launched platform in 14 days</p>
+                </div>
+
+                <Link href="/contact" className="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-sm font-bold shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all flex items-center justify-center gap-2">
+                  Initialize Project Scope <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
 
             </div>
@@ -518,7 +518,7 @@ export default function Home() {
               <div className="order-1 lg:order-2 relative">
                 <div className="absolute -inset-4 bg-gradient-to-tr from-primary/10 to-secondary/10 rounded-[3rem] blur-xl opacity-50" />
                 <div className="relative aspect-square w-full max-w-md mx-auto lg:mx-0 rounded-[2.5rem] overflow-hidden border border-slate-200 bg-slate-50 shadow-2xl">
-                  <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=AnimeHero&backgroundColor=e2e8f0" alt="Himesh Satyam" className="absolute inset-0 w-full h-full object-cover p-4" />
+                  <img src="https://static0.srcdn.com/wordpress/wp-content/uploads/2025/11/okabe-steins-gate.jpg?w=1600&h=1200&fit=crop" alt="Himesh Satyam" className="absolute inset-0 w-full h-full object-cover" />
                 </div>
               </div>
             </Reveal>

@@ -9,11 +9,11 @@ export default function ContactPage() {
     const [step, setStep] = useState(1);
     const [pending, setPending] = useState(false);
     const [error, setError] = useState("");
-    const [formData, setFormData] = useState({ 
-        type: "", 
-        budget: "", 
-        details: "", 
-        name: "", 
+    const [formData, setFormData] = useState({
+        type: "",
+        budget: "",
+        details: "",
+        name: "",
         email: "",
         phone: "",
         company: ""
@@ -32,7 +32,7 @@ export default function ContactPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!formData.name || !formData.email || !formData.details) {
             setError("Please fill in all required fields (Name, Email, Project Details).");
             return;
@@ -40,7 +40,7 @@ export default function ContactPage() {
 
         setPending(true);
         setError("");
-        
+
         try {
             const res = await fetch("/api/contact", {
                 method: "POST",
@@ -53,7 +53,7 @@ export default function ContactPage() {
                     message: `[Project Type: ${formData.type}] [Budget: ${formData.budget}]\n\n${formData.details}`,
                 }),
             });
-            
+
             if (res.ok) {
                 setStep(4); // Success step
                 setFormData({ type: "", budget: "", details: "", name: "", email: "", phone: "", company: "" });
@@ -74,12 +74,12 @@ export default function ContactPage() {
         { id: "Technical Consulting", title: "Technical Consulting", icon: MessageSquare }
     ];
 
-    const budgets = ["Under $10k", "$10k - $25k", "$25k - $50k", "$50k+"];
+    const budgets = ["Under $5k", "$5k - $10k", "$10k - $20k", "$20k+"];
 
     return (
         <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative">
-            <div className="max-w-7xl mx-auto px-6 py-16 md:py-32 space-y-16 md:space-y-24 relative z-10">
-                
+            <div className="max-w-7xl mx-auto px-6 py-24 md:py-32 space-y-12 md:space-y-24 relative z-10">
+
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 24 }}
@@ -101,52 +101,52 @@ export default function ContactPage() {
                 </motion.div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-                    
+
                     {/* Direct Contact Info */}
                     <div className="lg:col-span-4 space-y-8">
-                        <div className="bg-slate-50 border border-slate-200 p-8 rounded-[2rem] shadow-sm space-y-8">
-                            <h3 className="text-2xl font-display font-bold text-slate-900">Direct Contact</h3>
-                            
+                        <div className="bg-slate-700 border border-slate-200 p-6 sm:p-8 rounded-[1rem] sm:rounded-[2rem] shadow-sm space-y-8">
+                            {/* <h3 className="text-xl sm:text-2xl font-display font-bold text-slate-900">Direct Contact</h3> */}
+
                             <div className="space-y-6">
                                 <a href="mailto:hello@cyphertech.com" className="flex items-start gap-4 group">
                                     <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-md transition-all">
                                         <Mail className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Email</p>
-                                        <p className="font-bold text-slate-900 group-hover:text-primary transition-colors">satyamhimesh@gmail.com</p>
+                                        <p className="text-xs font-bold uppercase tracking-widest text-slate-100 mb-1">Email</p>
+                                        <p className="font-bold text-slate-300 group-hover:text-blue-400 transition-colors">satyamhimesh@gmail.com</p>
                                     </div>
                                 </a>
-                                
+
                                 <a href="tel:+918105542318" className="flex items-start gap-4 group">
                                     <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-primary group-hover:scale-110 group-hover:shadow-md transition-all">
                                         <Phone className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Phone</p>
-                                        <p className="font-bold text-slate-900 group-hover:text-primary transition-colors">+91-8105542318</p>
+                                        <p className="text-xs font-bold uppercase tracking-widest text-slate-100 mb-1">Phone</p>
+                                        <p className="font-bold text-slate-300 group-hover:text-blue-400 transition-colors">+91-8105542318</p>
                                     </div>
                                 </a>
-                                
+
                                 <div className="flex items-start gap-4">
                                     <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-primary">
                                         <MapPin className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Location</p>
-                                        <p className="font-bold text-slate-900">Remote Worldwide</p>
+                                        <p className="text-xs font-bold uppercase tracking-widest text-slate-100 mb-1">Location</p>
+                                        <p className="font-bold text-slate-300 group-hover:text-blue-400 transition-colors">Remote Worldwide</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-slate-900 p-8 rounded-[2rem] text-white shadow-xl relative overflow-hidden">
+                        <div className="bg-slate-900 p-4 sm:p-8 rounded-[1rem] sm:rounded-[2rem] text-white shadow-xl relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[50px] rounded-full" />
                             <h3 className="text-xl font-bold mb-3 relative z-10">Schedule a Call</h3>
                             <p className="text-white/70 text-sm mb-6 relative z-10 leading-relaxed">
                                 Prefer to speak directly? Book a 30-minute discovery call with our technical director.
                             </p>
-                            <Link href="#" className="w-full bg-white text-slate-900 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-100 transition-colors relative z-10">
+                            <Link href="#" className="w-full bg-white text-slate-900 py-1 sm:py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-100 transition-colors relative z-10">
                                 Open Calendly <ChevronRight className="w-4 h-4" />
                             </Link>
                         </div>
@@ -166,21 +166,21 @@ export default function ContactPage() {
                                     <h3 className="text-3xl font-display font-bold text-slate-900">What do you need help with?</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         {projectTypes.map(type => (
-                                            <button 
-                                                key={type.id} 
-                                                onClick={() => setFormData({...formData, type: type.id})}
-                                                className={`p-6 rounded-2xl border-2 text-left transition-all ${formData.type === type.id ? 'border-primary bg-primary/5 shadow-md' : 'border-slate-200 hover:border-slate-300 bg-white'}`}
+                                            <button
+                                                key={type.id}
+                                                onClick={() => setFormData({ ...formData, type: type.id })}
+                                                className={`flex flex-row items-center justify-center sm:flex-col gap-4 p-4 sm:p-6 rounded-2xl border-2 text-left transition-all ${formData.type === type.id ? 'border-primary bg-primary/5 shadow-md' : 'border-slate-200 hover:border-slate-300 bg-white'}`}
                                             >
-                                                <type.icon className={`w-8 h-8 mb-4 ${formData.type === type.id ? 'text-primary' : 'text-slate-400'}`} />
-                                                <p className="font-bold text-slate-900">{type.title}</p>
+                                                <type.icon className={`w-8 h-8 ${formData.type === type.id ? 'text-primary' : 'text-slate-400'}`} />
+                                                <p className="font-bold text-center text-slate-900">{type.title}</p>
                                             </button>
                                         ))}
                                     </div>
-                                    <div className="pt-6 flex justify-end">
-                                        <button 
-                                            onClick={handleNext} 
+                                    <div className="pt-2 sm:pt-6 flex justify-end">
+                                        <button
+                                            onClick={handleNext}
                                             disabled={!formData.type}
-                                            className="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="bg-slate-900 text-white px-4 py-2 sm:px-8 sm:py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             Next Step <ArrowRight className="w-4 h-4" />
                                         </button>
@@ -193,9 +193,9 @@ export default function ContactPage() {
                                     <h3 className="text-3xl font-display font-bold text-slate-900">What is your estimated budget?</h3>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {budgets.map(budget => (
-                                            <button 
-                                                key={budget} 
-                                                onClick={() => setFormData({...formData, budget})}
+                                            <button
+                                                key={budget}
+                                                onClick={() => setFormData({ ...formData, budget })}
                                                 className={`p-6 rounded-2xl border-2 text-center transition-all ${formData.budget === budget ? 'border-primary bg-primary/5 shadow-md' : 'border-slate-200 hover:border-slate-300 bg-white'}`}
                                             >
                                                 <p className="font-bold text-slate-900">{budget}</p>
@@ -204,8 +204,8 @@ export default function ContactPage() {
                                     </div>
                                     <div className="pt-6 flex justify-between">
                                         <button onClick={handlePrev} className="px-8 py-4 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-colors border border-slate-200">Back</button>
-                                        <button 
-                                            onClick={handleNext} 
+                                        <button
+                                            onClick={handleNext}
                                             disabled={!formData.budget}
                                             className="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
@@ -242,7 +242,7 @@ export default function ContactPage() {
                                             <textarea required name="details" value={formData.details} onChange={handleChange} rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none" placeholder="Tell us about the features you need..." />
                                         </div>
                                     </div>
-                                    
+
                                     {error && (
                                         <p className="text-red-500 text-sm font-bold bg-red-50 p-3 rounded-lg border border-red-100">
                                             {error}

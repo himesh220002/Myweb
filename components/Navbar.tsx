@@ -46,8 +46,8 @@ export default function Navbar() {
                 className={cn(
                     "mx-auto w-full transition-all duration-500 flex justify-between items-center",
                     scrolled
-                        ? "max-w-[1600px] px-4 py-2 rounded-t-sm rounded-b-3xl bg-white/90 backdrop-blur-xl border border-slate-200 shadow-sm"
-                        : "max-w-7xl px-6 py-3 bg-white/60 rounded-full backdrop-blur-lg border border-slate-200 shadow-sm"
+                        ? "max-w-7xl px-4 py-2 rounded-t-sm rounded-full bg-white/90 backdrop-blur-xl border border-slate-200 shadow-sm"
+                        : "max-w-7xl px-6 py-3 bg-white/90 rounded-full backdrop-blur-lg border border-slate-200 shadow-sm"
                 )}
             >
                 {/* Logo */}
@@ -133,7 +133,7 @@ export default function Navbar() {
                     {isOpen ? <X /> : <Menu />}
                 </button>
             </div>
-            
+
             {/* Mobile Nav */}
             <AnimatePresence>
                 {isOpen && (

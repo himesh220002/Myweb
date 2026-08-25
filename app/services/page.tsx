@@ -77,12 +77,12 @@ const specializedServices = [
 export default function ServicesPage() {
     return (
         <div className="bg-[#030305] text-slate-200 min-h-screen font-sans selection:bg-purple-500/30 relative overflow-hidden">
-            
+
             {/* Cosmic Background Effects */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 {/* Tech Grid */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-                
+
                 {/* Infinity Stone Nebula Glows */}
                 <div className="absolute top-[-10%] left-[-10%] w-[50rem] h-[50rem] bg-purple-600/20 rounded-full blur-[150px] mix-blend-screen animate-pulse" style={{ animationDuration: '10s' }} />
                 <div className="absolute top-[20%] right-[-10%] w-[40rem] h-[40rem] bg-blue-600/20 rounded-full blur-[150px] mix-blend-screen animate-pulse" style={{ animationDuration: '14s', animationDelay: '2s' }} />
@@ -90,7 +90,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="max-w-[1600px] mx-auto px-6 py-24 md:py-32 space-y-32 relative z-10">
-                
+
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -100,12 +100,12 @@ export default function ServicesPage() {
                 >
                     <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
                         <InfinityIcon className="w-5 h-5 text-purple-400 animate-pulse" />
-                        <span className="text-sm font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">Avengers Level Tech</span>
+                        <span className="text-sm font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">Multi Level Tech</span>
                     </div>
                     <h1 className="text-6xl md:text-8xl font-display font-black mb-8 leading-[1.05] tracking-tight text-white relative">
                         <span className="absolute -inset-4 bg-gradient-to-r from-purple-600 via-red-600 to-blue-600 blur-3xl opacity-20" />
                         <span className="relative">Technology to <br className="hidden md:block" />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-red-500 to-orange-500">Save The World</span></span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-red-500 to-orange-500">UpGrade Any Business</span></span>
                     </h1>
                     <p className="text-slate-400 text-xl md:text-2xl leading-relaxed font-medium max-w-3xl mx-auto">
                         We don't just write code. We engineer cosmic-scale solutions designed to solve impossible problems and power the future of humanity.
@@ -118,7 +118,7 @@ export default function ServicesPage() {
                         <h2 className="text-4xl md:text-5xl font-display font-bold text-white">Core Disciplines</h2>
                         <p className="text-slate-400 font-medium mt-4 text-lg">The foundational pillars of our engineering universe.</p>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
                         {mainServices.map((service, idx) => {
                             const Icon = service.icon;
@@ -133,17 +133,17 @@ export default function ServicesPage() {
                                 >
                                     {/* Inner Glow */}
                                     <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl ${service.color} rounded-full blur-[100px] opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none`} />
-                                    
+
                                     <div className="relative z-10">
                                         <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-sm mb-10 group-hover:scale-110 transition-all duration-500 relative">
                                             <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-20 rounded-2xl transition-opacity duration-500`} />
                                             <Icon className="w-10 h-10 text-slate-300 group-hover:text-white transition-colors duration-500" />
                                         </div>
-                                        
+
                                         <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 tracking-tight">{service.title}</h3>
                                         <p className="text-slate-400 font-medium leading-relaxed mb-12 text-lg">{service.description}</p>
                                     </div>
-                                    
+
                                     <div className="relative z-10 pt-8 border-t border-white/10">
                                         <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6">Key Technologies</h4>
                                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -170,7 +170,7 @@ export default function ServicesPage() {
                         <h2 className="text-4xl md:text-5xl font-display font-bold text-white">Specialized Solutions</h2>
                         <p className="text-slate-400 font-medium mt-4 text-lg">Targeted technical interventions for complex challenges.</p>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {specializedServices.map((service, idx) => (
                             <motion.div
@@ -202,27 +202,27 @@ export default function ServicesPage() {
                 >
                     {/* High-tech grid background inside the box */}
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:16px_16px] opacity-50 pointer-events-none" />
-                    
+
                     <div className="absolute -bottom-48 -right-48 w-[40rem] h-[40rem] bg-gradient-to-tl from-purple-600/30 to-blue-600/30 blur-[120px] rounded-full pointer-events-none" />
-                    
+
                     <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
                         <div className="lg:col-span-5 space-y-8">
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold tracking-widest uppercase">
                                 <ShieldCheck className="w-4 h-4" /> Protocol Alpha
                             </div>
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black leading-tight tracking-tight">The Delivery <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Framework</span></h2>
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black leading-tight tracking-tight">The Delivery <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Framework</span></h2>
                             <p className="text-slate-400 text-xl leading-relaxed font-medium">
                                 We utilize a battle-tested agile framework to ensure projects are delivered on time, under budget, and beyond expectations. Absolute precision from Day 1.
                             </p>
                             <div className="pt-4">
                                 <Link href="/contact" className="group relative inline-flex items-center gap-3 bg-white text-slate-900 px-10 py-5 rounded-full font-bold shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] transition-all overflow-hidden">
-                                    <span className="relative z-10">Initiate Project</span> 
+                                    <span className="relative z-10">Initiate Project</span>
                                     <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                                     <div className="absolute inset-0 bg-gradient-to-r from-white via-slate-200 to-white opacity-0 group-hover:opacity-100 transition-opacity" />
                                 </Link>
                             </div>
                         </div>
-                        
+
                         <div className="lg:col-span-7 space-y-6">
                             {[
                                 { step: "01", title: "Strategic Blueprint", desc: "Mapping out data flow, tech stack, and user journeys to ensure absolute clarity." },
@@ -243,7 +243,7 @@ export default function ServicesPage() {
                         </div>
                     </div>
                 </motion.div>
-                
+
             </div>
         </div>
     );
