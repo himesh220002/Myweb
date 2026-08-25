@@ -5,6 +5,8 @@ import { ArrowRight, Code2, Cpu, Globe, Rocket, Shield, Smartphone, Star, CheckC
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import RoadmapSection from "@/components/RoadmapSection";
+
 
 const Reveal = ({ children, className, delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
   const ref = useRef(null);
@@ -72,56 +74,78 @@ export default function Home() {
         </div>
       </section>
 
+      {/* --- ROADMAP / PROCESS SECTION --- */}
+      <RoadmapSection />
+
       {/* --- WHY CHOOSE US (BENTO GRID) --- */}
-      <section className="px-6 py-32 relative border-t border-slate-200 bg-white">
+      <section className="px-6 py-32 relative bg-white">
         <div className="max-w-7xl mx-auto">
           <Reveal className="mb-20 text-center">
             <h2 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight text-slate-900 mb-6">
-              The <span className="text-primary">CypherTech</span> Advantage
+              The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">CypherTech</span> Advantage
             </h2>
-            <p className="text-slate-600 max-w-2xl mx-auto text-xl font-medium leading-relaxed">
-              We combine elite engineering with stunning design to deliver digital products that outperform the competition.
+            <p className="text-slate-500 max-w-2xl mx-auto text-xl font-medium leading-relaxed">
+              We combine elite engineering with stunning, conversion-optimized design to deliver digital products that dominate your market.
             </p>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[650px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 md:gap-8 h-auto md:h-[600px]">
             {/* Bento Item 1: Large Span */}
-            <Reveal delay={0.1} className="md:col-span-2 md:row-span-2 group">
-              <div className="h-full w-full rounded-[2.5rem] bg-slate-900 p-10 flex flex-col justify-between relative overflow-hidden transition-all duration-500 shadow-xl hover:shadow-2xl hover:-translate-y-1">
-                <img src="/performance_bg.png" alt="Performance" className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-screen group-hover:scale-105 group-hover:opacity-60 transition-all duration-1000" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
-                <Rocket className="w-12 h-12 text-primary relative z-10" />
-                <div className="relative z-10 max-w-lg mt-32">
-                  <h3 className="text-3xl font-display font-bold text-white mb-4">Blazing Fast Performance</h3>
-                  <p className="text-white/70 font-medium leading-relaxed">Our Next.js server-rendered architecture ensures millisecond load times, dramatically improving SEO rankings and conversion rates.</p>
+            <Reveal delay={0.1} className="md:col-span-2 md:row-span-2">
+              <div className="group relative h-full w-full rounded-[2.5rem] bg-[#0a0a0f] p-10 md:p-14 flex flex-col justify-between overflow-hidden transition-all duration-700 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] border border-slate-800 hover:border-blue-500/30">
+                {/* Abstract grid & glow */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
+                <div className="absolute -top-32 -right-32 w-[30rem] h-[30rem] bg-blue-600/20 rounded-full blur-[120px] group-hover:bg-blue-600/30 transition-colors duration-700" />
+                
+                <div className="relative z-10">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 p-[1px] mb-8 shadow-lg shadow-blue-500/20">
+                    <div className="w-full h-full bg-[#0a0a0f] rounded-2xl flex items-center justify-center">
+                      <Rocket className="w-8 h-8 text-blue-400 group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative z-10 max-w-lg mt-auto">
+                  <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 tracking-tight">Blazing Fast Performance</h3>
+                  <p className="text-slate-400 text-lg font-medium leading-relaxed group-hover:text-slate-300 transition-colors duration-500">
+                    Our Next.js server-rendered architecture ensures sub-second load times, dramatically improving your SEO rankings and user retention rates.
+                  </p>
                 </div>
               </div>
             </Reveal>
 
             {/* Bento Item 2 */}
-            <Reveal delay={0.2} className="md:col-span-1 md:row-span-1 group">
-              <div className="h-full w-full rounded-[2.5rem] bg-slate-50 border border-slate-200 p-8 flex flex-col justify-end relative overflow-hidden transition-all duration-500 shadow-sm hover:shadow-lg hover:-translate-y-1">
-                <img src="/design_bg.png" alt="UI/UX Design" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-multiply group-hover:scale-110 transition-all duration-1000" />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent" />
-
-                <div className="relative z-10">
-                  <Smartphone className="w-8 h-8 text-indigo-500 mb-4" />
-                  <h3 className="text-xl font-display font-bold text-slate-900 mb-2">Premium UI/UX</h3>
-                  <p className="text-slate-600 font-medium text-sm">Award-winning design systems built for engagement.</p>
+            <Reveal delay={0.2} className="md:col-span-1 md:row-span-1">
+              <div className="group relative h-full w-full rounded-[2.5rem] bg-white border border-slate-200 p-8 flex flex-col justify-between overflow-hidden transition-all duration-700 hover:shadow-2xl hover:-translate-y-1 hover:border-pink-500/30">
+                <div className="absolute -top-24 -right-24 w-64 h-64 bg-pink-500/10 rounded-full blur-[60px] group-hover:bg-pink-500/20 transition-colors duration-700" />
+                
+                <div className="relative z-10 w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-400 to-rose-600 p-[1px] mb-6 shadow-md shadow-pink-500/10">
+                  <div className="w-full h-full bg-white rounded-2xl flex items-center justify-center">
+                    <Smartphone className="w-7 h-7 text-pink-500 group-hover:scale-110 transition-transform duration-500" />
+                  </div>
+                </div>
+                
+                <div className="relative z-10 mt-auto">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight group-hover:text-pink-600 transition-colors duration-500">Premium UI/UX</h3>
+                  <p className="text-slate-500 font-medium leading-relaxed">Award-winning design systems with glassmorphism and micro-interactions built for absolute engagement.</p>
                 </div>
               </div>
             </Reveal>
 
             {/* Bento Item 3 */}
-            <Reveal delay={0.3} className="md:col-span-1 md:row-span-1 group">
-              <div className="h-full w-full rounded-[2.5rem] bg-slate-50 border border-slate-200 p-8 flex flex-col justify-end relative overflow-hidden transition-all duration-500 shadow-sm hover:shadow-lg hover:-translate-y-1">
-                <img src="/security_bg.png" alt="Security" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-multiply group-hover:scale-110 transition-all duration-1000" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-slate-50/90 to-transparent" />
-
-                <div className="relative z-10">
-                  <Shield className="w-8 h-8 text-emerald-500 mb-4" />
-                  <h3 className="text-xl font-display font-bold text-slate-900 mb-2">Enterprise Security</h3>
-                  <p className="text-slate-600 font-medium text-sm">Bank-grade encryption and robust authentication.</p>
+            <Reveal delay={0.3} className="md:col-span-1 md:row-span-1">
+              <div className="group relative h-full w-full rounded-[2.5rem] bg-white border border-slate-200 p-8 flex flex-col justify-between overflow-hidden transition-all duration-700 hover:shadow-2xl hover:-translate-y-1 hover:border-emerald-500/30">
+                <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-[60px] group-hover:bg-emerald-500/20 transition-colors duration-700" />
+                
+                <div className="relative z-10 w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 p-[1px] mb-6 shadow-md shadow-emerald-500/10">
+                  <div className="w-full h-full bg-white rounded-2xl flex items-center justify-center">
+                    <Shield className="w-7 h-7 text-emerald-500 group-hover:scale-110 transition-transform duration-500" />
+                  </div>
+                </div>
+                
+                <div className="relative z-10 mt-auto">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight group-hover:text-emerald-600 transition-colors duration-500">Enterprise Security</h3>
+                  <p className="text-slate-500 font-medium leading-relaxed">Bank-grade encryption, OAuth authentication, and secure API layers out of the box.</p>
                 </div>
               </div>
             </Reveal>
