@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&display=swap');
 
+
+
+
 .container {
   position: relative;
   width: 100%;
@@ -79,13 +82,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 14px;
+  padding: 4px 4px;
   background: rgba(15, 25, 35, 0.85);
   border: 1px solid rgba(236, 232, 225, 0.1);
-  border-bottom: 2px solid #ff4655;
+  border-bottom: 1px solid #ff4655;
   border-radius: 0;
   backdrop-filter: blur(8px);
   font-size: 14px;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   max-width: 96%;
@@ -155,7 +159,7 @@
 }
 
 .container :global(#autoToggle) {
-  padding: 5px 10px;
+  padding: 4px 4px;
   border-radius: 8px;
   border: 1px solid #00e67655;
   background: #0e2a1a;
@@ -195,20 +199,38 @@
   display: grid;
 }
 
-.container :global(.bg-text-massive) {
+.container :global(.bg-text) {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 250px;
+  font-size: 200px;
   font-weight: 900;
-  color: #ff4655;
-  opacity: 0.15;
-  pointer-events: none;
-  text-align: center;
-  white-space: nowrap;
-  letter-spacing: 15px;
+  color: rgba(255, 70, 85, 0.08);
+  margin: 0;
   z-index: 0;
+  letter-spacing: 20px;
+  pointer-events: none;
+}
+
+.container :global(.top-high-score) {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: 700;
+  color: #ece8e1;
+  letter-spacing: 4px;
+  z-index: 2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.container :global(.top-high-score span) {
+  color: #ff4655;
+  margin-left: 10px;
 }
 
 .container :global(#scoreCard) {
@@ -226,35 +248,46 @@
   margin-bottom: 40px;
 }
 
+.container :global(.hint kbd) {
+  background: rgba(236, 232, 225, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(236, 232, 225, 0.2);
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.container :global(.highlight-hint) {
+  color: #ff4655;
+  font-weight: 700;
+}
+
+.container :global(.highlight-hint kbd) {
+  border-color: #ff4655;
+  color: #ff4655;
+  background: rgba(255, 70, 85, 0.1);
+}
+
 .container :global(.stat-box) {
   background: rgba(236, 232, 225, 0.05);
   border: 1px solid rgba(236, 232, 225, 0.1);
-  padding: 20px;
-  flex: 1;
+  border-top: 2px solid #ff4655;
+  padding: 15px 30px;
   text-align: center;
-  position: relative;
-}
-.container :global(.stat-box::before) {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: #ff4655;
+  min-width: 140px;
 }
 
 .container :global(.stat-label) {
-  color: #ece8e1;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 14px;
+  color: rgba(236, 232, 225, 0.6);
   letter-spacing: 2px;
-  opacity: 0.7;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .container :global(.stat-value) {
-  color: #ece8e1;
-  font-size: 32px;
+  font-size: 42px;
   font-weight: 700;
-  letter-spacing: 1px;
+  color: #ece8e1;
 }
 
 .container :global(.val-btn) {
@@ -281,6 +314,7 @@
   transition: all 0.2s ease;
   z-index: -1;
 }
+
 .container :global(.val-btn::after) {
   content: "";
   position: absolute;
@@ -294,12 +328,26 @@
 .container :global(.val-btn:hover .btn-bg) {
   background: #ece8e1;
 }
+
 .container :global(.val-btn:hover .btn-text) {
   color: #ff4655;
 }
+
 .container :global(.val-btn:hover::after) {
   border-color: #ece8e1;
   inset: -6px;
+}
+
+.container :global(.go-buttons) {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
 }
 
 .container :global(#startScreen) {
@@ -307,16 +355,18 @@
   inset: 0;
   display: none;
   align-items: center;
-  background: #0f1923;
+  background: rgba(15, 25, 35, 0.3);
+  backdrop-filter: blur(2px);
   z-index: 30;
   font-family: 'Oswald', sans-serif;
   overflow: hidden;
 }
+
 .container :global(#startScreen::before) {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 70% 50%, rgba(255,70,85,0.15) 0%, transparent 60%);
+  background: radial-gradient(circle at 70% 50%, rgba(255, 70, 85, 0.15) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -345,10 +395,24 @@
 }
 
 @media (max-width: 600px) {
-  .container :global(#startContent) { padding-left: 20px; text-align: center; width: 100%; }
-  .container :global(#startContent h1) { font-size: 60px; }
-  .container :global(.stats-grid) { flex-direction: column; gap: 10px; }
-  .container :global(.bg-text-massive) { font-size: 100px; }
+  .container :global(#startContent) {
+    padding-left: 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .container :global(#startContent h1) {
+    font-size: 60px;
+  }
+
+  .container :global(.stats-grid) {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .container :global(.bg-text-massive) {
+    font-size: 100px;
+  }
 }
 
 .container :global(#startContent .tag) {
@@ -375,6 +439,14 @@
   display: flex;
 }
 
+.container :global(#goContent) {
+  z-index: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .container :global(#pauseCard) {
   display: flex;
   flex-direction: column;
@@ -395,11 +467,13 @@
   display: flex;
   gap: 40px;
 }
+
 .container :global(#pauseCard .stat) {
   font-size: 24px;
   color: rgba(236, 232, 225, 0.7);
   letter-spacing: 2px;
 }
+
 .container :global(#pauseCard .stat span) {
   color: #ff4655;
   font-weight: 700;
@@ -428,6 +502,7 @@
   display: flex;
   align-items: center;
 }
+
 .container :global(.val-menu-btn::before) {
   content: "";
   display: inline-block;
@@ -437,10 +512,12 @@
   margin-right: 0px;
   transition: all 0.2s ease;
 }
+
 .container :global(.val-menu-btn:hover) {
   color: #ff4655;
   transform: translateX(10px);
 }
+
 .container :global(.val-menu-btn:hover::before) {
   width: 20px;
   margin-right: 15px;
@@ -474,9 +551,28 @@
 }
 
 @keyframes ghostBlink {
-  0% { opacity: 0; transform: translate(-50%, -45%); }
-  25% { opacity: 1; transform: translate(-50%, -50%); }
-  50% { opacity: 0; transform: translate(-50%, -50%); }
-  75% { opacity: 1; transform: translate(-50%, -50%); }
-  100% { opacity: 0; transform: translate(-50%, -55%); }
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  50% {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
 }

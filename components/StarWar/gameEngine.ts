@@ -4,7 +4,6 @@ export interface GameRefs {
   sensVal: HTMLElement;
   hudScore: HTMLElement;
   hudLives: HTMLElement;
-  hudPower: HTMLElement;
   healthBar: HTMLElement;
   healthText: HTMLElement;
   autoToggleBtn: HTMLButtonElement;
@@ -23,15 +22,15 @@ export interface GameRefs {
   pauseHighEl: HTMLElement;
   container: HTMLElement;
   returnBtn: HTMLButtonElement;
-  inGameHint: HTMLDivElement;
+  quitBtnGameOver: HTMLButtonElement;
 }
 
 export function initStarWarGame(refs: GameRefs) {
   const {
-    canvas, sensEl, sensVal, hudScore, hudLives, hudPower, healthBar, healthText,
+    canvas, sensEl, sensVal, hudScore, hudLives, healthBar, healthText,
     autoToggleBtn, gameOverScreen, finalScoreEl, highScoreEl, finalKillsEl, finalTimeEl,
     restartBtn, startScreen, startBtn, pauseScreen, resumeBtn, restartBtnPause,
-    pauseScoreEl, pauseHighEl, container, returnBtn, inGameHint
+    pauseScoreEl, pauseHighEl, container, returnBtn, quitBtnGameOver
   } = refs;
 
   const ctx = canvas.getContext('2d')!;
@@ -68,23 +67,16 @@ export function initStarWarGame(refs: GameRefs) {
     }
   }
 
-  function triggerFullscreenHint() {
-    inGameHint.classList.remove('animate');
-    void inGameHint.offsetWidth;
-    inGameHint.classList.add('animate');
-  }
 
   addListen(autoToggleBtn, 'click', () => { autoShootEnabled = !autoShootEnabled; updateAutoToggleUI(); });
   addListen(startBtn, 'click', () => { 
     started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset(); 
-    triggerFullscreenHint();
   });
   
   addListen(window, 'keydown', (ev: Event) => {
     const e = ev as KeyboardEvent;
     if (!started && (e.code === 'Space' || e.code === 'Enter')) { 
       started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset(); 
-      triggerFullscreenHint();
     }
   });
 
@@ -104,16 +96,20 @@ export function initStarWarGame(refs: GameRefs) {
   addListen(restartBtnPause, 'click', () => { 
     paused = false; pauseScreen.classList.remove('show'); reset(); 
   });
-  addListen(returnBtn, 'click', () => {
+  
+  function quitToMenu() {
     reset();
     started = false;
     paused = false;
     startScreen.classList.add('show');
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-  });
+  }
+  
+  addListen(returnBtn, 'click', quitToMenu);
+  addListen(quitBtnGameOver, 'click', quitToMenu);
 
   function updateAutoToggleUI() {
-    autoToggleBtn.textContent = autoShootEnabled ? 'AUTO SHOOT ON' : 'AUTO SHOOT OFF';
+    autoToggleBtn.textContent = autoShootEnabled ? 'AUTO: ON' : 'AUTO: OFF';
     autoToggleBtn.className = autoShootEnabled ? 'on' : 'off';
   }
 
@@ -220,6 +216,10 @@ export function initStarWarGame(refs: GameRefs) {
     updateAutoToggleUI();
   }
 
+  // Initial setup for demo mode to prevent errors before first render
+  player = { x: 500, y: 500, w: 34, h: 42, speed: 300, angle: 0 };
+  bullets = []; enemyBullets = []; enemies = []; pickups = []; popups = []; powers = []; explosions = [];
+
   function loseLifeWithExplosion(now: number) {
     explosions.push({ x: player.x, y: player.y, r: 22, life: 0.65 });
     for (let k = 0; k < 8; k++) { const a = Math.random() * Math.PI * 2; explosions.push({ x: player.x + Math.cos(a) * 6, y: player.y + Math.sin(a) * 6, r: 8 + Math.random() * 8, life: 0.4 }); }
@@ -232,7 +232,7 @@ export function initStarWarGame(refs: GameRefs) {
     finalScoreEl.textContent = String(score);
     finalKillsEl.textContent = String(kills);
     finalTimeEl.textContent = elapsed + 's';
-    if (score > highScore) { highScore = score; localStorage.setItem('sd_high', String(highScore)); }
+    if (score > highScore) { highScore = score; localStorage.setItem('starwar_highscore', String(highScore)); }
     highScoreEl.textContent = String(highScore);
     gameOverScreen.classList.add('show');
   }
@@ -294,7 +294,7 @@ export function initStarWarGame(refs: GameRefs) {
     const dt = Math.min((now - lastTime) / 1000, .05); lastTime = now;
     if (paused) return;
     stars.forEach(s => { s.y += s.sp * dt * (0.4 + sensitivity * 0.15); s.x += Math.sin(now * 0.0003 + s.x) * 2 * dt; if (s.y > H) { s.y = -4; s.x = Math.random() * W; } if (s.x < 0) s.x = W; if (s.x > W) s.x = 0; });
-    if (!started) return;
+    
     if (!gameOver) {
         let mx = 0, my = 0;
         if (keys.has('ArrowUp') || keys.has('KeyW')) my -= 1;
@@ -312,10 +312,12 @@ export function initStarWarGame(refs: GameRefs) {
         while (diff < -Math.PI) diff += Math.PI * 2;
         const turnSpeed = 6 + sensitivity * 7;
         player.angle += diff * Math.min(1, turnSpeed * dt);
+        
         const weapon = getWeaponActive(now);
         const ghost = isGhostActive(now);
         if (weaponPower && now >= weaponExpire) weaponPower = null;
         if (ghostExpire && now >= ghostExpire) ghostExpire = 0;
+        
         const wantShoot = isMouseDown || keys.has('Space');
         if (weapon === 'auto') {
             if (now - lastShot > 105) {
@@ -361,6 +363,7 @@ export function initStarWarGame(refs: GameRefs) {
             }
             lastShot = now;
         }
+
         if (now - lastSpawn > Math.max(1300, 2200 - score * 6)) {
             enemies.push(makeCommonEnemy(W, H, now, score));
             lastSpawn = now;
@@ -485,7 +488,7 @@ export function initStarWarGame(refs: GameRefs) {
                 }
             }
             if (hit(e, player)) {
-                if (isGhostActive(now) || isRespawning(now)) {
+                if (!started || isGhostActive(now) || isRespawning(now)) {
                     if (e.type !== 'boss') { enemies.splice(i, 1); explosions.push({ x: e.x, y: e.y, r: 10, life: 0.28 }); }
                     continue;
                 }
@@ -507,7 +510,7 @@ export function initStarWarGame(refs: GameRefs) {
             }
             if (hit({ x: player.x, y: player.y, w: 26, h: 26 }, b)) {
                 enemyBullets.splice(i, 1);
-                if (isGhostActive(now) || isRespawning(now)) continue;
+                if (!started || isGhostActive(now) || isRespawning(now)) continue;
                 health -= 20;
                 if (health <= 0) {
                     health = 0;
@@ -532,13 +535,6 @@ export function initStarWarGame(refs: GameRefs) {
     else if (health > 30) healthBar.style.background = 'linear-gradient(90deg, #ffd600, #ff9100)';
     else healthBar.style.background = 'linear-gradient(90deg, #ff3d00, #d50000)';
     if (isRespawning(now) && Math.floor(now / 100) % 2 === 0) healthBar.style.opacity = '0.35'; else healthBar.style.opacity = '1';
-    const weapon = getWeaponActive(now), ghost = isGhostActive(now);
-    let txt = '';
-    if (weapon && ghost) txt = weapon.toUpperCase() + '+GHOST ' + ((Math.min(weaponExpire, ghostExpire) - now) / 1000 | 0) + 's';
-    else if (weapon) txt = weapon.toUpperCase() + ' ' + ((weaponExpire - now) / 1000).toFixed(1) + 's';
-    else if (ghost) txt = 'GHOST ' + ((ghostExpire - now) / 1000).toFixed(1) + 's';
-    hudPower.textContent = txt;
-    hudPower.style.color = weapon ? (POWER_TYPES.find(t => t.type === weapon) || MEDKIT_TYPE).color : ghost ? '#b388ff' : '#fff';
   }
 
   function ship(x: number, y: number, size: number, color: string, enemy = false, angle = 0) {
@@ -703,10 +699,10 @@ export function initStarWarGame(refs: GameRefs) {
         } else if (weapon) {
             const r = Math.max(0, (weaponExpire - nowDraw) / 1000); txt = weapon.toUpperCase() + ' ' + r.toFixed(1) + 's'; col = POWER_TYPES.find(t => t.type === weapon)?.color || '#fff'; pct = r / 15;
         } else { const r = Math.max(0, (ghostExpire - nowDraw) / 1000); txt = 'GHOST ' + r.toFixed(1) + 's'; col = '#b388ff'; pct = r / 15; }
-        ctx.save(); ctx.fillStyle = '#0009'; rRect(ctx, W2 / 2 - 140, 52, 280, 22, 8); ctx.fill();
-        ctx.fillStyle = col; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'left'; ctx.fillText(txt, W2 / 2 - 128, 67);
-        ctx.fillStyle = '#ffffff33'; ctx.fillRect(W2 / 2 - 20, 62, 120, 4);
-        ctx.fillStyle = col; ctx.fillRect(W2 / 2 - 20, 62, 120 * pct, 4);
+        ctx.save(); ctx.fillStyle = '#0009'; rRect(ctx, W2 / 2 - 140, 87, 280, 22, 8); ctx.fill();
+        ctx.fillStyle = col; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'left'; ctx.fillText(txt, W2 / 2 - 128, 102);
+        ctx.fillStyle = '#ffffff33'; ctx.fillRect(W2 / 2 - 20, 97, 120, 4);
+        ctx.fillStyle = col; ctx.fillRect(W2 / 2 - 20, 97, 120 * pct, 4);
         ctx.restore();
     }
     if (gameOver) {
