@@ -34,8 +34,8 @@ export default function PathTravelerShip() {
   // passes through 180 (DOWN) instead of 0 (UP). This prevents the ship from doing a backflip!
   const baseAngle = useTransform(
     scrollYProgress,
-    [0, 0.02, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 1],
-    [180, 245, 245, 120, 120, 235, 235, 125, 125, 210, 220]
+    [0, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 1],
+    [245, 245, 120, 120, 235, 235, 125, 125, 210, 220]
   );
 
   // Flip the ship 180 degrees when scrolling backwards
@@ -60,7 +60,7 @@ export default function PathTravelerShip() {
   const tiltY = useTransform(
     scrollYProgress,
     [0, 0.15, 0.2, 0.25, 0.35, 0.4, 0.45, 0.55, 0.6, 0.65, 0.75, 0.8, 0.85, 1],
-    [0, 5, 25, 5, -5, -25, -5, -5, 25, 5, 5, -25, 0, 0]
+    [0, 5, 10, 5, -5, -10, -5, 5, 10, 5, -5, -10, 0, 0]
   );
 
   // rotateX = pitch. When flying straight, it pitches down slightly (-10). 
@@ -68,7 +68,7 @@ export default function PathTravelerShip() {
   const tiltX = useTransform(
     scrollYProgress,
     [0, 0.15, 0.2, 0.25, 0.35, 0.4, 0.45, 0.55, 0.6, 0.65, 0.75, 0.8, 0.85, 1],
-    [-10, -10, 35, -10, -10, 35, -10, -10, 35, -10, -10, 25, -10, -10]
+    [-10, -10, 5, -10, -10, 5, -10, -10, 5, -10, -10, 5, -10, -10]
   );
 
   return (
@@ -94,7 +94,7 @@ export default function PathTravelerShip() {
             opacity: flameOpacity,
             transformOrigin: "top center",
           }}
-          className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-8 h-16 bg-gradient-to-t from-transparent via-red-600 to-yellow-400 blur-md rounded-full mix-blend-screen"
+          className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-4 h-10 bg-gradient-to-t from-transparent via-red-600 to-yellow-400 blur-md rounded-full mix-blend-screen"
         />
 
         {/* Engine Fire (Core Brightness) */}
@@ -104,7 +104,7 @@ export default function PathTravelerShip() {
             opacity: flameOpacity,
             transformOrigin: "top center",
           }}
-          className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3 h-10 bg-white blur-[8px] rounded-full mix-blend-screen"
+          className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-3 h-10 bg-white blur-[8px] rounded-full mix-blend-screen"
         />
 
         {/* Ship Image */}
