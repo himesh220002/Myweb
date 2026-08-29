@@ -90,7 +90,7 @@ export default function StarWarGame() {
   return (
     <div className={styles.container} ref={containerRef}>
       <div className="game-wrap">
-        <button id="mobileToggle" ref={mobileToggleRef} className="mobile-toggle" title="Toggle Mobile Controls">
+        <button id="mobileToggle" ref={mobileToggleRef} className="mobile-toggle block md:hidden" title="Toggle Mobile Controls">
           🎮
         </button>
         <button className="mobile-pause" title="Pause Game" onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }))}>

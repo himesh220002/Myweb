@@ -5,6 +5,7 @@ import { projects } from "@/lib/data/projects";
 import { useState } from "react";
 import { Layers, ArrowRight, ChevronRight, Clock, Box } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const categories = ["All", ...Array.from(new Set(projects.map(p => p.category.split(" / ")[0])))];
 
@@ -99,10 +100,13 @@ export default function ProjectsPage() {
               className="p-8 rounded-[2.5rem] bg-white border border-slate-200 shadow-xl relative overflow-hidden group grid grid-cols-1 lg:grid-cols-12 gap-8 items-center cursor-crosshair transition-all hover:shadow-2xl hover:border-primary/20"
             >
               <div className="lg:col-span-7 relative aspect-[16/10] w-full rounded-3xl overflow-hidden bg-slate-100 border border-slate-200">
-                <img
-                  src={featuredProject.image}
+                <Image
+                  src={featuredProject.image.trim()}
                   alt={featuredProject.title}
-                  className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-[2s]"
+                  fill
+                  className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-[2s]"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80" />
                 <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-full tracking-wider shadow-sm">
@@ -164,10 +168,12 @@ export default function ProjectsPage() {
               >
                 <div className="space-y-4 relative z-10">
                   <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
-                    <img
-                      src={project.image}
+                    <Image
+                      src={project.image.trim()}
                       alt={project.title}
-                      className="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-700"
+                      fill
+                      className="object-cover opacity-90 group-hover:scale-110 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80" />
                   </div>

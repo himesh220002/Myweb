@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 interface ProjectCarouselProps {
     images: string[];
@@ -38,10 +39,13 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
     if (images.length === 1) {
         return (
             <div className="relative aspect-2/1 w-full max-w-5xl mx-auto rounded-[3rem] overflow-hidden bg-slate-50 border border-slate-200 shadow-2xl group">
-                <img
-                    src={images[0]}
+                <Image
+                    src={images[0].trim()}
                     alt={title}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-[2s]"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-[2s]"
+                    sizes="(max-width: 1024px) 100vw, 1024px"
+                    priority
                 />
             </div>
         );
@@ -53,18 +57,29 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <AnimatePresence mode="wait">
-                <motion.img
-                    key={currentIndex}
-                    src={images[currentIndex]}
-                    alt={`${title} screenshot ${currentIndex + 1}`}
-                    className="w-full h-full object-cover absolute top-0 left-0"
+            {images.map((img, i) => (
+                <motion.div
+                    key={i}
+                    className="absolute inset-0"
                     initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
+                    animate={{
+                        opacity: i === currentIndex ? 1 : 0,
+                        scale: i === currentIndex ? 1 : 1.05,
+                        zIndex: i === currentIndex ? 10 : 0
+                    }}
                     transition={{ duration: 0.5 }}
-                />
-            </AnimatePresence>
+                >
+                    <Image
+                        src={img.trim()}
+                        alt={`${title} screenshot ${i + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 1024px"
+                        priority={i === 0}
+                        loading={i === 0 ? "eager" : "lazy"}
+                    />
+                </motion.div>
+            ))}
 
             {/* Navigation controls */}
             <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
