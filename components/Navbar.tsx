@@ -46,8 +46,8 @@ export default function Navbar() {
                 className={cn(
                     "mx-auto w-full transition-all duration-500 flex justify-between items-center",
                     scrolled
-                        ? "max-w-7xl px-4 py-2 rounded-t-sm rounded-full bg-white/90 backdrop-blur-xl border border-slate-200 shadow-sm"
-                        : "max-w-7xl px-6 py-3 bg-white/90 rounded-full backdrop-blur-lg border border-slate-200 shadow-sm"
+                        ? "max-w-[80vw] px-[.4rem] py-[.2rem] rounded-t-sm rounded-full bg-white/90 backdrop-blur-xl border border-slate-200 shadow-sm"
+                        : "max-w-[70vw] px-[.6rem] py-[.3rem] bg-white/90 rounded-full backdrop-blur-lg border border-slate-200 shadow-sm"
                 )}
             >
                 {/* Logo */}
@@ -55,7 +55,7 @@ export default function Navbar() {
                     <div className="relative w-11 h-11 rounded-full flex items-center justify-center shadow-sm border border-slate-200 bg-white group-hover:border-primary/50 transition-colors">
                         <Logo className="w-8 h-8 rounded-full" />
                     </div>
-                    <span className="text-xl font-display font-extrabold text-slate-900 tracking-tight">CypherTech</span>
+                    <span className="text-[1.2rem] font-display font-extrabold text-slate-900 tracking-tight">CypherTech</span>
                 </Link>
 
                 {/* Desktop Nav */}

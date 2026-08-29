@@ -82,17 +82,17 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
             ))}
 
             {/* Navigation controls */}
-            <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute inset-0 flex items-center justify-between p-4">
                 <button
                     onClick={prevImage}
-                    className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-800 flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg"
+                    className="sm:w-12 sm:h-12 w-8 h-8 z-10 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-800 flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg"
                     aria-label="Previous image"
                 >
                     <ChevronLeft className="w-6 h-6" />
                 </button>
                 <button
                     onClick={nextImage}
-                    className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-800 flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg"
+                    className="sm:w-12 sm:h-12 w-8 h-8 z-10 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-800 flex items-center justify-center hover:bg-white hover:scale-110 transition-all shadow-lg"
                     aria-label="Next image"
                 >
                     <ChevronRight className="w-6 h-6" />
@@ -100,7 +100,7 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
             </div>
 
             {/* Indicators */}
-            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-3 z-10">
+            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-3 z-10 bg-gray-800 w-fit px-3 py-1 rounded-2xl mx-auto">
                 {images.map((_, index) => (
                     <button
                         key={index}

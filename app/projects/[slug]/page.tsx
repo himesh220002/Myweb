@@ -17,13 +17,13 @@ export default function ProjectDetail() {
     return (
         <div className="bg-white text-slate-900 min-h-screen pt-20 font-sans selection:bg-primary/30 relative">
 
-            <div className="max-w-7xl mx-auto px-6 py-16 md:py-12 relative z-10 space-y-2">
+            <div className="max-w-7xl mx-auto px-6 py-16 md:py-32 relative z-10 space-y-2">
                 <Link
                     href="/projects"
                     className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 mb-4 transition-all group"
                 >
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Back to Portfolio
+                    Back
                 </Link>
 
                 <motion.div
@@ -58,24 +58,24 @@ export default function ProjectDetail() {
                     </div>
 
                     {/* Metadata Bar */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 px-5 py-3 border-y border-slate-200">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 px-5 py-3 border-y border-slate-200">
                         <div className="flex flex-col items-center space-y-2">
                             <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">Category</span>
-                            <div className="flex items-center gap-2 font-bold text-sm text-slate-900">
+                            <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-slate-900">
                                 <Layers className="w-4 h-4 text-primary" />
                                 {project.category.split(" / ")[0]}
                             </div>
                         </div>
                         <div className="flex flex-col items-center space-y-2">
                             <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">Domain</span>
-                            <div className="flex items-center gap-2 font-bold text-sm text-slate-900">
+                            <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-slate-900">
                                 <Server className="w-4 h-4 text-secondary" />
                                 {project.category.includes("/") ? project.category.split(" / ")[1] : "Software"}
                             </div>
                         </div>
                         <div className="flex flex-col items-center space-y-2">
                             <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400">Last Updated</span>
-                            <div className="flex items-center gap-2 font-bold text-sm text-slate-900">
+                            <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-slate-900">
                                 <Calendar className="w-4 h-4 text-primary" />
                                 {project.lastUpdated}
                             </div>
@@ -87,13 +87,13 @@ export default function ProjectDetail() {
                                     href={project.github}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-2 font-bold text-sm text-primary hover:text-slate-900 transition-colors"
+                                    className="flex items-center gap-2 font-bold text-xs sm:text-sm text-primary hover:text-slate-900 transition-colors"
                                 >
                                     <Code2 className="w-4 h-4" />
                                     View on GitHub
                                 </a>
                             ) : (
-                                <div className="flex items-center gap-2 font-bold text-sm text-slate-400">
+                                <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-slate-400">
                                     <Code2 className="w-4 h-4" />
                                     Private Repo
                                 </div>

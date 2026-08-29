@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Code2, Server, Globe, Cloud, ArrowRight, LayoutTemplate, Database, Search, Gauge, ShieldCheck, PenTool, Infinity as InfinityIcon } from "lucide-react";
 import { SiReact, SiNextdotjs, SiRedux, SiFramer, SiNodedotjs, SiGraphql, SiPostgresql, SiSocketdotio, SiDocker, SiGithubactions, SiVercel, SiFigma, SiTailwindcss } from "react-icons/si";
 import { FaAws, FaUsers } from "react-icons/fa";
@@ -74,9 +75,131 @@ const specializedServices = [
     { icon: PenTool, title: "Tech Consultation", desc: "CTO-as-a-service. Strategic roadmapping, team scaling, and architecture blueprinting.", color: "text-orange-400", glow: "group-hover:shadow-[0_0_30px_rgba(251,146,60,0.15)]", border: "group-hover:border-orange-500/40" }
 ];
 
-export default function ServicesPage() {
+function CoreServiceCard({ service, idx }: { service: any, idx: number }) {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["0 1", "1 0"] // Entire time it's on screen
+    });
+
+    // Parallax effect: Cards move at different speeds over the background
+    const yRange = idx % 2 === 0 ? [80, -80] : [140, -140];
+    const y = useTransform(scrollYProgress, [0, 1], yRange);
+
+    // Entrance animation based on a tighter offset (first 35% of the scroll progress)
+    const entranceProgress = useTransform(scrollYProgress, [0, 0.35], [0, 1]);
+    const rotateY = useTransform(entranceProgress, [0, 1], [-20, 0]);
+    const scale = useTransform(entranceProgress, [0, 1], [0.9, 1]);
+    const opacity = useTransform(entranceProgress, [0, 1], [0.3, 1]);
+
+    const Icon = service.icon;
+
     return (
-        <div className="bg-[#030305] text-slate-200 min-h-screen font-sans selection:bg-purple-500/30 relative overflow-hidden">
+        <div style={{ perspective: "1200px" }} className="w-full h-full">
+            <motion.div
+                ref={ref}
+                style={{ y, rotateY, scale, opacity }}
+                className={`bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 group transition-all duration-700 relative overflow-hidden flex flex-col justify-between h-full ${service.border} ${service.shadow}`}
+            >
+                {/* Inner Glow */}
+                <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl ${service.color} rounded-full blur-[100px] opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none`} />
+
+                <div className="relative z-10">
+                    <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-sm mb-10 group-hover:scale-110 transition-all duration-500 relative">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-20 rounded-2xl transition-opacity duration-500`} />
+                        <Icon className="w-10 h-10 text-slate-300 group-hover:text-white transition-colors duration-500" />
+                    </div>
+
+                    <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 tracking-tight">{service.title}</h3>
+                    <p className="text-slate-400 font-medium leading-relaxed mb-12 text-lg">{service.description}</p>
+                </div>
+
+                <div className="relative z-10 pt-8 border-t border-white/10 mt-auto">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6">Key Technologies</h4>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {service.features.map((feature: any, i: number) => {
+                            const TechIcon = feature.TechIcon;
+                            return (
+                                <li key={i} className="flex items-center gap-3 text-slate-300 font-bold text-sm bg-white/5 rounded-lg px-4 py-3 border border-white/5 group-hover:border-white/10 transition-colors">
+                                    <TechIcon className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors shrink-0" />
+                                    {feature.text}
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
+function SpecializedServiceCard({ service, idx }: { service: any, idx: number }) {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["0 1", "0.7 1"]
+    });
+
+    const isEven = idx % 2 === 0;
+    const isThird = idx % 3 === 0;
+    const xStart = isEven ? -40 : (isThird ? 40 : 0);
+    const yStart = (!isEven && !isThird) ? 40 : 20;
+    
+    const x = useTransform(scrollYProgress, [0, 1], [xStart, 0]);
+    const y = useTransform(scrollYProgress, [0, 1], [yStart, 0]);
+    const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+    const Icon = service.icon;
+
+    return (
+        <motion.div
+            ref={ref}
+            style={{ x, y, opacity }}
+            className={`p-8 rounded-[2rem] bg-[#0a0a0f]/80 backdrop-blur-md border border-white/10 transition-all duration-500 group h-full flex flex-col ${service.border} ${service.glow}`}
+        >
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner mb-6 group-hover:scale-110 transition-transform duration-500">
+                <Icon className={`w-7 h-7 ${service.color}`} />
+            </div>
+            <h4 className="text-2xl font-bold text-white mb-4">{service.title}</h4>
+            <p className="text-slate-400 font-medium leading-relaxed mt-auto">
+                {service.desc}
+            </p>
+        </motion.div>
+    );
+}
+
+export default function ServicesPage() {
+    const { scrollYProgress } = useScroll();
+
+    // Smooth transition from dark to deep purple to dark blue back to dark
+    const backgroundColor = useTransform(
+        scrollYProgress,
+        [0, 0.3, 0.7, 1],
+        ["#030305", "#110826", "#051024", "#050508"]
+    );
+
+    const heroRef = useRef(null);
+    const { scrollYProgress: heroScroll } = useScroll({
+        target: heroRef,
+        offset: ["start start", "end start"]
+    });
+
+    const heroBadgeY = useTransform(heroScroll, [0, 1], [0, 250]);
+    const heroTitleY = useTransform(heroScroll, [0, 1], [0, 150]);
+    const heroDescY = useTransform(heroScroll, [0, 1], [0, 50]);
+    const heroOpacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
+
+    const commandRef = useRef(null);
+    const { scrollYProgress: commandScroll } = useScroll({
+        target: commandRef,
+        offset: ["0 1", "0.8 1"]
+    });
+
+    return (
+        <motion.div 
+            style={{ backgroundColor }}
+            className="text-slate-200 min-h-screen font-sans selection:bg-purple-500/30 relative overflow-hidden transition-colors duration-0"
+        >
 
             {/* Cosmic Background Effects */}
             <div className="absolute inset-0 z-0 pointer-events-none">
@@ -93,74 +216,46 @@ export default function ServicesPage() {
 
                 {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="text-center max-w-5xl mx-auto pt-10"
+                    ref={heroRef}
+                    style={{ opacity: heroOpacity }}
+                    className="text-center max-w-5xl mx-auto pt-10 relative z-10"
                 >
-                    <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+                    <motion.div 
+                        style={{ y: heroBadgeY }}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 shadow-[0_0_30px_rgba(168,85,247,0.2)]"
+                    >
                         <InfinityIcon className="w-5 h-5 text-purple-400 animate-pulse" />
                         <span className="text-sm font-bold tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">Multi Level Tech</span>
-                    </div>
-                    <h1 className="text-6xl md:text-8xl font-display font-black mb-8 leading-[1.05] tracking-tight text-white relative">
+                    </motion.div>
+                    
+                    <motion.h1 
+                        style={{ y: heroTitleY }}
+                        className="text-4xl md:text-7xl font-display font-black mb-8 leading-[1.05] tracking-tight text-white relative"
+                    >
                         <span className="absolute -inset-4 bg-gradient-to-r from-purple-600 via-red-600 to-blue-600 blur-3xl opacity-20" />
                         <span className="relative">Technology to <br className="hidden md:block" />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-red-500 to-orange-500">UpGrade Any Business</span></span>
-                    </h1>
-                    <p className="text-slate-400 text-xl md:text-2xl leading-relaxed font-medium max-w-3xl mx-auto">
+                    </motion.h1>
+                    
+                    <motion.p 
+                        style={{ y: heroDescY }}
+                        className="text-slate-400 text-xl md:text-2xl leading-relaxed font-medium max-w-3xl mx-auto"
+                    >
                         We don't just write code. We engineer cosmic-scale solutions designed to solve impossible problems and power the future of humanity.
-                    </p>
+                    </motion.p>
                 </motion.div>
 
                 {/* Core Services (Infinity Stones Style) */}
                 <div className="space-y-12">
                     <div className="text-center mb-16 relative">
-                        <h2 className="text-4xl md:text-5xl font-display font-bold text-white">Core Disciplines</h2>
+                        <h2 className="text-3xl md:text-4xl font-display font-bold text-white">Core Disciplines</h2>
                         <p className="text-slate-400 font-medium mt-4 text-lg">The foundational pillars of our engineering universe.</p>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-                        {mainServices.map((service, idx) => {
-                            const Icon = service.icon;
-                            return (
-                                <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: idx * 0.1 }}
-                                    className={`bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-14 group transition-all duration-700 relative overflow-hidden flex flex-col justify-between ${service.border} ${service.shadow}`}
-                                >
-                                    {/* Inner Glow */}
-                                    <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl ${service.color} rounded-full blur-[100px] opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none`} />
-
-                                    <div className="relative z-10">
-                                        <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-sm mb-10 group-hover:scale-110 transition-all duration-500 relative">
-                                            <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-20 rounded-2xl transition-opacity duration-500`} />
-                                            <Icon className="w-10 h-10 text-slate-300 group-hover:text-white transition-colors duration-500" />
-                                        </div>
-
-                                        <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 tracking-tight">{service.title}</h3>
-                                        <p className="text-slate-400 font-medium leading-relaxed mb-12 text-lg">{service.description}</p>
-                                    </div>
-
-                                    <div className="relative z-10 pt-8 border-t border-white/10">
-                                        <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6">Key Technologies</h4>
-                                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {service.features.map((feature, i) => {
-                                                const TechIcon = feature.TechIcon;
-                                                return (
-                                                    <li key={i} className="flex items-center gap-3 text-slate-300 font-bold text-sm bg-white/5 rounded-lg px-4 py-3 border border-white/5 group-hover:border-white/10 transition-colors">
-                                                        <TechIcon className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors shrink-0" />
-                                                        {feature.text}
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
+                        {mainServices.map((service, idx) => (
+                            <CoreServiceCard key={idx} service={service} idx={idx} />
+                        ))}
                     </div>
                 </div>
 
@@ -173,32 +268,18 @@ export default function ServicesPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {specializedServices.map((service, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.05 }}
-                                className={`p-8 rounded-[2rem] bg-[#0a0a0f]/80 backdrop-blur-md border border-white/10 transition-all duration-500 group ${service.border} ${service.glow}`}
-                            >
-                                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner mb-6 group-hover:scale-110 transition-transform duration-500">
-                                    <service.icon className={`w-7 h-7 ${service.color}`} />
-                                </div>
-                                <h4 className="text-2xl font-bold text-white mb-4">{service.title}</h4>
-                                <p className="text-slate-400 font-medium leading-relaxed">
-                                    {service.desc}
-                                </p>
-                            </motion.div>
+                            <SpecializedServiceCard key={idx} service={service} idx={idx} />
                         ))}
                     </div>
                 </div>
 
                 {/* Command Center Process Section */}
                 <motion.div
+                    ref={commandRef}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="bg-[#050508] border border-white/10 rounded-[3rem] p-8 md:p-24 text-white relative overflow-hidden shadow-2xl"
+                    className="bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-8 md:p-24 text-white relative overflow-hidden shadow-2xl"
                 >
                     {/* High-tech grid background inside the box */}
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:16px_16px] opacity-50 pointer-events-none" />
@@ -229,22 +310,33 @@ export default function ServicesPage() {
                                 { step: "02", title: "Cosmic Prototyping", desc: "Creating high-fidelity wireframes and interactive mockups for rapid validation." },
                                 { step: "03", title: "Quantum Development", desc: "Writing clean, scalable code in agile sprints with weekly stakeholder demos." },
                                 { step: "04", title: "Launch Sequence", desc: "Rigorous QA testing before seamless CI/CD production deployment and handoff." }
-                            ].map((phase, i) => (
-                                <div key={i} className="flex gap-6 group bg-[#0a0a0f] border border-white/5 p-6 md:p-8 rounded-3xl hover:border-white/20 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10">
-                                    <div className="w-16 h-16 shrink-0 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center font-display font-black text-2xl text-slate-500 group-hover:bg-gradient-to-br group-hover:from-purple-500 group-hover:to-blue-500 group-hover:text-white group-hover:border-transparent transition-all shadow-inner">
-                                        {phase.step}
-                                    </div>
-                                    <div>
-                                        <h4 className="text-2xl font-bold text-white mb-2">{phase.title}</h4>
-                                        <p className="text-slate-400 font-medium text-base leading-relaxed">{phase.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
+                            ].map((phase, i) => {
+                                const stepStart = i * 0.15;
+                                const stepEnd = stepStart + 0.3;
+                                const stepX = useTransform(commandScroll, [stepStart, stepEnd], [100, 0]);
+                                const stepOpacity = useTransform(commandScroll, [stepStart, stepEnd], [0, 1]);
+
+                                return (
+                                    <motion.div 
+                                        key={i} 
+                                        style={{ x: stepX, opacity: stepOpacity }}
+                                        className="flex gap-6 group bg-white/5 border border-white/5 p-6 md:p-8 rounded-3xl hover:border-white/20 transition-all hover:bg-white/10 shadow-2xl shadow-purple-500/5"
+                                    >
+                                        <div className="w-16 h-16 shrink-0 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center font-display font-black text-2xl text-slate-500 group-hover:bg-gradient-to-br group-hover:from-purple-500 group-hover:to-blue-500 group-hover:text-white group-hover:border-transparent transition-all shadow-inner">
+                                            {phase.step}
+                                        </div>
+                                        <div>
+                                            <h4 className="text-2xl font-bold text-white mb-2">{phase.title}</h4>
+                                            <p className="text-slate-400 font-medium text-base leading-relaxed">{phase.desc}</p>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
                         </div>
                     </div>
                 </motion.div>
 
             </div>
-        </div>
+        </motion.div>
     );
 }

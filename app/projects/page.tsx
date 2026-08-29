@@ -20,7 +20,7 @@ export default function ProjectsPage() {
     : projects.filter(p => p.category.includes(activeTab));
 
   return (
-    <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30 relative">
+    <div className="bg-white text-slate-900 min-h-screen pt-20 font-sans selection:bg-primary/30 relative">
       <div className="max-w-7xl mx-auto px-6 py-32 space-y-16 relative z-10">
 
         {/* Header Section */}

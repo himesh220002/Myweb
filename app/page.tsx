@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import RoadmapSection from "@/components/RoadmapSection";
 import StarWarGame from "@/components/StarWar/StarWarGame";
+import PathTravelerShip from "@/components/PathTravelerShip";
 
 
 const Reveal = ({ children, className, delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) => {
@@ -52,6 +53,7 @@ export default function Home() {
 
   return (
     <div className="bg-white text-slate-900 min-h-screen font-sans selection:bg-primary/30">
+      <PathTravelerShip />
 
       {/* --- HERO SECTION --- */}
       <section className="relative min-h-[100vh] flex flex-col justify-center items-center px-6 pt-32 pb-24 overflow-hidden bg-slate-50">
@@ -529,11 +531,11 @@ export default function Home() {
       </section>
 
       {/* --- MINI GAME SECTION --- */}
-      <section className="px-6 py-32 bg-slate-900 border-t border-slate-800">
+      <section className="hidden lg:block px-6 py-32 bg-slate-900 border-t border-slate-800">
         <div className="max-w-6xl mx-auto space-y-12">
           <Reveal className="text-center">
             <h2 className="text-4xl md:text-5xl font-display font-extrabold text-white">
-              Play<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Z</span>one
+              Play<span className="text-transparent bg-clip-text bg-gradient-to-br from-red-400 to-red-800">Z</span>one
             </h2>
             <p className="text-slate-400 mt-4 text-lg max-w-2xl mx-auto">
               Try out StarWarZ, a fully functioning HTML5 canvas game built directly into this page.
