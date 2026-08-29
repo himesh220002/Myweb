@@ -30,9 +30,11 @@ export default function StarWarGame() {
   const pauseScreenRef = useRef<HTMLDivElement>(null);
   const resumeBtnRef = useRef<HTMLButtonElement>(null);
   const restartBtnPauseRef = useRef<HTMLButtonElement>(null);
-  const returnBtnRef = useRef<HTMLButtonElement>(null);
   const pauseScoreElRef = useRef<HTMLSpanElement>(null);
   const pauseHighElRef = useRef<HTMLSpanElement>(null);
+  const touchControlsRef = useRef<HTMLDivElement>(null);
+  const mobileToggleRef = useRef<HTMLButtonElement>(null);
+  const returnBtnRef = useRef<HTMLButtonElement>(null);
   const quitBtnGameOverRef = useRef<HTMLButtonElement>(null);
   const inGameHintRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +48,7 @@ export default function StarWarGame() {
       !highScoreElRef.current || !finalKillsElRef.current || !finalTimeElRef.current ||
       !restartBtnRef.current || !startScreenRef.current || !startBtnRef.current ||
       !pauseScreenRef.current || !resumeBtnRef.current || !restartBtnPauseRef.current ||
-      !pauseScoreElRef.current || !pauseHighElRef.current || !returnBtnRef.current ||
+      !pauseScoreElRef.current || !pauseHighElRef.current || !touchControlsRef.current || !mobileToggleRef.current || !returnBtnRef.current ||
       !quitBtnGameOverRef.current
     ) {
       return;
@@ -76,6 +78,8 @@ export default function StarWarGame() {
       returnBtn: returnBtnRef.current,
       pauseScoreEl: pauseScoreElRef.current,
       pauseHighEl: pauseHighElRef.current,
+      touchControls: touchControlsRef.current,
+      mobileToggle: mobileToggleRef.current,
       quitBtnGameOver: quitBtnGameOverRef.current,
     };
 
@@ -86,7 +90,23 @@ export default function StarWarGame() {
   return (
     <div className={styles.container} ref={containerRef}>
       <div className="game-wrap">
+        <button id="mobileToggle" ref={mobileToggleRef} className="mobile-toggle" title="Toggle Mobile Controls">
+          🎮
+        </button>
+        <button className="mobile-pause" title="Pause Game" onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }))}>
+          ⏸
+        </button>
         <canvas id="game" ref={canvasRef} aria-label="Star Defender game"></canvas>
+        <div id="touchControls" ref={touchControlsRef}>
+          {/* Movement Joystick */}
+          <div className="joystick-base move-joystick" style={{ left: '20px', bottom: '40px' }}>
+            <div className="joystick-knob"></div>
+          </div>
+          {/* Aiming Joystick */}
+          <div className="joystick-base aim-joystick" style={{ right: '20px', bottom: '40px' }}>
+            <div className="joystick-knob"></div>
+          </div>
+        </div>
         <div id="hud">
           <label htmlFor="sens">SHIP SPEED</label>
           <input id="sens" ref={sensElRef} type="range" min="0.2" max="2.8" step="0.05" defaultValue="1" />
@@ -161,7 +181,7 @@ export default function StarWarGame() {
             <button id="restartBtnPause" ref={restartBtnPauseRef} className="val-menu-btn">RESTART</button>
             <button id="returnBtn" ref={returnBtnRef} className="val-menu-btn">QUIT TO MENU</button>
           </div>
-          <div className="esc-hint">PRESS F TO FUll</div>
+          <div className="esc-hint">PRESS F TO FULLSCREEN</div>
         </div>
       </div>
     </div>

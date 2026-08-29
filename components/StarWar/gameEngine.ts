@@ -23,6 +23,8 @@ export interface GameRefs {
   container: HTMLElement;
   returnBtn: HTMLButtonElement;
   quitBtnGameOver: HTMLButtonElement;
+  touchControls: HTMLElement;
+  mobileToggle: HTMLElement;
 }
 
 export function initStarWarGame(refs: GameRefs) {
@@ -30,7 +32,7 @@ export function initStarWarGame(refs: GameRefs) {
     canvas, sensEl, sensVal, hudScore, hudLives, healthBar, healthText,
     autoToggleBtn, gameOverScreen, finalScoreEl, highScoreEl, finalKillsEl, finalTimeEl,
     restartBtn, startScreen, startBtn, pauseScreen, resumeBtn, restartBtnPause,
-    pauseScoreEl, pauseHighEl, container, returnBtn, quitBtnGameOver
+    pauseScoreEl, pauseHighEl, container, returnBtn, quitBtnGameOver, touchControls, mobileToggle
   } = refs;
 
   const ctx = canvas.getContext('2d')!;
@@ -61,9 +63,17 @@ export function initStarWarGame(refs: GameRefs) {
   function requestFullscreen() {
     if (!document.fullscreenElement) {
       if (container.requestFullscreen) {
-        container.requestFullscreen().catch((err) => console.error(err));
+        container.requestFullscreen().then(() => {
+          if (screen.orientation && (screen.orientation as any).lock) {
+            (screen.orientation as any).lock('landscape').catch(() => {});
+          }
+        }).catch((err) => console.error(err));
       } else if ((container as any).webkitRequestFullscreen) {
         (container as any).webkitRequestFullscreen();
+      }
+    } else {
+      if (screen.orientation && (screen.orientation as any).lock) {
+        (screen.orientation as any).lock('landscape').catch(() => {});
       }
     }
   }
@@ -96,6 +106,11 @@ export function initStarWarGame(refs: GameRefs) {
     if (v) {
         pauseScoreEl.textContent = String(score);
         pauseHighEl.textContent = String(highScore);
+        if (screen.orientation && (screen.orientation as any).unlock) {
+            (screen.orientation as any).unlock();
+        }
+    } else {
+        requestFullscreen();
     }
     pauseScreen.classList.toggle('show', paused);
     if (paused) lastTime = performance.now();
@@ -104,6 +119,7 @@ export function initStarWarGame(refs: GameRefs) {
   addListen(resumeBtn, 'click', () => setPaused(false));
   addListen(restartBtnPause, 'click', () => { 
     paused = false; pauseScreen.classList.remove('show'); reset(); 
+    requestFullscreen();
   });
   
   function quitToMenu() {
@@ -286,10 +302,120 @@ export function initStarWarGame(refs: GameRefs) {
     }
   });
   
-  addListen(window, 'keyup', (ev: Event) => {
-    const e = ev as KeyboardEvent;
-    keys.delete(e.code);
+  addListen(window, 'keyup', (e: any) => { if (!started) return; keys.delete(e.code); });
+  
+  // Mobile Touch Controls
+  let mobileMode = false;
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  
+  if (isTouchDevice) {
+    mobileMode = true;
+    touchControls.classList.add('show');
+    mobileToggle.style.display = 'none';
+    container.classList.add('mobile-mode');
+    
+    // Hide keyboard hints if they exist
+    const hints = document.querySelectorAll('kbd, .hint');
+    hints.forEach((h: any) => h.style.display = 'none');
+  }
+  
+  addListen(mobileToggle, 'click', () => {
+    mobileMode = !mobileMode;
+    touchControls.classList.toggle('show', mobileMode);
   });
+
+  const dpadBtns = touchControls.querySelectorAll('.dpad-btn');
+  dpadBtns.forEach((btn: any) => {
+    const code = btn.getAttribute('data-key');
+    addListen(btn, 'touchstart', (e: any) => { e.preventDefault(); keys.add(code); btn.style.background = 'rgba(255,255,255,0.4)'; });
+    addListen(btn, 'touchend', (e: any) => { e.preventDefault(); keys.delete(code); btn.style.background = ''; });
+    addListen(btn, 'touchcancel', (e: any) => { e.preventDefault(); keys.delete(code); btn.style.background = ''; });
+  });
+
+  const moveJoystickBase = touchControls.querySelector('.move-joystick') as HTMLElement;
+  const moveJoystickKnob = moveJoystickBase.querySelector('.joystick-knob') as HTMLElement;
+  const aimJoystickBase = touchControls.querySelector('.aim-joystick') as HTMLElement;
+  const aimJoystickKnob = aimJoystickBase.querySelector('.joystick-knob') as HTMLElement;
+  
+  let mjActive = false, mjId: number | null = null, mjcx = 0, mjcy = 0;
+  let ajActive = false, ajId: number | null = null, ajcx = 0, ajcy = 0;
+  let aimDx = 0, aimDy = 0;
+  
+  function updateMoveJoystick(touches: TouchList) {
+    if (mjId === null) return;
+    for (let i=0; i<touches.length; i++) {
+      if (touches[i].identifier === mjId) {
+        let dx = touches[i].clientX - mjcx;
+        let dy = touches[i].clientY - mjcy;
+        const dist = Math.hypot(dx, dy);
+        const maxDist = 40;
+        if (dist > maxDist) { dx = (dx / dist) * maxDist; dy = (dy / dist) * maxDist; }
+        moveJoystickKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        
+        if (dx < -15) { keys.add('KeyA'); keys.delete('KeyD'); }
+        else if (dx > 15) { keys.add('KeyD'); keys.delete('KeyA'); }
+        else { keys.delete('KeyA'); keys.delete('KeyD'); }
+        
+        if (dy < -15) { keys.add('KeyW'); keys.delete('KeyS'); }
+        else if (dy > 15) { keys.add('KeyS'); keys.delete('KeyW'); }
+        else { keys.delete('KeyW'); keys.delete('KeyS'); }
+        break;
+      }
+    }
+  }
+
+  function updateAimJoystick(touches: TouchList) {
+    if (ajId === null) return;
+    for (let i=0; i<touches.length; i++) {
+      if (touches[i].identifier === ajId) {
+        let dx = touches[i].clientX - ajcx;
+        let dy = touches[i].clientY - ajcy;
+        const dist = Math.hypot(dx, dy);
+        const maxDist = 40;
+        if (dist > maxDist) { dx = (dx / dist) * maxDist; dy = (dy / dist) * maxDist; }
+        aimJoystickKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        aimDx = dx; aimDy = dy;
+        break;
+      }
+    }
+  }
+
+  addListen(moveJoystickBase, 'touchstart', (e: any) => {
+    e.preventDefault(); if (mjActive) return;
+    mjId = e.changedTouches[0].identifier; mjActive = true;
+    const rect = moveJoystickBase.getBoundingClientRect();
+    mjcx = rect.left + rect.width / 2; mjcy = rect.top + rect.height / 2;
+    updateMoveJoystick(e.touches);
+  });
+  addListen(moveJoystickBase, 'touchmove', (e: any) => { e.preventDefault(); if (mjActive) updateMoveJoystick(e.touches); });
+
+  addListen(aimJoystickBase, 'touchstart', (e: any) => {
+    e.preventDefault(); if (ajActive) return;
+    ajId = e.changedTouches[0].identifier; ajActive = true; isMouseDown = true;
+    const rect = aimJoystickBase.getBoundingClientRect();
+    ajcx = rect.left + rect.width / 2; ajcy = rect.top + rect.height / 2;
+    updateAimJoystick(e.touches);
+  });
+  addListen(aimJoystickBase, 'touchmove', (e: any) => { e.preventDefault(); if (ajActive) updateAimJoystick(e.touches); });
+  
+  function handleTouchEnd(e: any) {
+    for (let i=0; i<e.changedTouches.length; i++) {
+      const id = e.changedTouches[i].identifier;
+      if (id === mjId) {
+        mjActive = false; mjId = null;
+        moveJoystickKnob.style.transform = `translate(-50%, -50%)`;
+        keys.delete('KeyW'); keys.delete('KeyA'); keys.delete('KeyS'); keys.delete('KeyD');
+      }
+      if (id === ajId) {
+        ajActive = false; ajId = null; isMouseDown = false;
+        aimJoystickKnob.style.transform = `translate(-50%, -50%)`;
+        aimDx = 0; aimDy = 0;
+      }
+    }
+  }
+  
+  addListen(window, 'touchend', handleTouchEnd);
+  addListen(window, 'touchcancel', handleTouchEnd);
   
   addListen(restartBtn, 'click', () => {
     reset();
@@ -311,6 +437,15 @@ export function initStarWarGame(refs: GameRefs) {
         if (keys.has('ArrowLeft') || keys.has('KeyA')) mx -= 1;
         if (keys.has('ArrowRight') || keys.has('KeyD')) mx += 1;
         if (mx || my) { const len = Math.hypot(mx, my) || 1; mx /= len; my /= len; const effSpeed = player.speed * (0.55 + sensitivity * 0.45) * (isGhostActive(now) ? 1.15 : 1); player.x += mx * effSpeed * dt; player.y += my * effSpeed * dt; }
+        if (player && mobileMode) {
+            if (ajActive) {
+                mouseX = player.x + aimDx * 10;
+                mouseY = player.y + aimDy * 10;
+            } else {
+                mouseX = player.x + Math.cos(player.angle - Math.PI / 2) * 100;
+                mouseY = player.y + Math.sin(player.angle - Math.PI / 2) * 100;
+            }
+        }
         const margin = 22;
         player.x = Math.max(margin, Math.min(W - margin, player.x));
         player.y = Math.max(margin, Math.min(H - margin, player.y));
@@ -733,10 +868,10 @@ export function initStarWarGame(refs: GameRefs) {
         } else if (weapon) {
             const r = Math.max(0, (weaponExpire - nowDraw) / 1000); txt = weapon.toUpperCase() + ' ' + r.toFixed(1) + 's'; col = POWER_TYPES.find(t => t.type === weapon)?.color || '#fff'; pct = r / 15;
         } else { const r = Math.max(0, (ghostExpire - nowDraw) / 1000); txt = 'GHOST ' + r.toFixed(1) + 's'; col = '#b388ff'; pct = r / 15; }
-        ctx.save(); ctx.fillStyle = '#0009'; rRect(ctx, W2 / 2 - 140, 87, 280, 22, 8); ctx.fill();
-        ctx.fillStyle = col; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'left'; ctx.fillText(txt, W2 / 2 - 128, 102);
-        ctx.fillStyle = '#ffffff33'; ctx.fillRect(W2 / 2 - 20, 97, 120, 4);
-        ctx.fillStyle = col; ctx.fillRect(W2 / 2 - 20, 97, 120 * pct, 4);
+        ctx.save(); ctx.fillStyle = '#0009'; rRect(ctx, W2 / 2 - 140, 60, 280, 22, 8); ctx.fill();
+        ctx.fillStyle = col; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'left'; ctx.fillText(txt, W2 / 2 - 128, 75);
+        ctx.fillStyle = '#ffffff33'; ctx.fillRect(W2 / 2 - 20, 70, 120, 4);
+        ctx.fillStyle = col; ctx.fillRect(W2 / 2 - 20, 70, 120 * pct, 4);
         ctx.restore();
     }
     if (gameOver) {
