@@ -3,8 +3,8 @@ import { Mail, MapPin, Phone, ArrowRight } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="bg-slate-900 text-slate-400 py-20 px-6 mx-2 sm:mx-10 mt-10 border-t border-slate-800 rounded-t-[1.5rem] sm:rounded-t-[3rem]">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+        <footer className="bg-slate-900 text-slate-400 py-20 px-6 mx-2 sm:mx-4 2xl:mx-10 mt-10 border-t border-slate-800 rounded-t-[1.5rem] sm:rounded-t-[3rem]">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12">
                 <div className="md:col-span-1 space-y-6">
                     <h2 className="text-3xl font-display font-bold text-white tracking-tight">CypherTech</h2>
                     <p className="text-sm font-medium leading-relaxed">
