@@ -508,39 +508,47 @@ export function initStarWarGame(refs: GameRefs) {
             lastShot = now;
         }
 
-        if (now - lastSpawn > Math.max(1300, 2200 - score * 6)) {
-            enemies.push(makeCommonEnemy(W, H, now, score));
-            lastSpawn = now;
-        }
-        if (now - lastMidSpawn > 8500 + Math.random() * 5000) {
-            const midCount = enemies.filter(e => e.type === 'mid').length;
-            if (midCount < 3) {
-                enemies.push(makeMidEnemy(W, H, now, score));
-                lastMidSpawn = now;
+        if (started) {
+            if (now - lastSpawn > Math.max(1300, 2200 - score * 6)) {
+                enemies.push(makeCommonEnemy(W, H, now, score));
+                lastSpawn = now;
             }
-        }
-        if (now - lastBossSpawn > 180000 + Math.random() * 120000) {
-            const hasBoss = enemies.some(e => e.type === 'boss');
-            if (!hasBoss) {
-                enemies.push(makeBoss(W, H, now));
-                lastBossSpawn = now;
-                popups.push({ x: W / 2, y: H / 2 - 80, value: 'BOSS INCOMING!', life: 1.8, color: '#ff006e' });
+            if (now - lastMidSpawn > 8500 + Math.random() * 5000) {
+                const midCount = enemies.filter(e => e.type === 'mid').length;
+                if (midCount < 3) {
+                    enemies.push(makeMidEnemy(W, H, now, score));
+                    lastMidSpawn = now;
+                }
             }
-        }
-        if (now - lastPickup > 2100 + Math.random() * 2700) {
-            const r = Math.random(); const type = r < 0.6 ? PICKUP_TYPES[0] : r < 0.9 ? PICKUP_TYPES[1] : PICKUP_TYPES[2];
-            pickups.push({ x: 30 + Math.random() * (W - 60), y: -30, w: type.w, h: type.h, value: type.value, color: type.color, glow: type.glow, size: type.size, speed: 72 + Math.random() * 38, angle: 0, spin: (Math.random() * 0.6 + 0.4) * (Math.random() < 0.5 ? 1 : -1) });
-            lastPickup = now;
-        }
-        if (now - lastPower > 12000 + Math.random() * 6000) {
-            let pool = POWER_TYPES;
-            const pt = pool[Math.floor(Math.random() * pool.length)];
-            powers.push({ x: 30 + Math.random() * (W - 60), y: -30, w: pt.w, h: pt.h, type: pt.type, color: pt.color, glow: pt.glow, size: pt.size, speed: 62 + Math.random() * 28, angle: 0, spin: 0.7 });
-            lastPower = now;
-        }
-        if (now - lastMedkit > 30000 + Math.random() * 15000) {
-            powers.push({ x: 30 + Math.random() * (W - 60), y: -30, w: MEDKIT_TYPE.w, h: MEDKIT_TYPE.h, type: 'medkit', color: MEDKIT_TYPE.color, glow: MEDKIT_TYPE.glow, size: MEDKIT_TYPE.size, speed: 58 + Math.random() * 22, angle: 0, spin: 0.5 });
-            lastMedkit = now;
+            if (now - lastBossSpawn > 180000 + Math.random() * 120000) {
+                const hasBoss = enemies.some(e => e.type === 'boss');
+                if (!hasBoss) {
+                    enemies.push(makeBoss(W, H, now));
+                    lastBossSpawn = now;
+                    popups.push({ x: W / 2, y: H / 2 - 80, value: 'BOSS INCOMING!', life: 1.8, color: '#ff006e' });
+                }
+            }
+            if (now - lastPickup > 2100 + Math.random() * 2700) {
+                const r = Math.random(); const type = r < 0.6 ? PICKUP_TYPES[0] : r < 0.9 ? PICKUP_TYPES[1] : PICKUP_TYPES[2];
+                pickups.push({ x: 30 + Math.random() * (W - 60), y: -30, w: type.w, h: type.h, value: type.value, color: type.color, glow: type.glow, size: type.size, speed: 72 + Math.random() * 38, angle: 0, spin: (Math.random() * 0.6 + 0.4) * (Math.random() < 0.5 ? 1 : -1) });
+                lastPickup = now;
+            }
+            if (now - lastPower > 12000 + Math.random() * 6000) {
+                let pool = POWER_TYPES;
+                const pt = pool[Math.floor(Math.random() * pool.length)];
+                powers.push({ x: 30 + Math.random() * (W - 60), y: -30, w: pt.w, h: pt.h, type: pt.type, color: pt.color, glow: pt.glow, size: pt.size, speed: 62 + Math.random() * 28, angle: 0, spin: 0.7 });
+                lastPower = now;
+            }
+            if (now - lastMedkit > 30000 + Math.random() * 15000) {
+                powers.push({ x: 30 + Math.random() * (W - 60), y: -30, w: MEDKIT_TYPE.w, h: MEDKIT_TYPE.h, type: 'medkit', color: MEDKIT_TYPE.color, glow: MEDKIT_TYPE.glow, size: MEDKIT_TYPE.size, speed: 58 + Math.random() * 22, angle: 0, spin: 0.5 });
+                lastMedkit = now;
+            }
+        } else {
+            enemies = enemies.filter(e => e.type === 'mid');
+            const midCount = enemies.length;
+            if (midCount < 1) {
+                enemies.push(makeMidEnemy(W, H, now, 0));
+            }
         }
         bullets.forEach(b => { b.x += (b.vx || 0) * dt; b.y += (b.vy || 0) * dt; });
         enemyBullets.forEach(b => { b.x += b.vx * dt; b.y += b.vy * dt; if (b.x0 === undefined) { b.x0 = b.x; b.y0 = b.y; } b.dist = Math.hypot(b.x - b.x0, b.y - b.y0); });
