@@ -36,6 +36,15 @@ export function initStarWarGame(refs: GameRefs) {
   const ctx = canvas.getContext('2d')!;
   const keys = new Set<string>();
   
+  const shipImg = new Image();
+  shipImg.src = '/assets/player-ship.png';
+  const enemyImg = new Image();
+  enemyImg.src = '/assets/enemy-ship.png';
+  const midImg = new Image();
+  midImg.src = '/assets/mid-ship.png';
+  const bossImg = new Image();
+  bossImg.src = '/assets/boss-ship.png';
+  
   // Track listeners for cleanup
   const listeners: { target: EventTarget, type: string, fn: EventListener }[] = [];
   function addListen(target: EventTarget, type: string, fn: EventListener) {
@@ -537,21 +546,42 @@ export function initStarWarGame(refs: GameRefs) {
     if (isRespawning(now) && Math.floor(now / 100) % 2 === 0) healthBar.style.opacity = '0.35'; else healthBar.style.opacity = '1';
   }
 
-  function ship(x: number, y: number, size: number, color: string, enemy = false, angle = 0) {
-    ctx.save(); ctx.translate(x, y); ctx.rotate(angle); ctx.fillStyle = color;
-    ctx.beginPath();
-    if (enemy) { ctx.moveTo(-size / 2, -size / 2); ctx.lineTo(size / 2, -size / 2); ctx.lineTo(size * .35, size / 2); ctx.lineTo(-size * .35, size / 2); }
-    else { ctx.moveTo(0, -size / 2); ctx.lineTo(size / 2, size / 2); ctx.lineTo(0, size * .22); ctx.lineTo(-size / 2, size / 2); }
-    ctx.closePath(); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(-3, enemy ? -4 : 3, 6, 7); ctx.restore();
+  function ship(x: number, y: number, size: number, color: string, enemy = false, angle = 0, isPlayer = false) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    
+    if (isPlayer && shipImg.complete && shipImg.naturalWidth > 0) {
+      const sw = 32, sh = 32; 
+      ctx.drawImage(shipImg, -sw/2, -sh/2, sw, sh);
+    } else if (enemy && enemyImg.complete && enemyImg.naturalWidth > 0) {
+      const ew = size * 0.9, eh = size * 0.9;
+      ctx.drawImage(enemyImg, -ew/2, -eh/2, ew, eh);
+    } else {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      if (enemy) { ctx.moveTo(-size / 2, -size / 2); ctx.lineTo(size / 2, -size / 2); ctx.lineTo(size * .35, size / 2); ctx.lineTo(-size * .35, size / 2); }
+      else { ctx.moveTo(0, -size / 2); ctx.lineTo(size / 2, size / 2); ctx.lineTo(0, size * .22); ctx.lineTo(-size / 2, size / 2); }
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.fillRect(-3, enemy ? -4 : 3, 6, 7);
+    }
+    
+    ctx.restore();
   }
 
   function drawMidShip(e: any) {
     ctx.save(); ctx.translate(e.x, e.y); ctx.rotate(e.angle);
-    ctx.fillStyle = e.color; ctx.shadowBlur = 12; ctx.shadowColor = e.color;
-    ctx.beginPath(); ctx.moveTo(-e.w / 2, -e.h / 2); ctx.lineTo(e.w / 2, -e.h / 2); ctx.lineTo(e.w * 0.42, e.h / 2); ctx.lineTo(-e.w * 0.42, e.h / 2); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#1a1a2e'; ctx.fillRect(-e.w * 0.28, -4, e.w * 0.56, 7);
-    ctx.fillStyle = '#fff'; ctx.fillRect(-2, -6, 4, 5);
-    ctx.shadowBlur = 0;
+    if (midImg.complete && midImg.naturalWidth > 0) {
+      const w = e.w * 2, h = e.h * 2.2;
+      ctx.drawImage(midImg, -w/2, -h/2, w, h);
+    } else {
+      ctx.fillStyle = e.color; ctx.shadowBlur = 12; ctx.shadowColor = e.color;
+      ctx.beginPath(); ctx.moveTo(-e.w / 2, -e.h / 2); ctx.lineTo(e.w / 2, -e.h / 2); ctx.lineTo(e.w * 0.42, e.h / 2); ctx.lineTo(-e.w * 0.42, e.h / 2); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#1a1a2e'; ctx.fillRect(-e.w * 0.28, -4, e.w * 0.56, 7);
+      ctx.fillStyle = '#fff'; ctx.fillRect(-2, -6, 4, 5);
+      ctx.shadowBlur = 0;
+    }
     ctx.restore();
     if (e.hp < e.maxHp) {
         ctx.fillStyle = '#0008'; ctx.fillRect(e.x - e.w / 2, e.y - e.h / 2 - 10, e.w, 4);
@@ -561,15 +591,20 @@ export function initStarWarGame(refs: GameRefs) {
 
   function drawBoss(e: any) {
     ctx.save(); ctx.translate(e.x, e.y);
-    ctx.shadowBlur = 24; ctx.shadowColor = e.color;
-    ctx.fillStyle = e.color;
-    ctx.beginPath();
-    ctx.moveTo(-e.w / 2, -e.h * 0.35); ctx.lineTo(e.w / 2, -e.h * 0.35); ctx.lineTo(e.w * 0.48, e.h * 0.15); ctx.lineTo(e.w * 0.22, e.h * 0.5); ctx.lineTo(-e.w * 0.22, e.h * 0.5); ctx.lineTo(-e.w * 0.48, e.h * 0.15);
-    ctx.closePath(); ctx.fill();
-    ctx.fillStyle = '#1a0033'; ctx.beginPath(); ctx.ellipse(0, -6, e.w * 0.22, 11, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ff3b30'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(-e.w * 0.18, 4, 6, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(e.w * 0.18, 4, 6, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center'; ctx.fillText('BOSS', 0, 8);
-    ctx.shadowBlur = 0;
+    if (bossImg.complete && bossImg.naturalWidth > 0) {
+      const w = e.w * 1.5, h = e.h * 1.3;
+      ctx.drawImage(bossImg, -w/2, -h/2, w, h);
+    } else {
+      ctx.shadowBlur = 24; ctx.shadowColor = e.color;
+      ctx.fillStyle = e.color;
+      ctx.beginPath();
+      ctx.moveTo(-e.w / 2, -e.h * 0.35); ctx.lineTo(e.w / 2, -e.h * 0.35); ctx.lineTo(e.w * 0.48, e.h * 0.15); ctx.lineTo(e.w * 0.22, e.h * 0.5); ctx.lineTo(-e.w * 0.22, e.h * 0.5); ctx.lineTo(-e.w * 0.48, e.h * 0.15);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#1a0033'; ctx.beginPath(); ctx.ellipse(0, -6, e.w * 0.22, 11, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ff3b30'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(-e.w * 0.18, 4, 6, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(e.w * 0.18, 4, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center'; ctx.fillText('BOSS', 0, 8);
+      ctx.shadowBlur = 0;
+    }
     ctx.restore();
     const pct = e.hp / e.maxHp;
     ctx.fillStyle = '#000a'; ctx.fillRect(e.x - e.w / 2, e.y - e.h / 2 - 16, e.w, 7);
@@ -671,16 +706,15 @@ export function initStarWarGame(refs: GameRefs) {
     const blinkSkip = respawning && Math.floor(nowDraw / 90) % 2 === 0;
     if (!blinkSkip) {
         if (ghost) {
-            ctx.save(); ctx.globalAlpha = 0.52 + Math.sin(nowDraw * 0.015) * 0.18; ctx.shadowBlur = 22; ctx.shadowColor = '#b388ff'; ship(player.x, player.y, player.w, '#d6ccff', false, player.angle); ctx.restore();
+            ctx.save(); ctx.globalAlpha = 0.52 + Math.sin(nowDraw * 0.015) * 0.18; ctx.shadowBlur = 22; ctx.shadowColor = '#b388ff'; ship(player.x, player.y, player.w, '#d6ccff', false, player.angle, true); ctx.restore();
             ctx.save(); ctx.strokeStyle = '#b388ff88'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(player.x, player.y, 26 + Math.sin(nowDraw * 0.008) * 4, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
         } else if (respawning) {
             ctx.save(); ctx.globalAlpha = 0.35 + Math.sin(nowDraw * 0.02) * 0.12; ctx.shadowBlur = 18; ctx.shadowColor = '#ffffff';
-            ship(player.x, player.y, player.w, '#ffffff', false, player.angle); ctx.restore();
+            ship(player.x, player.y, player.w, '#ffffff', false, player.angle, true); ctx.restore();
             ctx.save(); ctx.globalAlpha = 0.78;
-            ship(player.x, player.y, player.w, '#4cc9f0', false, player.angle); ctx.restore();
-            ctx.save(); ctx.strokeStyle = '#ffffffcc'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]); ctx.beginPath(); ctx.arc(player.x, player.y, 28, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+            ship(player.x, player.y, player.w, '#4cc9f0', false, player.angle, true); ctx.restore();
         } else {
-            ship(player.x, player.y, player.w, '#4cc9f0', false, player.angle);
+            ship(player.x, player.y, player.w, '#4cc9f0', false, player.angle, true);
             const a = player.angle - Math.PI / 2; const tx = player.x - Math.cos(a) * 18, ty = player.y - Math.sin(a) * 18;
             ctx.save(); ctx.fillStyle = '#ff9500aa'; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(tx + Math.cos(a + 2.4) * 10, ty + Math.sin(a + 2.4) * 10); ctx.lineTo(tx + Math.cos(a - 2.4) * 10, ty + Math.sin(a - 2.4) * 10); ctx.closePath(); ctx.fill(); ctx.restore();
         }
