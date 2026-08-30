@@ -5,6 +5,6 @@ import Image from "next/image";
 
 export function Logo({ className = "w-6 h-6" }: { className?: string }) {
   return (
-    <img src="/CypherTechlogo.png" alt="Logo" className={className} />
+    <img src="/logo.png" alt="CypherTech — Valorant CT" className={className} />
   );
 }

@@ -9,247 +9,289 @@ import {
   ShieldCheck,
   TrendingUp,
   Cpu,
-  RefreshCw
+  RefreshCw,
+  Crosshair,
+  Target,
+  Radio,
 } from 'lucide-react';
+import { Anton, Rajdhani, JetBrains_Mono } from 'next/font/google';
+
+const anton = Anton({ weight: '400', subsets: ['latin'], variable: '--font-anton' });
+const rajdhani = Rajdhani({ weight: ['500', '600', '700'], subsets: ['latin'], variable: '--font-raj' });
+const jetmono = JetBrains_Mono({ weight: ['400', '700'], subsets: ['latin'], variable: '--font-mono' });
+
+const CLIP_CARD = "polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px)";
+const CLIP_BTN = "polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)";
 
 const roadmapPhases = [
   {
     id: 1,
-    title: "Discovery & Strategy",
-    description: "Deep dive into business logic, user flows, and product architecture. We blueprint the entire digital experience before writing a single line of code.",
-    icon: <Lightbulb className="w-8 h-8" />,
+    title: "DISCOVERY // STRATEGY",
+    description: "Deep dive into business logic, user flows, and product architecture. We blueprint the entire operation before a single line of code.",
+    icon: <Lightbulb className="w-5 h-5" />,
     tech: ["Figma", "Miro", "Notion"],
-    color: "from-blue-500 to-cyan-400",
-    shadow: "shadow-blue-500/20"
+    color: "#FF4655",
+    duration: "3-4 DAYS",
+    output: "PRD • SITEMAP • STACK",
+    extra: ["2× stakeholder workshops", "User journey maps + edge cases", "Tech risk matrix + estimate lock"],
   },
   {
     id: 2,
-    title: "UI/UX Design",
-    description: "Crafting striking, accessible, and high-conversion interfaces. We use micro-interactions and glassmorphism to build premium aesthetics.",
-    icon: <Layout className="w-8 h-8" />,
-    tech: ["Framer", "TailwindCSS", "Adobe CC"],
-    color: "from-purple-500 to-pink-400",
-    shadow: "shadow-purple-500/20"
+    title: "UI/UX // DESIGN",
+    description: "Striking, accessible, high-conversion interfaces. Micro-interactions and tactical HUDs for premium feel.",
+    icon: <Layout className="w-5 h-5" />,
+    tech: ["Framer", "Tailwind", "Adobe CC"],
+    color: "#00E5FF",
+    duration: "5-7 DAYS",
+    output: "HUD KIT • PROTOTYPE",
+    extra: ["Clickable Figma prototype 60fps", "Design tokens + clipped HUD system", "A11y + responsive stress test"],
   },
   {
     id: 3,
-    title: "Frontend Architecture",
-    description: "Engineering blazing-fast, server-rendered applications that deliver instant load times and unparalleled interactivity.",
-    icon: <Cpu className="w-8 h-8" />,
+    title: "FRONTEND // ARCH",
+    description: "Blazing-fast, server-rendered apps — instant loads, buttery interactions, Valorant-grade responsiveness.",
+    icon: <Cpu className="w-5 h-5" />,
     tech: ["Next.js", "React", "TypeScript"],
-    color: "from-emerald-500 to-teal-400",
-    shadow: "shadow-emerald-500/20"
+    color: "#FF4655",
+    duration: "1-2 WEEKS",
+    output: "SSR • ISR • PWA",
+    extra: ["Streaming SSR + edge cache", "Framer Motion HUD directives", "Lighthouse 98+ locked"],
   },
   {
     id: 4,
-    title: "Backend Systems",
-    description: "Developing robust, scalable backend services capable of handling millions of requests with complex business logic and real-time processing.",
-    icon: <Server className="w-8 h-8" />,
+    title: "BACKEND // SYSTEMS",
+    description: "Robust, scalable services handling millions of requests with complex logic and real-time processing.",
+    icon: <Server className="w-5 h-5" />,
     tech: ["Node.js", "Python", "Go"],
-    color: "from-amber-500 to-orange-400",
-    shadow: "shadow-amber-500/20"
+    color: "#FFD700",
+    duration: "1-2 WEEKS",
+    output: "API • MICROSERVICES",
+    extra: ["REST + GraphQL type-safe", "Real-time sockets / queues", "Rate-limit + idempotency"],
   },
   {
     id: 5,
-    title: "Database & Caching",
-    description: "Architecting high-performance data layers with optimal indexing, relational modeling, and in-memory caching for lightning-fast queries.",
-    icon: <Database className="w-8 h-8" />,
+    title: "DATA // CACHE",
+    description: "High-performance data layers — optimal indexing, relational modeling, in-memory cache for lightning queries.",
+    icon: <Database className="w-5 h-5" />,
     tech: ["PostgreSQL", "MongoDB", "Redis"],
-    color: "from-rose-500 to-red-400",
-    shadow: "shadow-rose-500/20"
+    color: "#00E5FF",
+    duration: "3-5 DAYS",
+    output: "SCHEMA • INDEX • CACHE",
+    extra: ["Query <40ms p95", "Redis hot-path cache", "Backups + point-in-time"],
   },
   {
     id: 6,
-    title: "API & Integrations",
-    description: "Connecting third-party services, payment gateways, and AI models via secure, type-safe APIs.",
-    icon: <LinkIcon className="w-8 h-8" />,
+    title: "API // INTEGRATIONS",
+    description: "Secure, type-safe APIs connecting payments, AI models, and third-party squads.",
+    icon: <LinkIcon className="w-5 h-5" />,
     tech: ["GraphQL", "REST", "OpenAI"],
-    color: "from-indigo-500 to-blue-400",
-    shadow: "shadow-indigo-500/20"
+    color: "#FF4655",
+    duration: "4-6 DAYS",
+    output: "WEBHOOKS • OAUTH",
+    extra: ["Stripe + auth flows", "OpenAI / vector search", "Webhook replay + logs"],
   },
   {
     id: 7,
-    title: "DevOps & Cloud",
-    description: "Containerizing applications and setting up automated CI/CD pipelines for zero-downtime deployments to enterprise cloud environments.",
-    icon: <Cloud className="w-8 h-8" />,
+    title: "DEVOPS // CLOUD",
+    description: "Containerized, CI/CD zero-downtime deployments to enterprise cloud battlefields.",
+    icon: <Cloud className="w-5 h-5" />,
     tech: ["Docker", "AWS", "GitHub Actions"],
-    color: "from-fuchsia-500 to-purple-400",
-    shadow: "shadow-fuchsia-500/20"
+    color: "#B14AFF",
+    duration: "2-3 DAYS",
+    output: "DOCKER • CI/CD • EDGE",
+    extra: ["Zero-downtime blue/green", "Preview env per PR", "Observability + alerts"],
   },
   {
     id: 8,
-    title: "Security & Testing",
-    description: "Implementing bank-grade encryption, OAuth authentication, and rigorous automated testing to ensure platform stability.",
-    icon: <ShieldCheck className="w-8 h-8" />,
+    title: "SECURITY // TESTING",
+    description: "Bank-grade encryption, OAuth, and rigorous automated testing — anti-cheat for your platform.",
+    icon: <ShieldCheck className="w-5 h-5" />,
     tech: ["Cypress", "Jest", "JWT"],
-    color: "from-teal-500 to-emerald-400",
-    shadow: "shadow-teal-500/20"
+    color: "#00E5FF",
+    duration: "CONTINUOUS",
+    output: "JWT • VAULT • TESTS",
+    extra: ["Pen-test + OWASP checklist", "E2E + unit 80%+", "Secret vault + rotation"],
   },
   {
     id: 9,
-    title: "SEO & Analytics",
-    description: "Optimizing Core Web Vitals and injecting dynamic metadata to dominate search engines and track granular user behavior.",
-    icon: <TrendingUp className="w-8 h-8" />,
+    title: "SEO // ANALYTICS",
+    description: "Core Web Vitals tuned, dynamic metadata injected — dominate search, track every movement.",
+    icon: <TrendingUp className="w-5 h-5" />,
     tech: ["Next SEO", "Lighthouse", "Mixpanel"],
-    color: "from-orange-500 to-amber-400",
-    shadow: "shadow-orange-500/20"
+    color: "#FFD700",
+    duration: "2-4 DAYS",
+    output: "SITEMAP • SCHEMA • CWV",
+    extra: ["Programmatic SEO 10k pages", "Pillar + schema markup", "Mixpanel funnels"],
   },
   {
     id: 10,
-    title: "Scale & Maintenance",
-    description: "Continuous monitoring, automated database backups, and proactive infrastructure scaling to handle exponential user growth.",
-    icon: <RefreshCw className="w-8 h-8" />,
+    title: "SCALE // MAINTENANCE",
+    description: "Continuous monitoring, backups, and proactive scaling to handle exponential agent influx.",
+    icon: <RefreshCw className="w-5 h-5" />,
     tech: ["Datadog", "Sentry", "Kubernetes"],
-    color: "from-cyan-500 to-blue-400",
-    shadow: "shadow-cyan-500/20"
+    color: "#FF4655",
+    duration: "ONGOING",
+    output: "K8S • SENTRY • ON-CALL",
+    extra: ["Auto-scale HPA + CDN", "On-call + SLO 99.99%", "Weekly tactical review"],
   }
 ];
 
+function CornerBrackets({ color = "rgba(255,70,85,0.6)" }: { color?: string }) {
+  return (
+    <>
+      <span className="absolute top-0 left-0 w-3 h-3 pointer-events-none" style={{ borderLeft: `2px solid ${color}`, borderTop: `2px solid ${color}` }} />
+      <span className="absolute top-0 right-0 w-3 h-3 pointer-events-none" style={{ borderRight: `2px solid ${color}`, borderTop: `2px solid ${color}` }} />
+      <span className="absolute bottom-0 left-0 w-3 h-3 pointer-events-none" style={{ borderLeft: `2px solid ${color}`, borderBottom: `2px solid ${color}` }} />
+      <span className="absolute bottom-0 right-0 w-3 h-3 pointer-events-none" style={{ borderRight: `2px solid ${color}`, borderBottom: `2px solid ${color}` }} />
+    </>
+  );
+}
+
 export default function RoadmapSection() {
   return (
-    <section className="relative min-h-[200vh] w-full bg-[#0a0a0f] overflow-hidden selection:bg-blue-500/30">
+    <section className={`${anton.variable} ${rajdhani.variable} ${jetmono.variable} relative w-full bg-[#0F1923] overflow-hidden selection:bg-[#FF4655]/30 border-y border-[#1e2d3a]`}>
+      {/* top red rule */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655] z-20" />
+      {/* hazard stripes bg */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{ background: "repeating-linear-gradient(-45deg, #ECE8E1 0 1px, transparent 1px 24px)" }} />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#FF465510_1px,transparent_1px),linear-gradient(to_bottom,#FF465510_1px,transparent_1px)] bg-[size:48px_48px] opacity-30" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[48rem] h-[24rem] bg-[#FF4655]/10 blur-[80px] rounded-full pointer-events-none" />
 
-      {/* Top Curvy Layered Transition (White to Dark) */}
-      <div className="absolute top-0 left-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-        <svg className="relative block w-full h-[60px] md:h-[120px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-          <path fill="#ffffff" fillOpacity="0.05" d="M0,32L120,42.7C240,53,480,75,720,74.7C960,75,1200,53,1320,42.7L1440,32L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path>
-          <path fill="#ffffff" fillOpacity="1" d="M0,96L120,90.7C240,85,480,75,720,90.7C960,107,1200,149,1320,170.7L1440,192L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path>
-        </svg>
+      {/* header */}
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-10">
+        <div className="text-center max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FF4655] text-white text-[11px] font-black tracking-[0.18em]" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>
+            <Radio className="w-3 h-3 animate-pulse" /> // OPERATION // ROADMAP
+          </div>
+          <h2 className="mt-4 text-4xl md:text-6xl leading-none tracking-tight" style={{ fontFamily: "var(--font-anton)" }}>
+            <span className="text-[#ECE8E1]">OUR</span> <span className="text-[#FF4655]">PROCESS</span>
+          </h2>
+          <div className="flex items-center justify-center gap-3 mt-4">
+            <div className="h-[2px] w-12 bg-[#FF4655]" />
+            <p className="text-sm text-[#768079]" style={{ fontFamily: "var(--font-raj)" }}>
+              From spark to global scale — the valorant-precision pipeline.
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="relative max-w-[1600px] mx-auto px-6 lg:px-8 py-40">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pb-20">
+        {/* vertical spine */}
+        <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-[#1e2d3a] -translate-x-1/2 hidden md:block" />
+        {/* dotted snake overlay for valorant tac */}
+        <div
+          className="absolute left-8 md:left-1/2 top-0 bottom-0 w-32 -translate-x-1/2 pointer-events-none opacity-[0.18] hidden md:block"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='128' height='400' viewBox='0 0 128 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M64,0 C128,100 0,300 64,400' stroke='%23FF4655' stroke-width='2' stroke-dasharray='8,10' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
+            backgroundRepeat: 'repeat-y',
+            backgroundSize: '100% 400px'
+          }}
+        />
 
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-32 mt-8">
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Process</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 leading-relaxed">
-            From the initial spark of strategy to a globally scaled deployment, explore the rigorous engineering and premium design pipeline that powers our digital products.
-          </p>
-        </div>
+        <div className="space-y-8 md:space-y-10 relative z-10">
+          {roadmapPhases.map((phase, index) => {
+            const isRight = index % 2 === 0;
+            return (
+              <div
+                key={phase.id}
+                className={`relative flex flex-col md:flex-row items-center ${isRight ? "md:flex-row" : "md:flex-row-reverse"}`}
+              >
+                {/* center node — valorant spike */}
+                <div className="absolute left-8 md:left-1/2 w-3 h-3 md:w-3.5 md:h-3.5 bg-[#FF4655] rotate-45 -translate-x-1/2 z-20 shadow-[0_0_12px_rgba(255,70,85,0.6)]">
+                  <span className="absolute inset-[3px] bg-[#ECE8E1] rotate-45" />
+                </div>
+                {/* connector */}
+                <div className={`hidden md:block absolute top-1/2 h-px bg-[#1e2d3a] w-12 lg:w-20 -translate-y-1/2 ${isRight ? "left-1/2" : "right-1/2"}`} />
+                <div className={`hidden md:block absolute top-1/2 w-1.5 h-1.5 bg-[#FF4655] -translate-y-1/2 ${isRight ? "left-[calc(50%+3rem)] lg:left-[calc(50%+5rem)]" : "right-[calc(50%+3rem)] lg:right-[calc(50%+5rem)]"}`} />
 
-        {/* Timeline Container */}
-        <div className="relative">
+                <div className="hidden md:flex w-1/2" />
 
-          {/* Vertical Dotted Snake Timeline (Background) */}
-          <div
-            className="absolute left-8 md:left-1/2 top-0 bottom-0 w-32 -translate-x-1/2 pointer-events-none opacity-30 z-0"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='128' height='400' viewBox='0 0 128 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M64,0 C128,100 0,300 64,400' stroke='white' stroke-width='3' stroke-dasharray='10,12' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
-              backgroundRepeat: 'repeat-y',
-              backgroundSize: '100% 400px'
-            }}
-          />
+                <div className={`w-full md:w-1/2 pl-14 md:pl-0 flex ${isRight ? "md:pl-12 lg:pl-20 justify-start" : "md:pr-12 lg:pr-20 justify-end"}`}>
+                  <div className="relative w-full max-w-xl group/card">
+                    {/* step badge */}
+                    <div
+                      className="absolute -top-3 left-6 md:left-auto z-30 px-3 py-1 text-white text-[11px] font-black tracking-[0.16em] flex items-center gap-1.5"
+                      style={{ background: phase.color, color: phase.color === "#FFD700" ? "#0F1923" : "#fff", clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
+                    >
+                      <Target className="w-3 h-3" /> STEP {phase.id.toString().padStart(2, "0")}
+                    </div>
 
-          {/* Roadmap Nodes */}
-          <div className="space-y-12 md:space-y-24 relative z-10">
-            {roadmapPhases.map((phase, index) => {
-              // Empty space is rendered first, Content Card is rendered second.
-              // So if md:flex-row, Card is on the RIGHT.
-              const isCardOnRight = index % 2 === 0;
-
-              return (
-                <div
-                  key={phase.id}
-                  className={`relative flex flex-col md:flex-row items-center justify-between md:justify-normal group ${isCardOnRight ? "md:flex-row" : "md:flex-row-reverse"
-                    }`}
-                >
-
-                  {/* Central Node (Sphere) */}
-                  <div className="absolute left-8 md:left-1/2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-100 shadow-[inset_-3px_-3px_6px_rgba(0,0,0,0.2),_0_0_15px_rgba(255,255,255,0.3)] transform -translate-x-1/2 z-20 transition-transform duration-500 group-hover:scale-125 group-hover:bg-white" />
-
-                  {/* Horizontal Connector Line (Only visible on desktop) */}
-                  <div className={`hidden md:block absolute top-1/2 h-0 border-t-[3px] border-dotted border-white/30 transition-colors duration-500 group-hover:border-white/70 z-10 w-12 lg:w-20 ${
-                    isCardOnRight ? "left-1/2" : "right-1/2"
-                  }`} />
-
-                  {/* Empty space for alternating layout on desktop */}
-                  <div className="hidden md:flex w-1/2 relative items-center justify-center"></div>
-
-                  {/* Content Card Area */}
-                  <div className={`w-full md:w-1/2 pl-20 md:pl-0 flex ${isCardOnRight ? "md:pl-12 lg:pl-20 justify-start" : "md:pr-12 lg:pr-20 justify-end"
-                    }`}>
-
-                    <div className="relative w-full max-w-xl group-hover:-translate-y-2 transition-transform duration-500">
-
-                      {/* Floating Step Badge (Top overlapping) */}
-                      <div className={`absolute -top-5 ${!isCardOnRight ? 'md:right-8 left-8 md:left-auto' : 'left-8'} z-30 px-5 py-2 rounded-xl bg-gradient-to-r ${phase.color} text-white font-black text-sm tracking-wider shadow-lg ${phase.shadow}`}>
-                        STEP {(phase.id < 10 ? '0' : '')}{phase.id}
-                      </div>
-
-                      {/* Pointed Card Shape */}
-                      <div
-                        className="relative bg-slate-900 shadow-2xl overflow-hidden p-[2px]"
-                        style={{
-                          clipPath: !isCardOnRight
-                            ? 'polygon(0 0, 93% 0, 100% 50%, 93% 100%, 0 100%)' // Card on Left, points Right
-                            : 'polygon(7% 0, 100% 0, 100% 100%, 7% 100%, 0 50%)'  // Card on Right, points Left
-                        }}
-                      >
-                        {/* Gradient Border effect layer */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${phase.color} opacity-40 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                        {/* Inner dark card */}
-                        <div
-                          className="relative h-full w-full bg-[#11111a] p-8 md:p-10 flex flex-col md:flex-row gap-6 items-start"
-                          style={{
-                            clipPath: !isCardOnRight
-                              ? 'polygon(0 0, 92.5% 0, 99.5% 50%, 92.5% 100%, 0 100%)'
-                              : 'polygon(7.5% 0, 100% 0, 100% 100%, 7.5% 100%, 0.5% 50%)'
-                          }}
-                        >
-                          {/* Inner soft glow */}
-                          <div className={`absolute -inset-24 bg-gradient-to-br ${phase.color} rounded-full blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity duration-700`} />
-
-                          {/* Icon container */}
-                          <div className="shrink-0 mt-2">
-                            <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 shadow-inner group-hover:text-white transition-colors duration-500">
+                    <div className="relative bg-[#111A23] border border-[#1e2d3a] p-[1px] overflow-visible group-hover/card:border-[#2e4154] group-hover/card:shadow-[0_12px_40px_rgba(0,0,0,0.5)] group-hover/card:-translate-y-[2px] transition-all duration-300" style={{ clipPath: CLIP_CARD }}>
+                      <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{ background: phase.color }} />
+                      <div className="absolute top-0 left-[3px] right-0 h-[2px] opacity-70 group-hover/card:opacity-100 transition-opacity" style={{ background: phase.color }} />
+                      <div className="relative bg-[#0F1923] p-6 md:p-7" style={{ clipPath: CLIP_CARD }}>
+                        <CornerBrackets color={`${phase.color}66`} />
+                        <div className="flex gap-4">
+                          {/* icon with step animation — slight hover only, no layout push */}
+                          <div className="shrink-0">
+                            <div className="w-12 h-12 bg-[#0a131c] border border-[#1e2d3a] flex items-center justify-center text-[#ECE8E1] group-hover/card:text-white group-hover/card:scale-110 group-hover/card:rotate-[-6deg] group-hover/card:shadow-[0_0_12px_rgba(255,70,85,0.35)] transition-all duration-400" style={{ clipPath: CLIP_BTN, background: `${phase.color}18`, borderColor: `${phase.color}40`, color: phase.color }}>
                               {phase.icon}
                             </div>
+                            <div className="mt-2 text-center">
+                              <span className="inline-flex px-1.5 py-0.5 bg-[#0a131c] border border-[#1e2d3a] text-[9px] font-black tracking-widest text-[#768079] group-hover/card:text-[#ECE8E1] group-hover/card:border-[#FF4655]/40 transition-colors" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>
+                                0{phase.id}
+                              </span>
+                            </div>
                           </div>
-
-                          {/* Text content */}
-                          <div className="relative z-10 flex-1">
-                            <h3 className="text-2xl font-bold text-white mb-3 mt-1">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-[15px] font-black tracking-wide text-[#ECE8E1] group-hover/card:text-white transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
                               {phase.title}
                             </h3>
-                            <p className="text-slate-400 leading-relaxed mb-6 text-sm md:text-base">
+                            <p className="text-sm leading-relaxed text-[#768079] mt-1.5" style={{ fontFamily: "var(--font-raj)" }}>
                               {phase.description}
                             </p>
-
-                            {/* Tech Stack Pills */}
-                            <div className="flex flex-wrap gap-2">
-                              {phase.tech.map(tech => (
-                                <span
-                                  key={tech}
-                                  className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/5 text-slate-300 text-xs font-semibold uppercase tracking-wider"
-                                >
-                                  {tech}
+                            <div className="flex flex-wrap gap-1.5 mt-4">
+                              {phase.tech.map((t) => (
+                                <span key={t} className="px-2.5 py-1 bg-[#0a131c] border border-[#1e2d3a] text-[11px] font-bold tracking-wide text-[#768079] group-hover/card:border-[#FF4655]/20 transition-colors" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>
+                                  {t.toUpperCase()}
                                 </span>
                               ))}
                             </div>
                           </div>
                         </div>
+                        <div className="mt-3 flex items-center gap-1.5 text-[10px] tracking-[0.16em] text-[#768079]/70 group-hover/card:text-[#FF4655]/80 transition-colors" style={{ fontFamily: "var(--font-mono)" }}>
+                          <Crosshair className="w-3 h-3" /> HOVER FOR DOSSIER
+                          <span className="ml-auto w-1 h-1 bg-[#FF4655] opacity-0 group-hover/card:opacity-100 animate-pulse transition-opacity" />
+                        </div>
                       </div>
+                    </div>
 
+                    {/* hover overlay — does NOT push siblings, slight lower drop only */}
+                    <div className="absolute left-0 right-0 top-[calc(100%-10px)] z-20 opacity-0 translate-y-[-6px] pointer-events-none group-hover/card:opacity-100 group-hover/card:translate-y-0 group-hover/card:pointer-events-auto transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+                      <div className="mx-[1px] bg-[#0F1923] border border-[#FF4655]/30 border-t-0 p-4 pt-5 shadow-[0_16px_40px_rgba(0,0,0,0.6),0_0_20px_rgba(255,70,85,0.15)] backdrop-blur-xl" style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)" }}>
+                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#FF4655]" />
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#0a131c] border border-[#1e2d3a] text-[10px] font-black tracking-[0.14em] text-[#768079]" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>
+                            <span className="w-1 h-1 bg-emerald-400 animate-pulse" /> {phase.duration}
+                          </span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#FF4655]/10 border border-[#FF4655]/20 text-[10px] font-black tracking-[0.14em] text-[#FF4655]" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>
+                            {phase.output}
+                          </span>
+                        </div>
+                        <ul className="space-y-1.5">
+                          {phase.extra.map((e) => (
+                            <li key={e} className="flex items-start gap-2 text-xs leading-relaxed text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>
+                              <span className="mt-1.5 w-1 h-1 bg-[#FF4655] shrink-0 rotate-45" />
+                              <span>{e}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="mt-3 flex items-center gap-2 text-[10px] tracking-[0.14em] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>
+                          <span className="flex-1 h-px bg-[#1e2d3a]" />
+                          EXPANDED • TACTICAL DOSSIER
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Bottom Curvy Layered Transition (Dark to White) */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-        <svg className="relative block w-full h-[60px] md:h-[120px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-          <path fill="#ffffff" fillOpacity="0.05" d="M0,256L120,245.3C240,235,480,213,720,213.3C960,213,1200,235,1320,245.3L1440,256L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
-          <path fill="#ffffff" fillOpacity="1" d="M0,192L120,197.3C240,203,480,213,720,197.3C960,181,1200,139,1320,117.3L1440,96L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
-        </svg>
-      </div>
-
+      {/* bottom fade — keep original white transition but valorant style: use #ECE8E1 */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#1e2d3a]" />
     </section>
   );
 }

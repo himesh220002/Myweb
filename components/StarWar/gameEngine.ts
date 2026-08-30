@@ -90,12 +90,14 @@ export function initStarWarGame(refs: GameRefs) {
   addListen(autoToggleBtn, 'click', () => { autoShootEnabled = !autoShootEnabled; updateAutoToggleUI(); });
   addListen(startBtn, 'click', () => { 
     started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset(); 
+    requestFullscreen();
   });
   
   addListen(window, 'keydown', (ev: Event) => {
     const e = ev as KeyboardEvent;
     if (!started && (e.code === 'Space' || e.code === 'Enter')) { 
       started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset(); 
+      requestFullscreen();
     }
   });
 

@@ -1,0 +1,37 @@
+{
+  "name": "CypherTech — Elite Digital Squad",
+  "short_name": "CypherTech",
+  "description": "Premium engineering & stunning design — Valorant-grade precision.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F1923",
+  "theme_color": "#FF4655",
+  "icons": [
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
