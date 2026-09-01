@@ -59,11 +59,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
           {/* BRAND */}
           <div className="lg:col-span-5 space-y-5">
-            <div className="space-y-2">
-              <h2 className="text-3xl md:text-4xl leading-none tracking-tight" style={{ fontFamily: "var(--font-anton)" }}>
-                <span className="text-[#ECE8E1]">CYPHER</span>
-                <span className="text-[#FF4655]">TECH</span>
-              </h2>
+            <div className="space-y-3">
+              <Link href="/" className="flex items-center gap-3 group shrink-0">
+                <div
+                  className="relative w-10 h-10 md:w-11 md:h-11 bg-[#000] flex items-center justify-center shrink-0 border border-[#FF4655] group-hover:bg-[#e03a49] group-hover:border-[#e03a49] transition-colors shadow-[0_0_12px_rgba(255,70,85,0.35)] overflow-hidden"
+                  style={{ clipPath: CLIP_BTN }}
+                >
+                  <img src="/hexagon-alien2.png" alt="CypherTech Logo" className="w-full h-full object-contain p-1" />
+                </div>
+                <h2 className="text-3xl md:text-4xl leading-none tracking-tight" style={{ fontFamily: "var(--font-anton)" }}>
+                  <span className="text-[#ECE8E1]">CYPHER</span>
+                  <span className="text-[#FF4655]">TECH</span>
+                </h2>
+              </Link>
               <div className="h-[2px] w-16 bg-[#FF4655]" />
               <p className="text-sm leading-relaxed text-[#768079] max-w-md" style={{ fontFamily: "var(--font-raj)" }}>
                 Building high-performance digital products that scale and delight. Valorant-grade precision for elite teams.

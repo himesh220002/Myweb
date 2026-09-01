@@ -19,12 +19,12 @@ export const metadata: Metadata = {
   authors: [{ name: "CypherTech Team" }],
   icons: {
     icon: [
-      { url: "/favicon.png", sizes: "512x512", type: "image/png" },
+      { url: "/hexagon-alien2.png", type: "image/png" },
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.ico" },
     ],
-    shortcut: "/favicon.png",
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/hexagon-alien2.png",
+    apple: [{ url: "/hexagon-alien2.png", sizes: "180x180", type: "image/png" }],
   },
   manifest: "/manifest.json",
   openGraph: {
@@ -34,14 +34,14 @@ export const metadata: Metadata = {
     siteName: "CypherTech",
     locale: "en_US",
     type: "website",
-    images: [{ url: "/logo.png", width: 1024, height: 1024, alt: "CypherTech CT Valorant" }],
+    images: [{ url: "/hexagon-alien2.png", width: 1024, height: 1024, alt: "CypherTech Logo" }],
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://CypherTech.com"),
   twitter: {
     card: "summary_large_image",
     title: "CypherTech | Premium Engineering",
     description: "Elite digital agency showcasing high-performance engineering and stunning design.",
-    images: ["/logo.png"],
+    images: ["/hexagon-alien2.png"],
   },
   robots: {
     index: true,

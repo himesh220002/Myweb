@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SVG to PNG Converter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background: #222;
+            color: #fff;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #FF1E1E;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #d01414;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h3>Your SVG Design Preview</h3>
+        <!-- Your exact SVG code with fixed W3C namespace -->
+        <svg id="mysvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+            <!-- Definitions for Glow Effects -->
+            <defs>
+                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="6" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+                <style>
+                    .logo-text {
+                        font-family: 'Impact', 'Arial Black', -apple-system, sans-serif;
+                        font-weight: 900;
+                        font-size: 35px;
+                        letter-spacing: 2px;
+                    }
+                </style>
+            </defs>
+
+
+
+            <!-- <rect width="100%" height="100%" fill="#000" /> -->
+
+            <!-- Hexagonal Body Structure -->
+            <polygon points="100,25 180,55 180,145 100,175 25,145 25,55" fill="#1C2026" stroke="#3A434F"
+                stroke-width="5" stroke-linejoin="round" />
+
+            <!-- Inner Hexagon Accent Line for Depth -->
+            <polygon points="100,35 170,60 170,140 100,165 35,140 35,60" fill="none" stroke="#252B33"
+                stroke-width="2" />
+
+            <polygon points="40,70 95,93 95,103 50,85 50,130 95,147 95,157 40,135" fill="#ff0000" stroke="#ff5555"
+                stroke-width="2" />
+            <polygon points="105,92 165,70 165,80 140,90 140,145 133,148 133,92 105,102" fill="#ff0000" stroke="#ff5555"
+                stroke-width="2" />
+
+            <line x1="38" y1="62" x2="100" y2="87" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+            <line x1="100" y1="87" x2="168" y2="62" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+            <!-- <line x1="100" y1="87" x2="100" y2="160" stroke="#fff" stroke-width="1" stroke-linecap="round" /> -->
+
+            <!-- Vertical Grill / Vent (3 Black Slots) -->
+            <!-- <rect x="50" y="60" width="100" height="30" rx="20" fill="#0D0F12" /> -->
+            <line x1="86" y1="40" x2="86" y2="70" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+            <line x1="85" y1="40" x2="85" y2="60" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+            <line x1="85" y1="65" x2="85" y2="70" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+
+            <line x1="93" y1="60" x2="93" y2="80" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+            <line x1="92" y1="60" x2="92" y2="70" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+            <line x1="92" y1="75" x2="92" y2="80" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+
+            <line x1="100" y1="45" x2="100" y2="75" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+            <line x1="99" y1="45" x2="99" y2="65" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+            <line x1="99" y1="70" x2="99" y2="75" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+
+            <line x1="107" y1="60" x2="107" y2="80" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+            <line x1="106" y1="60" x2="106" y2="70" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+            <line x1="106" y1="75" x2="106" y2="80" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+
+            <line x1="114" y1="40" x2="114" y2="70" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+            <line x1="113" y1="40" x2="113" y2="60" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+            <line x1="113" y1="65" x2="113" y2="70" stroke="#fff" stroke-width="1" stroke-linecap="round" />
+
+
+
+
+
+
+
+            <!-- Two Glowing Circular Red Eyes -->
+            <!-- Right Eye -->
+            <circle cx="122" cy="108" r="6" fill="#1F1EFE" filter="url(#glow)" />
+            <circle cx="122" cy="108" r="4" fill="#000" />
+
+
+
+            <!-- Left Eye -->
+            <circle cx="78" cy="108" r="6" fill="#FF1E1E" filter="url(#glow)" />
+            <circle cx="78" cy="108" r="4" fill="#000" />
+
+            <!-- <g transform="translate(90, 65) skewX(0) skewY(0) rotate(0)">
+    <text x="-24" y="34" class="logo-text" fill="#140101" text-anchor="middle">C</text>
+    
+    <text x="47" y="34" class="logo-text" fill="#140101" text-anchor="middle">T</text>
+    
+    <text x="-21" y="35" class="logo-text" fill="#FFFFFF" text-anchor="middle">C</text>
+    <text x="44" y="35" class="logo-text" fill="#FFFFFF" text-anchor="middle">T</text>
+    
+  </g> -->
+
+
+
+        </svg>
+        <br>
+        <button onclick="convertToPng()">Download as PNG</button>
+    </div>
+
+    <script>
+        function convertToPng() {
+            const svgElement = document.getElementById('mysvg') || document.querySelector('svg');
+            if (!svgElement) return alert('SVG element not found!');
+            const svgString = new XMLSerializer().serializeToString(svgElement);
+            const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            const URL = window.URL || window.webkitURL || window;
+            const blobURL = URL.createObjectURL(svgBlob);
+
+            const image = new Image();
+            image.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 800; // High resolution output sizing
+                canvas.height = 800;
+                const context = canvas.getContext('2d');
+                context.drawImage(image, 0, 0, 800, 800);
+
+                const png = canvas.toDataURL('image/png');
+                const downloadLink = document.createElement('a');
+                downloadLink.href = png;
+                downloadLink.download = 'hexagon-alien.png';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(blobURL);
+            };
+            image.src = blobURL;
+        }
+    </script>
+</body>
+
+</html>
