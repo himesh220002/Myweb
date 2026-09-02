@@ -8,7 +8,7 @@
   "theme_color": "#FF4655",
   "icons": [
     {
-      "src": "/hexagon-alien2.png",
+      "src": "/hexagon-alien.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
