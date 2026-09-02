@@ -142,7 +142,7 @@ export default function Navbar() {
               className="relative w-10 h-10 md:w-11 md:h-11 bg-[#000] flex items-center justify-center shrink-0 border border-[#FF4655] group-hover:bg-[#e03a49] group-hover:border-[#e03a49] transition-colors shadow-[0_0_12px_rgba(255,70,85,0.35)] overflow-hidden"
               style={{ clipPath: CLIP_BTN }}
             >
-              <img src="/hexagon-alien2.png" alt="CypherTech Logo" className="w-full h-full object-contain p-1" />
+              <img src="/hexagon-alien.png" alt="CypherTech Logo" className="w-full h-full object-contain p-1" />
             </div>
             <div className="flex flex-col leading-none">
               <span
