@@ -24,7 +24,7 @@ export const metadata: Metadata = {
       { url: "/favicon.ico" },
     ],
     shortcut: "/hexagon-alien.png",
-    apple: [{ url: "/hexagon-alien.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   manifest: "/manifest.json",
   openGraph: {
