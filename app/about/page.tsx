@@ -67,7 +67,7 @@ export default function AboutPage() {
                   <div className="mt-3 flex gap-2">
                     {[
                       { Icon: ExternalLink, href: "https://github.com/himesh220002", label: "GH" },
-                      { Icon: Globe, href: "https://www.linkedin.com/in/himesh", label: "IN" },
+                      { Icon: Globe, href: "https://www.linkedin.com/in/himesh-satyam/", label: "IN" },
                       { Icon: Mail, href: "mailto:satyamhimesh@gmail.com", label: "ML" },
                       { Icon: Globe, href: "https://x.com/CypherHarley", label: "X" },
                     ].map(({ Icon, href }, i) => (
