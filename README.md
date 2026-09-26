@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CypherTech Online
 
-## Getting Started
+## 🌐 Overview
+CypherTech Online is a modern technology service platform delivering **scalable, secure, and high‑performance solutions**.  
+We specialize in **web development, system architecture, DevOps, cybersecurity, and AI/ML integration**, helping businesses and individuals build future‑ready digital experiences.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Services
+- **Web Development** → Custom websites, portals, and interactive applications  
+- **System Architecture** → Scalable backend and frontend design  
+- **Cybersecurity** → Ethical hacking, penetration testing, and secure deployments  
+- **DevOps** → CI/CD pipelines, cloud hosting, and containerization  
+- **UI/UX Design** → Fast, responsive, and user‑friendly interfaces  
+- **AI & ML Integration** → Machine learning models, dashboards, and intelligent automation  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
+- **Frontend:** Next.js, Astro.js, React, Three.js  
+- **Backend:** Node.js, Express, Supabase, Render  
+- **DevOps:** Vercel, Docker, GitHub Actions  
+- **Security:** Kali Linux, Network Reconnaissance, Ethical Hacking Tools  
+- **AI/ML:** PyTorch, Streamlit, ResNet50 Transfer Learning  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✨ Why Choose CypherTech?
+- **Performance‑first design** → Optimized for speed and scalability  
+- **Security‑focused builds** → Protecting your data and infrastructure  
+- **Future‑ready tech** → Leveraging the latest frameworks and AI tools  
+- **Transparent deals** → Clear documentation, pricing, and client ownership  
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📑 Tags
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📌 Meta Description
+> CypherTech Online – Scalable web development, DevOps, cybersecurity, and AI/ML solutions. Build secure, high‑performance digital experiences with modern tech.
