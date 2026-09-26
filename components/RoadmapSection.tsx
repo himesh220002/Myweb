@@ -149,11 +149,19 @@ function CornerBrackets({ color = "rgba(255,70,85,0.6)" }: { color?: string }) {
 
 export default function RoadmapSection() {
   return (
-    <section className={`${anton.variable} ${rajdhani.variable} ${jetmono.variable} relative w-full bg-[#0F1923] overflow-hidden selection:bg-[#FF4655]/30 border-y border-[#1e2d3a]`}>
+    <section className={`${anton.variable} ${rajdhani.variable} ${jetmono.variable} relative w-full bg-[#0B131C] overflow-hidden selection:bg-[#FF4655]/30 border-y border-white/10`}>
       {/* top red rule */}
       <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655] z-20" />
+      {/* section backdrop image — visible tactical depth */}
+      <div className="absolute inset-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/herobackgroundtheme2.jpg" alt="" className="w-full h-full object-cover object-center" />
+        <div className="absolute inset-0 bg-[#0B131C]/62" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />
+      </div>
       {/* hazard stripes bg */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{ background: "repeating-linear-gradient(-45deg, #ECE8E1 0 1px, transparent 1px 24px)" }} />
+      {/* <div className="absolute inset-0 opacity-[0.03]" style={{ background: "repeating-linear-gradient(-45deg, #ECE8E1 0 1px, transparent 1px 24px)" }} /> */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#FF465510_1px,transparent_1px),linear-gradient(to_bottom,#FF465510_1px,transparent_1px)] bg-[size:48px_48px] opacity-30" />
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[48rem] h-[24rem] bg-[#FF4655]/10 blur-[80px] rounded-full pointer-events-none" />
 
