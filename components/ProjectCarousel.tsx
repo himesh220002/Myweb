@@ -39,7 +39,7 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
 
   useEffect(() => {
     if (isHovered) return;
-    const interval = setInterval(() => nextImage(), 5000);
+    const interval = setInterval(() => nextImage(), 20000);
     return () => clearInterval(interval);
   }, [isHovered, nextImage]);
 

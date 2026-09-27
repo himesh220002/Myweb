@@ -21,6 +21,7 @@ export interface GameRefs {
   pauseScoreEl: HTMLElement;
   pauseHighEl: HTMLElement;
   container: HTMLElement;
+  anchor: HTMLElement;
   returnBtn: HTMLButtonElement;
   quitBtnGameOver: HTMLButtonElement;
   touchControls: HTMLElement;
@@ -32,7 +33,7 @@ export function initStarWarGame(refs: GameRefs) {
     canvas, sensEl, sensVal, hudScore, hudLives, healthBar, healthText,
     autoToggleBtn, gameOverScreen, finalScoreEl, highScoreEl, finalKillsEl, finalTimeEl,
     restartBtn, startScreen, startBtn, pauseScreen, resumeBtn, restartBtnPause,
-    pauseScoreEl, pauseHighEl, container, returnBtn, quitBtnGameOver, touchControls, mobileToggle
+    pauseScoreEl, pauseHighEl, container, anchor, returnBtn, quitBtnGameOver, touchControls, mobileToggle
   } = refs;
 
   const ctx = canvas.getContext('2d')!;
@@ -60,44 +61,49 @@ export function initStarWarGame(refs: GameRefs) {
   let started = false;
   let paused = false;
 
-  function requestFullscreen() {
-    if (!document.fullscreenElement) {
-      if (container.requestFullscreen) {
-        container.requestFullscreen().then(() => {
-          if (screen.orientation && (screen.orientation as any).lock) {
-            (screen.orientation as any).lock('landscape').catch(() => {});
-          }
-        }).catch((err) => console.error(err));
-      } else if ((container as any).webkitRequestFullscreen) {
-        (container as any).webkitRequestFullscreen();
-      }
-    } else {
-      if (screen.orientation && (screen.orientation as any).lock) {
-        (screen.orientation as any).lock('landscape').catch(() => {});
-      }
-    }
+  // ── Full-page overlay mode (CSS-driven, NOT the Fullscreen API) ──
+  // Keeps Escape ours (the browser reserves Esc to exit native fullscreen)
+  // and avoids hijacking homepage keys like F / Ctrl+F / Space.
+  // The node is reparented to <body> on expand: ancestors with
+  // backdrop-filter/transform (e.g. the Playzone card) would otherwise
+  // trap `position: fixed` inside themselves instead of the viewport.
+  function isExpanded() {
+    return container.classList.contains('expanded');
   }
 
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      requestFullscreen();
-    } else {
-      document.exitFullscreen().catch(() => {});
+  function expand() {
+    if (isExpanded()) return;
+    if (container.parentNode !== document.body) {
+      document.body.appendChild(container);
     }
+    container.classList.add('expanded');
+    document.body.style.overflow = 'hidden';
+    resize();
+  }
+
+  function collapse() {
+    if (!isExpanded()) return;
+    container.classList.remove('expanded');
+    document.body.style.overflow = '';
+    if (anchor.parentNode && container.parentNode !== anchor.parentNode) {
+      anchor.parentNode.insertBefore(container, anchor.nextSibling);
+    }
+    resize();
   }
 
 
   addListen(autoToggleBtn, 'click', () => { autoShootEnabled = !autoShootEnabled; updateAutoToggleUI(); });
-  addListen(startBtn, 'click', () => { 
-    started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset(); 
-    requestFullscreen();
+  addListen(startBtn, 'click', () => {
+    expand(); // PLAY opens the full-page arena
+    started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset();
   });
-  
+
   addListen(window, 'keydown', (ev: Event) => {
     const e = ev as KeyboardEvent;
-    if (!started && (e.code === 'Space' || e.code === 'Enter')) { 
-      started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset(); 
-      requestFullscreen();
+    // Never steal homepage keys — only respond while the full-page arena is open.
+    if (!isExpanded()) return;
+    if (!started && (e.code === 'Space' || e.code === 'Enter')) {
+      started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset();
     }
   });
 
@@ -108,28 +114,22 @@ export function initStarWarGame(refs: GameRefs) {
     if (v) {
         pauseScoreEl.textContent = String(score);
         pauseHighEl.textContent = String(highScore);
-        if (screen.orientation && (screen.orientation as any).unlock) {
-            (screen.orientation as any).unlock();
-        }
-    } else {
-        requestFullscreen();
     }
     pauseScreen.classList.toggle('show', paused);
     if (paused) lastTime = performance.now();
   }
 
   addListen(resumeBtn, 'click', () => setPaused(false));
-  addListen(restartBtnPause, 'click', () => { 
-    paused = false; pauseScreen.classList.remove('show'); reset(); 
-    requestFullscreen();
+  addListen(restartBtnPause, 'click', () => {
+    paused = false; pauseScreen.classList.remove('show'); reset();
   });
-  
+
   function quitToMenu() {
     reset();
     started = false;
     paused = false;
     startScreen.classList.add('show');
-    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    collapse(); // EXIT returns to the 500px home embed
   }
   
   addListen(returnBtn, 'click', quitToMenu);
@@ -287,6 +287,8 @@ export function initStarWarGame(refs: GameRefs) {
 
   addListen(window, 'keydown', (ev: Event) => {
     const e = ev as KeyboardEvent;
+    // Scoped to the full-page arena so homepage keys (F, Ctrl+F, Space…) keep working.
+    if (!isExpanded()) return;
     if (e.code === 'Escape' && started && !gameOver) {
         e.preventDefault();
         setPaused(!paused);
@@ -295,16 +297,9 @@ export function initStarWarGame(refs: GameRefs) {
     keys.add(e.code);
     if (['Space', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.code)) e.preventDefault();
     if (e.code === 'KeyR') { if (gameOver) { reset(); } }
-    if (e.code === 'KeyF') {
-        e.preventDefault();
-        toggleFullscreen();
-        if (!started) {
-          started = true; paused = false; startScreen.classList.remove('show'); pauseScreen.classList.remove('show'); reset(); 
-        }
-    }
   });
-  
-  addListen(window, 'keyup', (e: any) => { if (!started) return; keys.delete(e.code); });
+
+  addListen(window, 'keyup', (e: any) => { if (!started || !isExpanded()) return; keys.delete(e.code); });
   
   // Mobile Touch Controls
   let mobileMode = false;
@@ -901,6 +896,10 @@ export function initStarWarGame(refs: GameRefs) {
 
   return function cleanup() {
     cancelAnimationFrame(animationFrameId);
+    // Move the node back into React's tree before unmount so React's
+    // removeChild doesn't run against a stale parent.
+    collapse();
+    document.body.style.overflow = '';
     listeners.forEach(({ target, type, fn }) => {
       target.removeEventListener(type, fn);
     });

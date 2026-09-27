@@ -18,6 +18,7 @@ import {
   Filter,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono } from "next/font/google";
 
@@ -54,10 +55,23 @@ function ValorantCrosshair({ className = "" }: { className?: string }) {
   );
 }
 
-const categories = ["All", ...Array.from(new Set(projects.map((p) => p.category.split(" / ")[0])))];
+// ── Consolidated filter groups (6 browsable buckets, not 13 micro-tags) ──
+// Each group matches the FIRST segment of a project's `category` ("A / B" → "A").
+const categoryGroups: { label: string; match: string[] }[] = [
+  { label: "All", match: [] },
+  { label: "Web Apps", match: ["Web Development", "Web Portal", "Enterprise"] },
+  { label: "AI & ML", match: ["Machine Learning", "Chrome Extension"] },
+  { label: "Data", match: ["Data Tools", "Data Analysis", "Data Engineering"] },
+  { label: "Backend & Web3", match: ["Backend", "Blockchain"] },
+  { label: "Personal", match: ["Personal Website", "Personal"] },
+  { label: "Learning", match: ["Learning"] },
+];
+
+const firstSegment = (category: string) => category.split(" / ")[0];
 
 export default function ProjectsPage() {
   const [activeTab, setActiveTab] = useState("All");
+  const router = useRouter();
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 18, restDelta: 0.001 });
@@ -65,7 +79,11 @@ export default function ProjectsPage() {
   const featuredProject = projects.find((p) => p.featured) || projects[0];
   const otherProjects = projects.filter((p) => p.id !== featuredProject.id);
 
-  const filteredProjects = activeTab === "All" ? otherProjects : projects.filter((p) => p.category.includes(activeTab));
+  const activeGroup = categoryGroups.find((g) => g.label === activeTab) ?? categoryGroups[0];
+  const filteredProjects =
+    activeTab === "All"
+      ? otherProjects
+      : projects.filter((p) => activeGroup.match.includes(firstSegment(p.category)));
 
   return (
     <div className={`${anton.variable} ${bebas.variable} ${rajdhani.variable} ${jetmono.variable} bg-[#0F1923] text-[#ECE8E1] min-h-screen selection:bg-[#FF4655]/30 relative overflow-hidden`}>
@@ -224,17 +242,17 @@ export default function ProjectsPage() {
             <Filter className="w-3.5 h-3.5 text-[#FF4655]" /> FILTER //
           </span>
           <div className="inline-flex flex-wrap gap-1.5 p-1.5 bg-[#0a131c] border border-[#1e2d3a]" style={{ clipPath: CLIP_PANEL }}>
-            {categories.map((category) => {
-              const active = activeTab === category;
+            {categoryGroups.map((group) => {
+              const active = activeTab === group.label;
               return (
                 <button
-                  key={category}
-                  onClick={() => setActiveTab(category)}
+                  key={group.label}
+                  onClick={() => setActiveTab(group.label)}
                   className={`relative px-5 py-2 text-[11px] font-black tracking-[0.14em] transition-all duration-200 ${active ? "bg-[#FF4655] text-white shadow-[0_0_14px_rgba(255,70,85,0.35)]" : "bg-transparent text-[#768079] hover:text-[#ECE8E1] hover:bg-[#111A23] border border-transparent hover:border-[#1e2d3a]"}`}
                   style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
                 >
                   {active && <span className="absolute top-0 left-0 right-0 h-[2px] bg-white/80" />}
-                  {category.toUpperCase()}
+                  {group.label.toUpperCase()}
                 </button>
               );
             })}
@@ -252,8 +270,18 @@ export default function ProjectsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ delay: 0.1, duration: 0.5 }}
-              className="relative bg-[#111A23] border border-[#1e2d3a] p-[1px] overflow-hidden"
+              className="relative bg-[#111A23] border border-[#1e2d3a] p-[1px] overflow-hidden cursor-pointer"
               style={{ clipPath: CLIP_CARD }}
+              role="link"
+              tabIndex={0}
+              aria-label={`View ${featuredProject.title} case study`}
+              onClick={() => router.push(`/projects/${featuredProject.slug}`)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  router.push(`/projects/${featuredProject.slug}`);
+                }
+              }}
             >
               <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#FF4655] z-20" />
               <div className="absolute top-0 left-[3px] right-0 h-[2px] bg-[#FF4655]/70 z-20" />
@@ -306,16 +334,15 @@ export default function ProjectsPage() {
                     <span className="inline-flex items-center gap-2 text-[#768079] text-[11px] font-bold tracking-[0.14em]" style={{ fontFamily: "var(--font-mono)" }}>
                       <Clock className="w-3.5 h-3.5 text-[#FF4655]" /> {featuredProject.lastUpdated.toUpperCase()}
                     </span>
-                    <Link
-                      href={`/projects/${featuredProject.slug}`}
-                      className="group inline-flex items-center gap-2 bg-[#FF4655] text-white px-6 py-3 text-xs font-black tracking-widest hover:bg-[#e03a49] transition-colors relative overflow-hidden"
+                    <span
+                      className="group inline-flex items-center gap-2 bg-[#FF4655] text-white px-6 py-3 text-xs font-black tracking-widest transition-colors relative overflow-hidden"
                       style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-raj)" }}
                     >
                       <span className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" style={{ clipPath: CLIP_BTN }} />
                       <span className="relative flex items-center gap-2">
                         VIEW CASE STUDY <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </span>
-                    </Link>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -337,8 +364,18 @@ export default function ProjectsPage() {
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.4, delay: idx * 0.04 }}
                   key={project.id}
-                  className="group relative bg-[#111A23] border border-[#1e2d3a] p-[1px] overflow-hidden hover:border-[#2a3a4a] transition-colors flex flex-col"
+                  className="group relative bg-[#111A23] border border-[#1e2d3a] p-[1px] overflow-hidden hover:border-[#2a3a4a] transition-colors flex flex-col cursor-pointer"
                   style={{ clipPath: CLIP_CARD }}
+                  role="link"
+                  tabIndex={0}
+                  aria-label={`View ${project.title} case study`}
+                  onClick={() => router.push(`/projects/${project.slug}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      router.push(`/projects/${project.slug}`);
+                    }
+                  }}
                 >
                   <div className="absolute left-0 top-0 bottom-0 w-[3px] opacity-0 group-hover:opacity-100 transition-opacity z-20" style={{ background: accent }} />
                   <div className="absolute top-0 left-[3px] right-0 h-[2px] opacity-60 group-hover:opacity-100 transition-opacity z-20" style={{ background: accent }} />
@@ -383,9 +420,9 @@ export default function ProjectsPage() {
                         <span className="inline-flex items-center gap-1.5 text-[#768079] text-[11px] font-bold tracking-wide" style={{ fontFamily: "var(--font-mono)" }}>
                           <Clock className="w-3 h-3" style={{ color: accent }} /> {project.lastUpdated.toUpperCase()}
                         </span>
-                        <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-1 text-xs font-black tracking-widest text-[#ECE8E1] hover:text-[#FF4655] transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
+                        <span className="inline-flex items-center gap-1 text-xs font-black tracking-widest text-[#ECE8E1] group-hover:text-[#FF4655] transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
                           VIEW <ChevronRight className="w-3.5 h-3.5" style={{ color: accent }} />
-                        </Link>
+                        </span>
                       </div>
                     </div>
                   </div>

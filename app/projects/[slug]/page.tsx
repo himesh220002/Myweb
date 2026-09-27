@@ -76,8 +76,15 @@ export default function ProjectDetail() {
 
   return (
     <div className={`${anton.variable} ${bebas.variable} ${rajdhani.variable} ${jetmono.variable} bg-[#0F1923] text-[#ECE8E1] min-h-screen selection:bg-[#FF4655]/30 relative overflow-hidden`}>
+      <div className="fixed inset-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/herobackgroundtheme4.jpg" alt="" className="w-full h-screen object-cover object-center" />
+        <div className="absolute inset-0 bg-[#0B131C]/62" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />
+      </div>
       {/* ── VALORANT BG ── */}
-      <div className="pointer-events-none absolute inset-0">
+      {/* <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[#0F1923]" />
         <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#FF465520_1px,transparent_1px),linear-gradient(to_bottom,#FF465520_1px,transparent_1px)] bg-[size:48px_48px]" />
         <div className="absolute inset-0 opacity-[0.03]" style={{ background: "repeating-linear-gradient(-45deg, #ECE8E1 0 1px, transparent 1px 24px)" }} />
@@ -85,7 +92,7 @@ export default function ProjectDetail() {
         <motion.div animate={{ x: [0, 14, 0] }} transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }} className="absolute -top-[14%] left-[-8%] w-[42rem] h-[42rem] bg-[#FF4655]/10 blur-[120px] rounded-full" />
         <div className="absolute top-[12%] right-[-12%] w-[36rem] h-[36rem] bg-[#00E5FF]/[0.06] blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[28%] w-[30rem] h-[30rem] bg-[#FF4655]/[0.05] blur-[110px] rounded-full" />
-      </div>
+      </div> */}
 
       {/* scroll progress */}
       <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF4655] origin-left z-50">
@@ -94,8 +101,8 @@ export default function ProjectDetail() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 md:py-20 space-y-8">
         {/* ── BACK ── */}
-        <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}>
-          <Link href="/projects" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0a131c] border border-[#1e2d3a] text-[#768079] hover:text-[#ECE8E1] hover:border-[#FF4655]/40 transition-colors group" style={{ clipPath: CLIP_BTN }}>
+        <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }} className="flex items-center justify-end gap-2 mt-6">
+          <Link href="/projects" className="flex items-center gap-2 px-3 py-1.5 bg-[#0a131c] border border-[#1e2d3a] text-[#768079] hover:text-[#ECE8E1] hover:border-[#FF4655]/40 transition-colors group" style={{ clipPath: CLIP_BTN }}>
             <Crosshair className="w-3.5 h-3.5 text-[#FF4655] group-hover:rotate-90 transition-transform duration-300" />
             <span className="text-[11px] font-black tracking-[0.16em]" style={{ fontFamily: "var(--font-mono)" }}>
               // BACK TO ARSENAL

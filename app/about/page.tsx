@@ -27,13 +27,20 @@ function CornerBrackets({ color = "rgba(255,70,85,0.5)" }: { color?: string }) {
 export default function AboutPage() {
   return (
     <div className={`${anton.variable} ${bebas.variable} ${rajdhani.variable} ${jetmono.variable} bg-[#0F1923] text-[#ECE8E1] min-h-screen selection:bg-[#FF4655]/30 relative overflow-hidden`}>
-      <div className="pointer-events-none absolute inset-0">
+      <div className="fixed inset-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/herobackgroundtheme3.jpg" alt="" className="w-full h-screen object-cover object-center" />
+        <div className="absolute inset-0 bg-[#0B131C]/62" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />
+      </div>
+      {/* <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[#0F1923]" />
         <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#FF465520_1px,transparent_1px),linear-gradient(to_bottom,#FF465520_1px,transparent_1px)] bg-[size:48px_48px]" />
         <div className="absolute inset-0 opacity-[0.03]" style={{ background: "repeating-linear-gradient(-45deg, #ECE8E1 0 1px, transparent 1px 26px)" }} />
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655]" />
         <div className="absolute -top-20 left-1/4 w-96 h-96 bg-[#FF4655]/10 rounded-full blur-[120px]" />
-      </div>
+      </div> */}
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-28 space-y-12">
         {/* HUD header */}
@@ -54,7 +61,7 @@ export default function AboutPage() {
               <div className="relative overflow-hidden bg-[#0a131c]" style={{ clipPath: CLIP_CARD }}>
                 <CornerBrackets />
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <img src="https://static0.srcdn.com/wordpress/wp-content/uploads/2025/11/okabe-steins-gate.jpg?w=1200&h=1500&fit=crop" alt="Himesh Satyam" className="absolute inset-0 w-full h-full object-cover" />
+                  <img src="/profile_avatar.png" alt="Himesh Satyam" className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-transparent to-transparent" />
                   <div className="absolute top-3 left-3 px-2.5 py-1 bg-[#FF4655] text-white text-[11px] font-black tracking-widest" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>LVL 09 // ELITE</div>
                   <div className="absolute top-3 right-3 w-2 h-2 bg-emerald-400 animate-pulse border border-[#0F1923]" style={{ clipPath: "polygon(50% 0,100% 50%,50% 100%,0 50%)" }} />

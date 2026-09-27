@@ -25,6 +25,17 @@ import {
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono } from "next/font/google";
+import {
+  PLANS as SHARED_PLANS,
+  CARD_FEATURES,
+  COMPARISON,
+  ALL_PLANS_INCLUDE,
+  getPlanPrice,
+  formatINR,
+  formatUSD,
+  type PlanId,
+  type Currency,
+} from "@/lib/pricing";
 
 // ── VALORANT FONTS ──
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
@@ -80,42 +91,42 @@ function ValorantCrosshair({ className = "" }: { className?: string }) {
 const addonsData = [
   {
     title: "Advanced SEO Package",
-    prices: { USD: 799, INR: 14999 },
+    prices: { USD: 795, INR: 14499 },
     icon: Search,
     desc: "Technical SEO audit, keyword research, schema markup, Google Search Console setup, and monthly reporting.",
     accent: "#00E5FF",
   },
   {
     title: "Analytics Integration",
-    prices: { USD: 499, INR: 9999 },
+    prices: { USD: 475, INR: 9499 },
     icon: BarChart2,
     desc: "Google Analytics 4, Mixpanel or Hotjar setup, custom event tracking, and a live metrics dashboard.",
     accent: "#FFD700",
   },
   {
     title: "E-Commerce Integration",
-    prices: { USD: 1499, INR: 39999 },
+    prices: { USD: 1455, INR: 38999 },
     icon: ShoppingCart,
     desc: "Stripe payments, product catalog, inventory management, order processing, and tax/shipping configurations.",
     accent: "#FF4655",
   },
   {
     title: "Custom Dashboard",
-    prices: { USD: 1299, INR: 29999 },
+    prices: { USD: 1275, INR: 29999 },
     icon: Layout,
     desc: "Bespoke admin panel with real-time charts, user management, data export, and role-based access control.",
     accent: "#B14AFF",
   },
   {
     title: "Email System",
-    prices: { USD: 599, INR: 11999 },
+    prices: { USD: 585, INR: 11499 },
     icon: Mail,
     desc: "Transactional emails with Resend or SendGrid, templates, delivery tracking, and bounce handling.",
     accent: "#00E5FF",
   },
   {
     title: "Security Hardening",
-    prices: { USD: 999, INR: 19999 },
+    prices: { USD: 975, INR: 19499 },
     icon: Lock,
     desc: "Rate limiting, CSRF protection, input sanitization, penetration testing report, and compliance review.",
     accent: "#FF4655",
@@ -177,107 +188,46 @@ export default function PricingPage() {
   const heroDescY = useTransform(heroScroll, [0, 1], [0, 30]);
   const heroOpacity = useTransform(heroScroll, [0, 0.8], [1, 0]);
 
-  const plans = [
-    {
-      name: "Starter",
-      sub: "STARTER",
-      tag: "ESSENTIAL",
-      code: "VLR-STARTER-01",
-      price:
-        currency === "USD"
-          ? billingPeriod === "project"
-            ? 2499
-            : 1999
-          : billingPeriod === "project"
-            ? 49999
-            : 39999,
-      desc: "Perfect for landing pages, portfolios, and small business sites.",
-      accent: "#00E5FF",
-      accentSoft: "rgba(0,229,255,0.14)",
-      features: [
-        { text: "Up to 5 pages / routes", included: true },
-        { text: "Responsive design & mobile-first", included: true },
-        { text: "Custom database architecture", included: false },
-        { text: "Authentication & User Roles", included: false },
-        { text: "Basic SEO & domain setup", included: true },
-        { text: "E-commerce integration", included: false },
-        { text: "CMS for content management", included: false },
-        { text: "Serverless Cloud deployment", included: true },
-        { text: "1 round of revisions", included: true },
-        { text: "30-day post-launch support", included: true },
-        { text: "Custom animations & WebGL", included: false },
-      ],
-      btnText: "GET STARTED",
-      ctaHref: "/#estimator",
-      popular: false,
-    },
-    {
-      name: "Growth",
-      sub: "GROWTH",
-      tag: "POPULAR",
-      code: "VLR-GROWTH-02",
-      price:
-        currency === "USD"
-          ? billingPeriod === "project"
-            ? 6999
-            : 5599
-          : billingPeriod === "project"
-            ? 149999
-            : 119999,
-      desc: "Full-stack web apps with auth, database, and production deployment.",
-      accent: "#FF4655",
-      accentSoft: "rgba(255,70,85,0.14)",
-      features: [
-        { text: "Up to 20 pages / routes", included: true },
-        { text: "Responsive design & mobile-first", included: true },
-        { text: "Custom database architecture", included: true },
-        { text: "Authentication & User Roles", included: true },
-        { text: "Advanced SEO & sitemaps", included: true },
-        { text: "E-commerce integration", included: false },
-        { text: "CMS for content management", included: true },
-        { text: "Serverless Cloud deployment", included: true },
-        { text: "3 rounds of revisions", included: true },
-        { text: "90-day post-launch support", included: true },
-        { text: "Custom animations & WebGL", included: false },
-      ],
-      btnText: "START PROJECT",
-      ctaHref: "/#estimator",
-      popular: true,
-    },
-    {
-      name: "Enterprise",
-      sub: "ENTERPRISE",
-      tag: "SCALABLE",
-      code: "VLR-ELITE-03",
-      price: "Custom" as const,
-      desc: "Complex platforms, SaaS products, and multi-tenant systems.",
-      accent: "#FFD700",
-      accentSoft: "rgba(255,215,0,0.12)",
-      features: [
-        { text: "Unlimited pages / routes", included: true },
-        { text: "Responsive design & mobile-first", included: true },
-        { text: "Custom database architecture", included: true },
-        { text: "Authentication & User Roles", included: true },
-        { text: "Enterprise SEO optimization", included: true },
-        { text: "E-commerce integration", included: true },
-        { text: "CMS for content management", included: true },
-        { text: "Serverless Cloud deployment", included: true },
-        { text: "Unlimited revisions", included: true },
-        { text: "6-month post-launch support", included: true },
-        { text: "Custom animations & WebGL", included: true },
-      ],
-      btnText: "REQUEST A QUOTE",
-      ctaHref: "/#estimator",
-      popular: false,
-    },
-  ];
+  // ── Plans: single source of truth (same tiers + prices as Home) ──
+  const ACCENTS: Record<PlanId, { accent: string; accentSoft: string }> = {
+    starter: { accent: "#00E5FF", accentSoft: "rgba(0,229,255,0.14)" },
+    growth: { accent: "#FF4655", accentSoft: "rgba(255,70,85,0.14)" },
+    enterprise: { accent: "#FFD700", accentSoft: "rgba(255,215,0,0.12)" },
+  };
+
+  const plans = SHARED_PLANS.map((p) => {
+    const price = getPlanPrice(p, currency, billingPeriod);
+    const other: Currency = currency === "INR" ? "USD" : "INR";
+    const otherPrice = getPlanPrice(p, other, billingPeriod);
+    return {
+      id: p.id as PlanId,
+      name: p.name,
+      sub: p.name.toUpperCase(),
+      tag: p.tag,
+      code: p.code,
+      price,
+      otherPriceLabel:
+        typeof otherPrice === "string"
+          ? otherPrice
+          : other === "INR"
+            ? formatINR(otherPrice)
+            : formatUSD(otherPrice),
+      desc: p.blurb,
+      billingNote:
+        billingPeriod === "project" ? p.billingNoteProject : p.billingNoteRetainer,
+      accent: ACCENTS[p.id as PlanId].accent,
+      accentSoft: ACCENTS[p.id as PlanId].accentSoft,
+      groups: CARD_FEATURES[p.id as PlanId],
+      btnText: p.cta,
+      ctaHref: p.ctaHref,
+      trust: p.trust,
+      popular: p.popular,
+    };
+  });
 
   const formatVal = (val: number | string) => {
     if (typeof val === "string") return val;
-    if (currency === "INR") {
-      return `₹${val.toLocaleString("en-IN")}`;
-    }
-    return `$${val.toLocaleString("en-US")}`;
+    return currency === "INR" ? formatINR(val) : formatUSD(val);
   };
 
   return (
@@ -448,6 +398,32 @@ export default function PricingPage() {
                     <span className="text-[#ECE8E1] font-bold">{c.v}</span>
                   </span>
                 ))}
+              </motion.div>
+
+              {/* ── Hostinger-style: all plans include strip ── */}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur px-4 py-3.5"
+              >
+                <p
+                  className="text-[10px] font-black tracking-[0.18em] text-white/45 mb-2.5"
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  ALL PLANS INCLUDE //
+                </p>
+                <div className="flex flex-wrap gap-x-5 gap-y-2">
+                  {ALL_PLANS_INCLUDE.map((inc) => (
+                    <span
+                      key={inc}
+                      className="inline-flex items-center gap-1.5 text-[13px] font-bold text-white/75"
+                      style={{ fontFamily: "var(--font-raj)" }}
+                    >
+                      <Check className="w-3.5 h-3.5 text-emerald-400" /> {inc}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             </div>
 
@@ -628,12 +604,12 @@ export default function PricingPage() {
                       </h3>
                     </div>
 
-                    <h3 className="text-[1.9rem] md:text-[2.1rem] leading-none tracking-tight text-[#ECE8E1] mb-2" style={{ fontFamily: "var(--font-anton)" }}>
+                    <h3 className="text-[1.9rem] md:text-[2.1rem] leading-none  text-[#ECE8E1] mb-2" style={{ fontFamily: "var(--font-anton)" }}>
                       {plan.name.toUpperCase()}
                     </h3>
 
                     <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-3xl md:text-4xl font-black tracking-tight text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
+                      <span className="text-3xl md:text-4xl font-black  text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
                         {formatVal(plan.price)}
                       </span>
                       {typeof plan.price === "number" && (
@@ -642,14 +618,14 @@ export default function PricingPage() {
                         </span>
                       )}
                     </div>
-                    {typeof plan.price === "number" && (
-                      <p className="text-[11px] tracking-widest text-[#768079] mb-4" style={{ fontFamily: "var(--font-mono)" }}>
-                        {billingPeriod === "project" ? "ONE-TIME // DEPLOY" : "RETAINER // MONTHLY"}
+                    {typeof plan.price === "number" ? (
+                      <p className="text-[11px] tracking-widest text-[#768079] mb-1" style={{ fontFamily: "var(--font-mono)" }}>
+                        {plan.billingNote.toUpperCase()} · ≈ {plan.otherPriceLabel}{" "}
+                        {currency === "INR" ? "USD" : "INR"}
                       </p>
-                    )}
-                    {plan.price === "Custom" && (
-                      <p className="text-[11px] tracking-widest text-[#768079] mb-4" style={{ fontFamily: "var(--font-mono)" }}>
-                        TAILORED // SCOPE
+                    ) : (
+                      <p className="text-[11px] tracking-widest text-[#768079] mb-1" style={{ fontFamily: "var(--font-mono)" }}>
+                        {plan.billingNote.toUpperCase()}
                       </p>
                     )}
 
@@ -659,34 +635,47 @@ export default function PricingPage() {
                       {plan.desc}
                     </p>
 
-                    {/* Features */}
-                    <ul className="space-y-2.5 mb-8">
-                      {plan.features.map((feat, fIdx) => (
-                        <li key={fIdx} className="flex items-start gap-3 text-xs">
-                          {feat.included ? (
-                            <div
-                              className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20"
-                              style={{ clipPath: CLIP_BTN }}
-                            >
-                              <Check className="w-3 h-3" />
-                            </div>
-                          ) : (
-                            <div
-                              className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-[#768079] bg-[#0a131c] border border-[#1e2d3a]"
-                              style={{ clipPath: CLIP_BTN }}
-                            >
-                              <X className="w-3 h-3" />
-                            </div>
-                          )}
-                          <span
-                            className={`leading-relaxed font-bold ${feat.included ? "text-[#ECE8E1]" : "text-[#768079]/60 line-through"}`}
-                            style={{ fontFamily: "var(--font-raj)" }}
+                    {/* Features — Hostinger-style grouped list, nothing missed */}
+                    <div className="space-y-5 mb-8">
+                      {plan.groups.map((grp) => (
+                        <div key={grp.group}>
+                          <p
+                            className="text-[10px] font-black tracking-[0.18em] text-[#768079] mb-2.5 flex items-center gap-2"
+                            style={{ fontFamily: "var(--font-mono)" }}
                           >
-                            {feat.text}
-                          </span>
-                        </li>
+                            <span className="w-4 h-[2px]" style={{ background: plan.accent }} />
+                            {grp.group.toUpperCase()}
+                          </p>
+                          <ul className="space-y-2.5">
+                            {grp.items.map((feat, fIdx) => (
+                              <li key={fIdx} className="flex items-start gap-3 text-xs">
+                                {feat.included ? (
+                                  <div
+                                    className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20"
+                                    style={{ clipPath: CLIP_BTN }}
+                                  >
+                                    <Check className="w-3 h-3" />
+                                  </div>
+                                ) : (
+                                  <div
+                                    className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-[#768079] bg-[#0a131c] border border-[#1e2d3a]"
+                                    style={{ clipPath: CLIP_BTN }}
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </div>
+                                )}
+                                <span
+                                  className={`leading-relaxed font-bold ${feat.included ? "text-[#ECE8E1]" : "text-[#768079]/60 line-through"}`}
+                                  style={{ fontFamily: "var(--font-raj)" }}
+                                >
+                                  {feat.text}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
 
                     {/* CTA */}
                     <Link
@@ -702,13 +691,142 @@ export default function PricingPage() {
                     </Link>
 
                     <p className="text-center text-[10px] tracking-[0.14em] text-[#768079]/60 mt-3" style={{ fontFamily: "var(--font-mono)" }}>
-                      {plan.popular ? "● POPULAR // NDA-FIRST" : "○ NDA-FIRST // 48H PROPOSAL"}
+                      {plan.trust}
                     </p>
                   </div>
                 </div>
               </motion.div>
             );
           })}
+        </div>
+
+        {/* ── COMPARE PLANS — Hostinger-style categorical table ── */}
+        <div className="space-y-8">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <p
+              className="inline-flex items-center gap-2 px-3 py-1 bg-[#0a131c] border border-[#1e2d3a] text-[#00E5FF] text-[11px] font-black tracking-[0.18em]"
+              style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
+            >
+              <Target className="w-3.5 h-3.5" /> // COMPARE // PLANS
+            </p>
+            <h2 className="text-3xl md:text-5xl leading-none " style={{ fontFamily: "var(--font-anton)" }}>
+              <span className="text-[#ECE8E1]">COMPARE EVERY</span>{" "}
+              <span className="text-[#FF4655]">DETAIL</span>
+            </h2>
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-[2px] w-10 bg-[#FF4655]" />
+              <p className="text-sm text-[#768079]" style={{ fontFamily: "var(--font-raj)" }}>
+                Same tiers, same prices as Home — grouped so nothing gets missed. Prices shown in{" "}
+                {currency === "INR" ? "INR (₹)" : "USD ($)"}
+                {billingPeriod === "retainer" ? " · retainer / month" : " · flat fee, one-time deploy"}
+                {billingPeriod === "project" ? " (retainer saves ~20%)" : ""}.
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="relative bg-[#111A23] border border-[#1e2d3a] p-[1px] overflow-hidden"
+            style={{ clipPath: CLIP_CARD }}
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#FF4655] z-10" />
+            <div className="bg-[#0F1923] overflow-x-auto" style={{ clipPath: CLIP_CARD }}>
+              <table className="w-full min-w-[640px] border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-[#1e2d3a]">
+                    <th
+                      className="p-4 md:p-5 text-[11px] font-black tracking-[0.16em] text-[#768079] w-[34%]"
+                      style={{ fontFamily: "var(--font-mono)" }}
+                    >
+                      FEATURE //
+                    </th>
+                    {plans.map((p) => (
+                      <th key={p.id} className="p-4 md:p-5 text-center">
+                        <p
+                          className="text-[10px] font-black tracking-[0.16em]"
+                          style={{ fontFamily: "var(--font-mono)", color: p.accent }}
+                        >
+                          {p.name.toUpperCase()}
+                        </p>
+                        <p
+                          className="mt-1 text-lg font-black text-[#ECE8E1] leading-none"
+                          style={{ fontFamily: "var(--font-anton)" }}
+                        >
+                          {formatVal(p.price)}
+                          {typeof p.price === "number" && (
+                            <span className="block mt-1 text-[10px] font-bold tracking-widest text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>
+                              ≈ {p.otherPriceLabel} {currency === "INR" ? "USD" : "INR"}
+                            </span>
+                          )}
+                        </p>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                {COMPARISON.map((cat) => (
+                  <tbody key={cat.category}>
+                    <tr>
+                      <td
+                        colSpan={4}
+                        className="px-4 md:px-5 pt-5 pb-2 text-[11px] font-black tracking-[0.18em] text-[#ECE8E1]"
+                        style={{ fontFamily: "var(--font-mono)" }}
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <span className="w-4 h-[2px] bg-[#FF4655]" />
+                          {cat.category.toUpperCase()}
+                        </span>
+                      </td>
+                    </tr>
+                    {cat.rows.map((row) => (
+                      <tr key={row.label} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
+                        <td
+                          className="px-4 md:px-5 py-3.5 text-[13px] font-bold text-white/70"
+                          style={{ fontFamily: "var(--font-raj)" }}
+                        >
+                          {row.label}
+                          {row.addonHint && (
+                            <span
+                              className="ml-2 text-[10px] font-black tracking-widest text-[#00E5FF]"
+                              style={{ fontFamily: "var(--font-mono)" }}
+                            >
+                              ADD-ON↓
+                            </span>
+                          )}
+                        </td>
+                        {row.values.map((v, vi) => (
+                          <td key={vi} className="px-4 md:px-5 py-3.5 text-center">
+                            {typeof v === "boolean" ? (
+                              v ? (
+                                <span className="inline-flex w-6 h-6 items-center justify-center text-emerald-400 bg-emerald-500/10 border border-emerald-500/20" style={{ clipPath: CLIP_BTN }}>
+                                  <Check className="w-3.5 h-3.5" />
+                                </span>
+                              ) : (
+                                <span className="inline-flex w-6 h-6 items-center justify-center text-[#768079]/60 bg-[#0a131c] border border-[#1e2d3a]" style={{ clipPath: CLIP_BTN }}>
+                                  <X className="w-3.5 h-3.5" />
+                                </span>
+                              )
+                            ) : (
+                              <span
+                                className="text-[13px] font-bold text-[#ECE8E1]"
+                                style={{ fontFamily: "var(--font-raj)" }}
+                              >
+                                {v}
+                              </span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                ))}
+              </table>
+              <p
+                className="px-4 md:px-5 py-4 text-[11px] tracking-widest text-[#768079] border-t border-[#1e2d3a]"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                ✗ = NOT INCLUDED IN BASE TIER — MOST GAPS CAN BE CLOSED WITH AN ADD-ON BELOW ↓
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* ── ADD-ONS — VALORANT TAC PANELS ── */}
@@ -720,7 +838,7 @@ export default function PricingPage() {
             >
               <Zap className="w-3.5 h-3.5" /> // LOADOUT // ADD-ONS
             </p>
-            <h2 className="text-3xl md:text-5xl leading-none tracking-tight" style={{ fontFamily: "var(--font-anton)" }}>
+            <h2 className="text-3xl md:text-5xl leading-none " style={{ fontFamily: "var(--font-anton)" }}>
               <span className="text-[#ECE8E1]">EXTEND YOUR</span> <span className="text-[#00E5FF]">CAPABILITIES</span>
             </h2>
             <div className="flex items-center justify-center gap-3">
@@ -770,7 +888,7 @@ export default function PricingPage() {
                         <span className="text-xs line-through text-[#768079] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
                           {formatVal(addon.prices[currency as "USD" | "INR"])}
                         </span>
-                        <span className="text-xl font-black tracking-tight text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
+                        <span className="text-xl font-black  text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
                           +{formatVal(Math.round(addon.prices[currency as "USD" | "INR"] * 0.4))}
                         </span>
                         <span
@@ -790,7 +908,7 @@ export default function PricingPage() {
                         </span>
                       </div>
                       <h4
-                        className="text-[1.15rem] font-black tracking-wide text-[#ECE8E1] leading-none mb-3 group-hover:text-white transition-colors"
+                        className="text-[1.15rem] tracking-wide text-[#ECE8E1] leading-none mb-3 group-hover:text-white transition-colors"
                         style={{ fontFamily: "var(--font-anton)" }}
                       >
                         {addon.title.toUpperCase()}
@@ -819,7 +937,7 @@ export default function PricingPage() {
             >
               <ShieldCheck className="w-3.5 h-3.5" /> // COMMS // FAQ
             </p>
-            <h2 className="text-3xl md:text-5xl leading-none tracking-tight" style={{ fontFamily: "var(--font-anton)" }}>
+            <h2 className="text-3xl md:text-5xl leading-none " style={{ fontFamily: "var(--font-anton)" }}>
               <span className="text-[#ECE8E1]">COMMON</span> <span className="text-[#FF4655]">QUESTIONS</span>
             </h2>
             <div className="flex items-center justify-center gap-3">
@@ -911,7 +1029,7 @@ export default function PricingPage() {
                 <span className="w-1.5 h-1.5 bg-white animate-pulse" /> SPIKE PLANTED // READY FOR INSERTION
               </div>
 
-              <h3 className="text-3xl md:text-5xl leading-[0.9] tracking-tight" style={{ fontFamily: "var(--font-anton)" }}>
+              <h3 className="text-3xl md:text-5xl leading-[0.9] " style={{ fontFamily: "var(--font-anton)" }}>
                 <span className="text-[#ECE8E1]">READY TO BRING YOUR</span> <span className="text-[#FF4655]">VISION</span>
                 <br />
                 <span className="text-[#ECE8E1]">TO LIFE?</span>

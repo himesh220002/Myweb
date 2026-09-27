@@ -6,6 +6,9 @@ import { initStarWarGame, GameRefs } from "./gameEngine";
 
 export default function StarWarGame() {
   const containerRef = useRef<HTMLDivElement>(null);
+  // Zero-size marker for the embed slot — the game node is moved to
+  // <body> for full-page play and restored here on EXIT.
+  const anchorRef = useRef<HTMLDivElement>(null);
 
   // Refs for all game UI elements
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,7 +44,7 @@ export default function StarWarGame() {
   useEffect(() => {
     // Ensure all refs are attached
     if (
-      !containerRef.current || !canvasRef.current || !sensElRef.current ||
+      !containerRef.current || !anchorRef.current || !canvasRef.current || !sensElRef.current ||
       !sensValRef.current || !hudScoreRef.current || !hudLivesRef.current ||
       !healthBarRef.current || !healthTextRef.current ||
       !autoToggleBtnRef.current || !gameOverScreenRef.current || !finalScoreElRef.current ||
@@ -56,6 +59,7 @@ export default function StarWarGame() {
 
     const refs: GameRefs = {
       container: containerRef.current,
+      anchor: anchorRef.current,
       canvas: canvasRef.current,
       sensEl: sensElRef.current,
       sensVal: sensValRef.current,
@@ -88,7 +92,9 @@ export default function StarWarGame() {
   }, []);
 
   return (
-    <div className={styles.container} ref={containerRef}>
+    <>
+      <div ref={anchorRef} aria-hidden="true" />
+      <div className={styles.container} ref={containerRef}>
       <div className="game-wrap">
         <button id="mobileToggle" ref={mobileToggleRef} className="mobile-toggle hidden" title="Toggle Mobile Controls">
           🎮
@@ -122,7 +128,7 @@ export default function StarWarGame() {
             AUTO: OFF
           </button>
         </div>
-        <p className="hint">Move: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / Arrows · Aim: <kbd>Mouse</kbd> · Fire: <kbd>Click</kbd> / <kbd>Space</kbd> · Pause: <kbd>ESC</kbd> · <span className="highlight-hint">Fullscreen: <kbd>F</kbd></span></p>
+        <p className="hint">Move: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / Arrows · Aim: <kbd>Mouse</kbd> · Fire: <kbd>Click</kbd> / <kbd>Space</kbd> · Pause: <kbd>ESC</kbd></p>
       </div>
 
       <div id="gameOverScreen" ref={gameOverScreenRef}>
@@ -179,11 +185,12 @@ export default function StarWarGame() {
           <div className="pause-actions">
             <button id="resumeBtn" ref={resumeBtnRef} className="val-menu-btn">RESUME</button>
             <button id="restartBtnPause" ref={restartBtnPauseRef} className="val-menu-btn">RESTART</button>
-            <button id="returnBtn" ref={returnBtnRef} className="val-menu-btn">QUIT TO MENU</button>
+            <button id="returnBtn" ref={returnBtnRef} className="val-menu-btn">EXIT</button>
           </div>
-          <div className="esc-hint">PRESS F TO FULLSCREEN</div>
+          <div className="esc-hint">PRESS ESC TO RESUME · EXIT RETURNS HOME</div>
         </div>
       </div>
     </div>
+    </>
   );
 }

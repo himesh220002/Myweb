@@ -52,6 +52,45 @@ const posts: Record<string, { category: string; title: string; date: string; rea
       "First hire: not a dev — a dispatcher. Then design, then backend. Front-end last, because system matters more than pixels.",
     ],
   },
+  "edge-runtime": {
+    category: "Engineering",
+    title: "Edge Runtime vs Node: Where to Run Your Next.js Workloads",
+    date: "Sep 02, 2026",
+    readTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&q=80&auto=format&fit=crop",
+    color: "#FF4655",
+    content: [
+      "Edge is not faster Node — it’s a different weapon. Sub-50ms cold starts and regional execution beat a single warm server for anything read-heavy and cacheable: marketing pages, product listings, middleware auth.",
+      "Node still wins where the Edge Runtime can’t go: sharp image pipelines, heavy PDF work, long-lived sockets, and native modules. Our decision tree: static-ish and personalizable → edge; stateful, binary, or long-running → Node serverless.",
+      "We run hybrid by default — middleware + ISR pages on the edge, checkout webhooks and queues on Node. One repo, two runtimes, zero drama. Measure p95 by region before you pick a side.",
+    ],
+  },
+  "design-systems": {
+    category: "Design",
+    title: "Building a Clipped HUD Design System in Tailwind",
+    date: "Aug 21, 2026",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1541462608143-67571c6738dd?w=1200&q=80&auto=format&fit=crop",
+    color: "#B14AFF",
+    content: [
+      "A valorant-grade system is three tokens repeated everywhere: clipped corners (cards, buttons, panels), corner brackets for focus, and a 2–3px red rail for hierarchy. Constrain the chaos and 200+ screens stay coherent.",
+      "We tokenize clips as utilities — CLIP_CARD, CLIP_BTN, CLIP_PANEL — plus Oswald/Anton display type and a mono HUD layer. Every component composes from those; no one-off borders allowed past v1.",
+      "Ship it like code: versioned tokens, a11y contrast checks in CI, and a Figma file generated from the same values. Design debt becomes a lint error, not a meeting.",
+    ],
+  },
+  "observability": {
+    category: "Strategy",
+    title: "Observability That Actually Saves Rounds: Logs, Traces, SLOs",
+    date: "Aug 09, 2026",
+    readTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80&auto=format&fit=crop",
+    color: "#00E5FF",
+    content: [
+      "99.99% uptime is 52 minutes of downtime a year — you don’t get there with vibes. One SLO per surface (p95 latency, error budget, checkout success), traces from edge to DB, and logs you can actually query at 3am.",
+      "Our stack: Sentry for exceptions with release health, structured JSON logs with request IDs, and a weekly error-budget review. Pager only fires on burn-rate alerts — everything else is a ticket, not a siren.",
+      "Start small: instrument the money path first (signup → pay → deliver), add synthetic checks from two regions, and write the runbook before the incident. Calm on-call is a feature you ship.",
+    ],
+  },
 };
 
 export default function BlogSlugPage() {
@@ -61,12 +100,19 @@ export default function BlogSlugPage() {
 
   return (
     <div className={`${anton.variable} ${rajdhani.variable} ${jetmono.variable} bg-[#0F1923] text-[#ECE8E1] min-h-screen selection:bg-[#FF4655]/30 relative overflow-hidden`}>
-      <div className="pointer-events-none absolute inset-0">
+      <div className="fixed inset-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/herobackgroundtheme3.jpg" alt="" className="w-full h-screen object-cover object-center" />
+        <div className="absolute inset-0 bg-[#0B131C]/62" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />
+      </div>
+      {/* <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[#0F1923]" />
         <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#FF465520_1px,transparent_1px),linear-gradient(to_bottom,#FF465520_1px,transparent_1px)] bg-[size:48px_48px]" />
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655]" />
-      </div>
-      <div className="relative z-10 max-w-3xl mx-auto px-6 py-16 md:py-24 space-y-8">
+      </div> */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 md:py-24 space-y-8">
         <Link href="/blog" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0a131c] border border-[#1e2d3a] text-[#768079] hover:text-[#ECE8E1] text-xs font-black tracking-widest" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>
           <ArrowLeft className="w-3.5 h-3.5" /> BACK TO INTEL
         </Link>
@@ -74,7 +120,7 @@ export default function BlogSlugPage() {
         <div className="relative bg-[#111A23] border border-[#1e2d3a] p-[1px] overflow-hidden" style={{ clipPath: CLIP_CARD }}>
           <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: post.color }} />
           <div className="relative bg-[#0F1923] overflow-hidden" style={{ clipPath: CLIP_CARD }}>
-            <div className="relative h-[320px] w-full overflow-hidden">
+            <div className="relative h-[300px] sm:h-[600px] w-full overflow-hidden">
               <img src={post.image} alt={post.title} className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-transparent to-transparent" />
               <div className="absolute top-3 left-3 px-2.5 py-1 bg-[#0a131c] border border-[#1e2d3a] text-white text-[11px] font-black tracking-widest" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>{post.category.toUpperCase()}</div>
