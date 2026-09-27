@@ -855,8 +855,6 @@ export function initStarWarGame(refs: GameRefs) {
             ship(player.x, player.y, player.w, '#4cc9f0', false, player.angle, true); ctx.restore();
         } else {
             ship(player.x, player.y, player.w, '#4cc9f0', false, player.angle, true);
-            const a = player.angle - Math.PI / 2; const tx = player.x - Math.cos(a) * 18, ty = player.y - Math.sin(a) * 18;
-            ctx.save(); ctx.fillStyle = '#ff9500aa'; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(tx + Math.cos(a + 2.4) * 10, ty + Math.sin(a + 2.4) * 10); ctx.lineTo(tx + Math.cos(a - 2.4) * 10, ty + Math.sin(a - 2.4) * 10); ctx.closePath(); ctx.fill(); ctx.restore();
         }
     }
     popups.forEach(pt => {

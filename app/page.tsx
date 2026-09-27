@@ -196,7 +196,7 @@ const STACK = [
   {
     group: "Frontend",
     items: [
-      { label: "Next.js 15", icons: ["https://cdn.simpleicons.org/nextdotjs/white"] },
+      { label: "Next.js 16", icons: ["https://cdn.simpleicons.org/nextdotjs/white"] },
       { label: "React 19", icons: ["https://cdn.simpleicons.org/react/white"] },
       { label: "TypeScript", icons: ["https://cdn.simpleicons.org/typescript/white"] },
       { label: "Tailwind CSS", icons: ["https://cdn.simpleicons.org/tailwindcss/white"] },
@@ -532,7 +532,7 @@ export default function Home() {
         </div>
 
         {/* bottom ticker */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full mt-12 border-y border-[#1e2d3a] bg-[#0a131c]/60 overflow-hidden">
+        <div className="relative z-10 max-w-7xl mx-auto hidden w-full mt-12 border-y border-[#1e2d3a] bg-[#0a131c]/60 overflow-hidden">
           <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent_0_40px,rgba(255,70,85,0.05)_40px_41px)]" />
           <div className="flex items-center justify-center gap-6 py-6 px-4 text-[11px] tracking-[0.18em] whitespace-nowrap overflow-hidden" style={{ fontFamily: "var(--font-mono)" }}>
             <span className="text-[#FF4655] font-black flex items-center gap-2"><span className="w-1.5 h-1.5 bg-[#FF4655] animate-pulse" /> LIVE // TICKER</span>
@@ -696,7 +696,7 @@ export default function Home() {
                       <div className="grid grid-cols-3 gap-2 mt-5">
                         {a.metrics.map((m) => (
                           <div key={m.k} className="rounded-2xl bg-black/30 border border-white/10 py-2.5 text-center">
-                            <p className="font-bold text-white text-[15px]" style={{ fontFamily: "var(--font-anton)" }}>{m.k}</p>
+                            <p className="text-white text-[15px]" style={{ fontFamily: "var(--font-anton)" }}>{m.k}</p>
                             <p className="text-[11px] text-white/50">{m.v}</p>
                           </div>
                         ))}
@@ -892,7 +892,7 @@ export default function Home() {
               </Link>
               <span className="hidden sm:inline text-white/20">·</span>
               <span className="text-[11px] tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
-                DUAL PRICING IN INR + USD · NDA-FIRST // 48H PROPOSAL
+                Non-Disclosure-Agreement-FIRST // 48H PROPOSAL
               </span>
             </div>
             <Reveal delay={0.15} className="mt-6">

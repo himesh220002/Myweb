@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import {
   Quote,
@@ -353,7 +353,6 @@ function DossierCard({ study, idx }: { study: (typeof caseStudies)[number]; idx:
 // ──────────────────────────────────────────────────────────────
 export default function ClientsPageValorant() {
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 18, restDelta: 0.001 });
 
   const backgroundColor = useTransform(scrollYProgress, [0, 0.5, 1], ["#0F1923", "#0a131c", "#0F1923"]);
 
@@ -405,14 +404,6 @@ export default function ClientsPageValorant() {
         {/* top red bar (valorant header rule) */}
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655]" />
       </div>
-
-      {/* scroll progress — valorant notched */}
-      <motion.div
-        style={{ scaleX }}
-        className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF4655] origin-left z-50"
-      >
-        <div className="absolute right-0 top-0 w-3 h-[3px] bg-[#ECE8E1]" />
-      </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-24 space-y-16 md:space-y-20">
         {/* ── HERO — VALORANT AGENT SELECT ── */}

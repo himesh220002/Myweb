@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import {
   Check,
   X,
@@ -176,9 +176,8 @@ export default function PricingPage() {
       .catch((err) => console.log("IP Geolocation check error:", err));
   }, []);
 
-  // Scroll progress
+  // Page background tint (scroll-driven)
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 18, restDelta: 0.001 });
   const backgroundColor = useTransform(scrollYProgress, [0, 0.5, 1], ["#0F1923", "#0a131c", "#0F1923"]);
 
   const heroRef = useRef(null);
@@ -258,11 +257,6 @@ export default function PricingPage() {
         <div className="absolute top-[18%] right-[-12%] w-[36rem] h-[36rem] bg-[#00E5FF]/[0.06] blur-[120px] rounded-full" />
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655]" />
       </div> */}
-
-      {/* scroll progress */}
-      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF4655] origin-left z-50">
-        <div className="absolute right-0 top-0 w-3 h-[3px] bg-[#ECE8E1]" />
-      </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-24 space-y-16 md:space-y-20">
         {/* ── HERO — VALORANT ARSENAL PRICING ── */}
@@ -345,7 +339,7 @@ export default function PricingPage() {
                     style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
                   >
                     RETAINER{" "}
-                    <span className="text-[10px] px-1.5 py-0.5 bg-emerald-500 text-white leading-none" style={{ clipPath: CLIP_BTN }}>
+                    <span className="text-[10px] px-1.5 py-1.5 bg-emerald-500 text-white leading-none" style={{ clipPath: CLIP_BTN }}>
                       SAVE 20%
                     </span>
                   </button>
@@ -609,22 +603,21 @@ export default function PricingPage() {
                     </h3>
 
                     <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-3xl md:text-4xl font-black  text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
+                      <span className="text-3xl md:text-4xl  text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
                         {formatVal(plan.price)}
                       </span>
                       {typeof plan.price === "number" && (
                         <span className="text-[11px] tracking-[0.14em] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>
-                          {billingPeriod === "project" ? "// FLAT FEE" : "// PER MONTH"}
+                          {billingPeriod === "project" ? "// PROGRESSIVE" : "// MONTHLY"}
                         </span>
                       )}
                     </div>
                     {typeof plan.price === "number" ? (
-                      <p className="text-[11px] tracking-widest text-[#768079] mb-1" style={{ fontFamily: "var(--font-mono)" }}>
-                        {plan.billingNote.toUpperCase()} · ≈ {plan.otherPriceLabel}{" "}
-                        {currency === "INR" ? "USD" : "INR"}
+                      <p className="text-[11px] tracking-widest text-[#768079] my-1" style={{ fontFamily: "var(--font-mono)" }}>
+                        {plan.billingNote.toUpperCase()}
                       </p>
                     ) : (
-                      <p className="text-[11px] tracking-widest text-[#768079] mb-1" style={{ fontFamily: "var(--font-mono)" }}>
+                      <p className="text-[11px] tracking-widest text-[#768079] my-1" style={{ fontFamily: "var(--font-mono)" }}>
                         {plan.billingNote.toUpperCase()}
                       </p>
                     )}
@@ -665,7 +658,7 @@ export default function PricingPage() {
                                   </div>
                                 )}
                                 <span
-                                  className={`leading-relaxed font-bold ${feat.included ? "text-[#ECE8E1]" : "text-[#768079]/60 line-through"}`}
+                                  className={`leading-relaxed text-lg ${feat.included ? "text-[#ECE8E1]" : "text-[#768079]/60 line-through"}`}
                                   style={{ fontFamily: "var(--font-raj)" }}
                                 >
                                   {feat.text}
@@ -718,7 +711,7 @@ export default function PricingPage() {
               <p className="text-sm text-[#768079]" style={{ fontFamily: "var(--font-raj)" }}>
                 Same tiers, same prices as Home — grouped so nothing gets missed. Prices shown in{" "}
                 {currency === "INR" ? "INR (₹)" : "USD ($)"}
-                {billingPeriod === "retainer" ? " · retainer / month" : " · flat fee, one-time deploy"}
+                {billingPeriod === "retainer" ? " · retainer / month" : " · progressive fee, one-time deploy"}
                 {billingPeriod === "project" ? " (retainer saves ~20%)" : ""}.
               </p>
             </div>

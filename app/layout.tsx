@@ -52,6 +52,7 @@ export const metadata: Metadata = {
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TopLoader from "@/components/TopLoader";
 
 export default function RootLayout({
   children,
@@ -70,6 +71,7 @@ export default function RootLayout({
           forcedTheme="dark"
           disableTransitionOnChange
         >
+          <TopLoader />
           <Navbar />
           <main className="flex-grow overflow-x-visible">
             {children}

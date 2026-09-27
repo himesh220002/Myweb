@@ -43,8 +43,14 @@
 
 /* ─── Base ─────────────────────────────────────────────── */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   overflow-x: hidden;
+}
+
+/* Opt-in smooth scrolling for in-page anchors only.
+   Keep route-change scroll-to-top instant (no scroll animation). */
+.smooth-scroll {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -363,5 +369,45 @@ body {
   100% {
     transform: rotate(35deg) translateY(100vh);
     opacity: 0;
+  }
+}
+
+/* ─── Guided attention glow (clip-path safe: uses drop-shadow) ─── */
+@keyframes guide-ping {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(255, 70, 85, 0.35));
+    border-color: rgba(255, 70, 85, 0.55);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 18px rgba(255, 70, 85, 0.8));
+    border-color: rgba(255, 70, 85, 1);
+  }
+}
+
+.guide-glow {
+  animation: guide-ping 1.6s ease-in-out infinite;
+}
+
+@keyframes next-phase-ping {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(255, 70, 85, 0.5));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 22px rgba(255, 70, 85, 0.95)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.25));
+  }
+}
+
+.next-phase-glow {
+  animation: next-phase-ping 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-glow,
+  .next-phase-glow {
+    animation: none;
   }
 }

@@ -135,7 +135,7 @@ export default function Navbar() {
           />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-[64px] md:h-[68px] gap-4">
+        <div className="relative max-w-[1800px] mx-auto px-4 sm:px-6 flex items-center justify-between h-[64px] md:h-[68px] gap-4">
           {/* Logo area */}
           <Link href="/" className="flex items-center gap-3 group shrink-0">
             <div
@@ -190,10 +190,10 @@ export default function Navbar() {
                         <>
                           <motion.span
                             layoutId="nav-active-indicator-more"
-                            className="absolute left-3 right-3 -bottom-[9px] h-[2px] bg-[#FF4655]"
+                            className="absolute left-3 right-3 bottom-1 h-[2px] bg-[#FF4655]"
                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                           />
-                          <span className="absolute left-1/2 -bottom-[13px] -translate-x-1/2 w-1 h-1 bg-[#FF4655] rotate-45" />
+                          <span className="absolute left-1/2 bottom-0 -translate-x-1/2 w-1 h-1 bg-[#FF4655] rotate-45" />
                         </>
                       )}
                     </button>
@@ -276,10 +276,10 @@ export default function Navbar() {
                     <>
                       <motion.span
                         layoutId="nav-active-indicator"
-                        className="absolute left-3 right-3 -bottom-[9px] h-[2px] bg-[#FF4655]"
+                        className="absolute left-3 right-3 bottom-1 h-[2px] bg-[#FF4655]"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
-                      <span className="absolute left-1/2 -bottom-[13px] -translate-x-1/2 w-1 h-1 bg-[#FF4655] rotate-45" />
+                      <span className="absolute left-1/2 bottom-0 -translate-x-1/2 w-1 h-1 bg-[#FF4655] rotate-45" />
                     </>
                   )}
                 </Link>

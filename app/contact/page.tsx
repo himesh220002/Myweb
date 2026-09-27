@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail,
   MapPin,
@@ -91,9 +91,6 @@ export default function ContactPage() {
     company: "",
   });
 
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 18, restDelta: 0.001 });
-
   const handleNext = () => setStep(step + 1);
   const handlePrev = () => {
     setError("");
@@ -149,7 +146,7 @@ export default function ContactPage() {
     { id: "Technical Consulting", title: "Technical Consulting", icon: MessageSquare, sub: "STRAT // AUDIT" },
   ];
 
-  const budgets = ["Under $5k", "$5k - $10k", "$10k - $20k", "$20+"];
+  const budgets = ["Under $1k", "$1k - $2k", "$2k - $5k", "$5k+"];
 
   return (
     <div
@@ -177,11 +174,6 @@ export default function ContactPage() {
         <div className="absolute bottom-[-10%] left-[28%] w-[30rem] h-[30rem] bg-[#FF4655]/[0.05] blur-[110px] rounded-full" />
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655]" />
       </div> */}
-
-      {/* scroll progress */}
-      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF4655] origin-left z-50">
-        <div className="absolute right-0 top-0 w-3 h-[3px] bg-[#ECE8E1]" />
-      </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-24 space-y-10 md:space-y-14">
         {/* ── HEADER HUD ── */}
@@ -364,9 +356,7 @@ export default function ContactPage() {
                       <Mail className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[10px] tracking-[0.14em] text-[#768079] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
-                        // EMAIL // PRIMARY
-                      </p>
+                      
                       <p className="text-sm font-bold tracking-wide text-[#ECE8E1] truncate group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
                         satyamhimesh@gmail.com
                       </p>
@@ -388,9 +378,7 @@ export default function ContactPage() {
                       <Phone className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[10px] tracking-[0.14em] text-[#768079] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
-                        // HOTLINE // VOICE
-                      </p>
+                      
                       <p className="text-sm font-bold tracking-wide text-[#ECE8E1] group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
                         +91-8105542318
                       </p>
@@ -407,9 +395,7 @@ export default function ContactPage() {
                       <MapPin className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[10px] tracking-[0.14em] text-[#768079] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
-                        // COORDS // GRID
-                      </p>
+                      
                       <p className="text-sm font-bold tracking-wide text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>
                         Remote Worldwide
                       </p>
@@ -507,7 +493,7 @@ export default function ContactPage() {
                 { v: "99.99%", l: "UPTIME SLA" },
               ].map((s) => (
                 <div key={s.l} className="bg-[#111A23] border border-[#1e2d3a] p-3 text-center" style={{ clipPath: CLIP_PANEL }}>
-                  <p className="text-sm font-black text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
+                  <p className="text-sm text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>
                     {s.v}
                   </p>
                   <p className="text-[10px] tracking-[0.14em] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>
@@ -601,6 +587,7 @@ export default function ContactPage() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                           {projectTypes.map((type) => {
                             const active = formData.type === type.id;
+                            const guiding = !formData.type;
                             return (
                               <button
                                 key={type.id}
@@ -608,11 +595,19 @@ export default function ContactPage() {
                                 className={`group relative flex flex-col items-center justify-center gap-3 p-6 border text-center transition-all text-left overflow-hidden ${
                                   active
                                     ? "bg-[#FF4655] border-[#FF4655] text-white shadow-[0_0_20px_rgba(255,70,85,0.35)]"
-                                    : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
+                                    : guiding
+                                      ? "guide-glow bg-[#0a131c] hover:bg-[#111A23] text-[#ECE8E1]"
+                                      : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
                                 }`}
                                 style={{ clipPath: CLIP_BTN }}
                               >
                                 {active && <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/80" />}
+                                {guiding && !active && (
+                                  <span className="absolute top-2 right-2 flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full bg-[#FF4655] opacity-75" />
+                                    <span className="relative inline-flex h-2 w-2 bg-[#FF4655]" />
+                                  </span>
+                                )}
                                 <div
                                   className={`w-11 h-11 flex items-center justify-center border ${active ? "bg-white text-[#FF4655] border-white" : "bg-[#111A23] border-[#1e2d3a] text-[#768079] group-hover:text-[#FF4655] group-hover:border-[#FF4655]/40"}`}
                                   style={{ clipPath: CLIP_BTN }}
@@ -639,7 +634,7 @@ export default function ContactPage() {
                           <button
                             onClick={handleNext}
                             disabled={!formData.type}
-                            className="group relative inline-flex items-center gap-2 bg-[#FF4655] text-white px-8 py-3.5 font-black tracking-wide hover:bg-[#e03a49] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className={`group relative inline-flex items-center gap-2 bg-[#FF4655] text-white px-8 py-3.5 font-black tracking-wide hover:bg-[#e03a49] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${formData.type ? "next-phase-glow" : ""}`}
                             style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-raj)" }}
                           >
                             <span className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" style={{ clipPath: CLIP_BTN }} />
@@ -670,6 +665,7 @@ export default function ContactPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {budgets.map((budget) => {
                             const active = formData.budget === budget;
+                            const guiding = !formData.budget;
                             return (
                               <button
                                 key={budget}
@@ -677,15 +673,21 @@ export default function ContactPage() {
                                 className={`relative p-6 border text-center transition-all overflow-hidden group ${
                                   active
                                     ? "bg-[#FF4655] border-[#FF4655] text-white shadow-[0_0_20px_rgba(255,70,85,0.35)]"
-                                    : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
+                                    : guiding
+                                      ? "guide-glow bg-[#0a131c] hover:bg-[#111A23] text-[#ECE8E1]"
+                                      : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
                                 }`}
                                 style={{ clipPath: CLIP_BTN }}
                               >
                                 {active && <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/80" />}
-                                <p className="text-[10px] tracking-[0.14em] font-bold" style={{ fontFamily: "var(--font-mono)", color: active ? "rgba(255,255,255,0.8)" : "#768079" }}>
-                                  // BUDGET // TIER
-                                </p>
-                                <p className={`text-lg font-black tracking-wide mt-1 ${active ? "text-white" : "text-[#ECE8E1]"}`} style={{ fontFamily: "var(--font-anton)" }}>
+                                {guiding && !active && (
+                                  <span className="absolute top-2 right-2 flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full bg-[#FF4655] opacity-75" />
+                                    <span className="relative inline-flex h-2 w-2 bg-[#FF4655]" />
+                                  </span>
+                                )}
+                                
+                                <p className={`text-lg tracking-wide mt-1 ${active ? "text-white" : "text-[#ECE8E1]"}`} style={{ fontFamily: "var(--font-anton)" }}>
                                   {budget.toUpperCase()}
                                 </p>
                                 <div className={`mt-2 h-px w-10 mx-auto ${active ? "bg-white/40" : "bg-[#1e2d3a] group-hover:bg-[#FF4655]/40"}`} />
@@ -714,7 +716,7 @@ export default function ContactPage() {
                           <button
                             onClick={handleNext}
                             disabled={!formData.budget}
-                            className="group relative inline-flex items-center gap-2 bg-[#FF4655] text-white px-8 py-3.5 font-black tracking-wide hover:bg-[#e03a49] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className={`group relative inline-flex items-center gap-2 bg-[#FF4655] text-white px-8 py-3.5 font-black tracking-wide hover:bg-[#e03a49] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${formData.budget ? "next-phase-glow" : ""}`}
                             style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-raj)" }}
                           >
                             <span className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" style={{ clipPath: CLIP_BTN }} />

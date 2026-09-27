@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, notFound } from "next/navigation";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { projects } from "@/lib/data/projects";
 import {
   ArrowLeft,
@@ -68,9 +68,6 @@ export default function ProjectDetail() {
 
   if (!project) return notFound();
 
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 18, restDelta: 0.001 });
-
   const categoryPrimary = project.category.split(" / ")[0];
   const categorySecondary = project.category.includes("/") ? project.category.split(" / ")[1] : "Software";
 
@@ -93,11 +90,6 @@ export default function ProjectDetail() {
         <div className="absolute top-[12%] right-[-12%] w-[36rem] h-[36rem] bg-[#00E5FF]/[0.06] blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] left-[28%] w-[30rem] h-[30rem] bg-[#FF4655]/[0.05] blur-[110px] rounded-full" />
       </div> */}
-
-      {/* scroll progress */}
-      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF4655] origin-left z-50">
-        <div className="absolute right-0 top-0 w-3 h-[3px] bg-[#ECE8E1]" />
-      </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 md:py-20 space-y-8">
         {/* ── BACK ── */}

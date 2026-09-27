@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2, Briefcase, MapPin, Calendar, Crosshair, Radio, Target, Swords, ShieldCheck, User, Mail, Phone, Globe2, FileText, Send, Skull } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
@@ -37,9 +37,6 @@ export default function ApplyPage() {
   const [error, setError] = useState("");
   const [cv, setCv] = useState<File | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", portfolio: "", coverLetter: "" });
-
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 18, restDelta: 0.001 });
 
   if (!role) return notFound();
 
@@ -102,10 +99,6 @@ export default function ApplyPage() {
         <div className="absolute -top-20 left-1/4 w-96 h-96 bg-[#FF4655]/10 rounded-full blur-[120px]" />
         <div className="absolute top-20 right-1/4 w-[30rem] h-[30rem] bg-[#00E5FF]/[0.06] rounded-full blur-[120px]" />
       </div> */}
-      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[3px] bg-[#FF4655] origin-left z-50">
-        <div className="absolute right-0 top-0 w-3 h-[3px] bg-[#ECE8E1]" />
-      </motion.div>
-
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 md:py-20 space-y-8">
         {/* back */}
         <Link href="/career" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0a131c] border border-[#1e2d3a] text-[#768079] hover:text-[#ECE8E1] hover:border-[#FF4655]/40 text-xs font-black tracking-[0.14em] transition-colors group" style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}>
