@@ -25,7 +25,6 @@ import {
   FileText,
   FileCode,
 } from "lucide-react";
-import QRCode from "qrcode";
 import { loadRazorpayScript } from "@/lib/loadRazorpay";
 import {
   printReceiptIsolated,
@@ -154,8 +153,6 @@ function PaymentPortalContent() {
   const [email, setEmail] = useState<string>(queryEmail || "");
   const [phone, setPhone] = useState<string>("");
 
-  const [activePaymentTab, setActivePaymentTab] = useState<"gateway" | "qr">("gateway");
-  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successData, setSuccessData] = useState<ReceiptData | null>(
@@ -174,7 +171,6 @@ function PaymentPortalContent() {
       : null
   );
   const [copiedId, setCopiedId] = useState(false);
-  const [copiedUpi, setCopiedUpi] = useState(false);
 
   const successContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -208,39 +204,10 @@ function PaymentPortalContent() {
       ? Number(customAmount) || 0
       : activePreset.amount;
 
-  const upiId = process.env.NEXT_PUBLIC_UPI_ID || "satyamhimesh@pingpay";
-  const upiPayeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME || "Himesh Satyam";
-
-  // Generate dynamic QR Code on-the-go whenever amount or description updates
-  useEffect(() => {
-    if (finalAmount > 0) {
-      const note = encodeURIComponent(
-        description || (selectedPreset === "coffee" ? "CypherTech Coffee Support" : "CypherTech Payment")
-      );
-      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiPayeeName)}&am=${finalAmount}&cu=INR&tn=${note}`;
-      QRCode.toDataURL(upiUrl, {
-        width: 240,
-        margin: 1.5,
-        color: {
-          dark: "#0f172a",
-          light: "#ffffff",
-        },
-      })
-        .then((url) => setQrCodeDataUrl(url))
-        .catch((err) => console.error("Error generating dynamic QR:", err));
-    }
-  }, [finalAmount, description, selectedPreset, upiId, upiPayeeName]);
-
   const handleCopyPaymentId = (id: string) => {
     navigator.clipboard.writeText(id);
     setCopiedId(true);
     setTimeout(() => setCopiedId(false), 2000);
-  };
-
-  const handleCopyUpiId = () => {
-    navigator.clipboard.writeText(upiId);
-    setCopiedUpi(true);
-    setTimeout(() => setCopiedUpi(false), 2000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -262,8 +229,8 @@ function PaymentPortalContent() {
       return;
     }
 
-    if (!phone.trim() || phone.trim().length < 8) {
-      setErrorMessage("Please enter a valid contact phone number.");
+    if (!phone.trim() || phone.trim().length < 3) {
+      setErrorMessage("Please enter a valid mobile number or UPI ID.");
       return;
     }
 
@@ -284,6 +251,9 @@ function PaymentPortalContent() {
           ? description.trim() || "Custom Project Milestone"
           : activePreset.label;
 
+      const isUpiVpa = phone.includes("@");
+      const prefillContact = isUpiVpa ? "" : phone.replace(/[^0-9+]/g, "");
+
       const orderRes = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -298,6 +268,7 @@ function PaymentPortalContent() {
           notes: {
             customDescription: description,
             presetType: selectedPreset,
+            contactIdentifier: phone,
           },
         }),
       });
@@ -327,7 +298,7 @@ function PaymentPortalContent() {
         prefill: {
           name,
           email,
-          contact: phone,
+          contact: prefillContact,
         },
         notes: {
           plan: planTitle,
@@ -483,10 +454,33 @@ function PaymentPortalContent() {
           {/* DEDICATED COMPACT BUT FULL-LENGTH DETAILED RECEIPT VOUCHER */}
           <div
             id="receipt-print-area"
-            className="bg-white border border-gray-300 rounded-xl p-4 sm:p-6 shadow-sm space-y-4"
+            className="bg-white border border-gray-300 rounded-xl p-4 sm:p-6 shadow-sm space-y-4 relative overflow-hidden"
           >
+            {/* Centered Cross & Tactical Security Watermark (0.03 opacity) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[460px] h-[460px] max-w-[88%] max-h-[88%] pointer-events-none opacity-[0.03] select-none flex items-center justify-center z-0">
+              <svg viewBox="0 0 600 600" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <line x1="300" y1="20" x2="300" y2="580" stroke="#0f172a" strokeWidth="3" strokeLinecap="round" />
+                <line x1="20" y1="300" x2="580" y2="300" stroke="#0f172a" strokeWidth="3" strokeLinecap="round" />
+                <line x1="270" y1="40" x2="330" y2="40" stroke="#0f172a" strokeWidth="2" />
+                <line x1="270" y1="560" x2="330" y2="560" stroke="#0f172a" strokeWidth="2" />
+                <line x1="40" y1="270" x2="40" y2="330" stroke="#0f172a" strokeWidth="2" />
+                <line x1="560" y1="270" x2="560" y2="330" stroke="#0f172a" strokeWidth="2" />
+                <line x1="120" y1="120" x2="480" y2="480" stroke="#0f172a" strokeWidth="1.5" strokeDasharray="10 8" />
+                <line x1="480" y1="120" x2="120" y2="480" stroke="#0f172a" strokeWidth="1.5" strokeDasharray="10 8" />
+                <circle cx="300" cy="300" r="260" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeDasharray="14 10" />
+                <circle cx="300" cy="300" r="180" fill="none" stroke="#0f172a" strokeWidth="2" />
+                <circle cx="300" cy="300" r="100" fill="none" stroke="#0f172a" strokeWidth="1.5" />
+                <rect x="282" y="282" width="36" height="36" fill="none" stroke="#0f172a" strokeWidth="2" transform="rotate(45 300 300)" />
+                <g transform="translate(200, 200) scale(1)">
+                  <polygon points="100,25 180,55 180,145 100,175 25,145 25,55" fill="#0f172a" stroke="#0f172a" strokeWidth="5" strokeLinejoin="round" />
+                  <polygon points="40,70 95,93 95,103 50,85 50,130 95,147 95,157 40,135" fill="#ffffff" />
+                  <polygon points="105,92 165,70 165,80 140,90 140,145 133,148 133,92 105,102" fill="#0f172a" />
+                </g>
+              </svg>
+            </div>
+
             {/* Header: Company & Merchant Info */}
-            <div className="flex justify-between items-start border-b border-gray-200 pb-3">
+            <div className="flex justify-between items-start border-b border-gray-200 pb-3 relative z-10">
               <div>
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 bg-black rounded flex items-center justify-center border border-red-500 shrink-0">
@@ -1030,151 +1024,81 @@ function PaymentPortalContent() {
                   </div>
                 </div>
 
-                {/* Tab Toggle: Gateway Checkout vs On-the-Go QR Code */}
-                <div className="flex border border-gray-200 rounded-xl p-1 bg-gray-100/70 text-xs sm:text-sm">
-                  <button
-                    type="button"
-                    onClick={() => setActivePaymentTab("gateway")}
-                    className={`flex-1 py-1.5 sm:py-2 px-2 text-xs sm:text-sm font-bold rounded-lg flex items-center justify-center gap-1.5 transition cursor-pointer ${
-                      activePaymentTab === "gateway"
-                        ? "bg-white text-blue-700 shadow-2xs font-extrabold"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    <CreditCard className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" /> Razorpay Gateway
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActivePaymentTab("qr")}
-                    className={`flex-1 py-1.5 sm:py-2 px-2 text-xs sm:text-sm font-bold rounded-lg flex items-center justify-center gap-1.5 transition cursor-pointer ${
-                      activePaymentTab === "qr"
-                        ? "bg-white text-emerald-700 shadow-2xs font-extrabold"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    <QrCode className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" /> Instant Scan (QR)
-                  </button>
-                </div>
-
-                {/* TAB 1: RAZORPAY GATEWAY CHECKOUT */}
-                {activePaymentTab === "gateway" ? (
-                  <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
-                    <div>
-                      <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                        Your Full Name <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g. Rahul Sharma"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                        Billing Email Address <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="billing@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
-                        required
-                      />
-                      <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
-                        Official digital tax receipt emailed here automatically.
-                      </span>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                        Mobile Phone (UPI / OTP) <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        placeholder="e.g. +91 9876543210"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
-                        required
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading || finalAmount <= 0}
-                      className="w-full py-3 sm:py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-base rounded-xl flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-98 mt-2"
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                          <span>Connecting Gateway...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Pay ₹{finalAmount.toLocaleString("en-IN")} via Razorpay</span>
-                          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                        </>
-                      )}
-                    </button>
-                  </form>
-                ) : (
-                  /* TAB 2: DYNAMIC ON-THE-GO QR CODE */
-                  <div className="space-y-3 text-center">
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 inline-block mx-auto shadow-2xs">
-                      {qrCodeDataUrl ? (
-                        <img
-                          src={qrCodeDataUrl}
-                          alt="Scan to pay"
-                          className="w-44 h-44 sm:w-52 sm:h-52 mx-auto rounded-lg"
-                        />
-                      ) : (
-                        <div className="w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
-                          <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-                        </div>
-                      )}
-                      <div className="mt-2 text-xs sm:text-sm font-bold text-gray-900">
-                        Scan with any UPI App • ₹{finalAmount.toLocaleString("en-IN")}
-                      </div>
-                      <div className="text-[10px] sm:text-xs text-gray-500">GPay, PhonePe, Paytm, BHIM</div>
-                    </div>
-
-                    {/* Copy UPI handle */}
-                    <div className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs sm:text-sm">
-                      <span className="text-gray-500 font-medium text-xs sm:text-sm">UPI ID:</span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-gray-900 font-bold text-xs sm:text-sm">{upiId}</span>
-                        <button
-                          type="button"
-                          onClick={handleCopyUpiId}
-                          className="text-blue-600 hover:text-blue-800 p-0.5 cursor-pointer"
-                          title="Copy UPI ID"
-                        >
-                          {copiedUpi ? (
-                            <CheckCheck className="w-4 h-4 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-4 h-4" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
-                    <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed">
-                      Payee: <strong className="text-gray-900">{upiPayeeName}</strong>. Dynamic QR syncs with your amount.
-                    </p>
+                {/* RAZORPAY GATEWAY CHECKOUT FORM */}
+                <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                      Your Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Rahul Sharma"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                      required
+                    />
                   </div>
-                )}
+
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                      Billing Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="billing@company.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                      required
+                    />
+                    <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
+                      Official digital tax receipt emailed here automatically.
+                    </span>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                      Mobile Number / UPI ID <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 9876543210 or username@upi"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                      required
+                    />
+                    <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
+                      Used for UPI payment routing and instant SMS confirmation.
+                    </span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || finalAmount <= 0}
+                    className="w-full py-3 sm:py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-base rounded-xl flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-98 mt-2"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                        <span>Connecting Gateway...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Pay ₹{finalAmount.toLocaleString("en-IN")} via Razorpay</span>
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </>
+                    )}
+                  </button>
+                </form>
 
                 {/* Platform Safeguards Badges */}
                 <div className="pt-3 border-t border-gray-100 space-y-2">
                   <div className="grid grid-cols-3 gap-1.5 text-center text-[10px] sm:text-xs">
                     <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
-                      <span className="block font-bold text-gray-800">UPI Instant</span>
-                      <span className="block text-[9px] sm:text-[10px] text-gray-500">GPay • PhonePe</span>
+                      <span className="block font-bold text-gray-800">UPI &amp; Dynamic QR</span>
+                      <span className="block text-[9px] sm:text-[10px] text-gray-500">GPay • PhonePe • QR</span>
                     </div>
                     <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
                       <span className="block font-bold text-gray-800">Cards &amp; EMI</span>

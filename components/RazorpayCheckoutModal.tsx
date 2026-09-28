@@ -20,7 +20,6 @@ import {
   Download,
   FileCode,
 } from "lucide-react";
-import QRCode from "qrcode";
 import { loadRazorpayScript } from "@/lib/loadRazorpay";
 import {
   printReceiptIsolated,
@@ -57,13 +56,10 @@ export default function RazorpayCheckoutModal({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
-  const [activeTab, setActiveTab] = useState<"gateway" | "qr">("gateway");
-  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successData, setSuccessData] = useState<any | null>(null);
   const [copiedId, setCopiedId] = useState(false);
-  const [copiedUpi, setCopiedUpi] = useState(false);
 
   const modalBodyRef = useRef<HTMLDivElement | null>(null);
 
@@ -80,7 +76,6 @@ export default function RazorpayCheckoutModal({
       setErrorMessage(null);
       setSuccessData(null);
       setLoading(false);
-      setActiveTab("gateway");
       if (item) {
         setPaymentOption("deposit");
       }
@@ -102,33 +97,11 @@ export default function RazorpayCheckoutModal({
       : Number(customAmount) || 0;
 
   const currencyCode = "INR";
-  const upiId = process.env.NEXT_PUBLIC_UPI_ID || "satyamhimesh@pingpay";
-  const upiPayeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME || "Himesh Satyam";
-
-  // Generate dynamic QR code on the go
-  useEffect(() => {
-    if (finalAmount > 0) {
-      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiPayeeName)}&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(item?.name || "CypherTech Payment")}`;
-      QRCode.toDataURL(upiUrl, {
-        width: 240,
-        margin: 1.5,
-        color: { dark: "#0f172a", light: "#ffffff" },
-      })
-        .then((url) => setQrCodeDataUrl(url))
-        .catch((err) => console.error("Error generating QR:", err));
-    }
-  }, [finalAmount, item?.name, upiId, upiPayeeName]);
 
   const handleCopyPaymentId = (id: string) => {
     navigator.clipboard.writeText(id);
     setCopiedId(true);
     setTimeout(() => setCopiedId(false), 2000);
-  };
-
-  const handleCopyUpiId = () => {
-    navigator.clipboard.writeText(upiId);
-    setCopiedUpi(true);
-    setTimeout(() => setCopiedUpi(false), 2000);
   };
 
 
@@ -151,8 +124,8 @@ export default function RazorpayCheckoutModal({
       return;
     }
 
-    if (!phone.trim() || phone.trim().length < 8) {
-      setErrorMessage("Please enter a valid mobile number for payment confirmation.");
+    if (!phone.trim() || phone.trim().length < 3) {
+      setErrorMessage("Please enter a valid mobile number or UPI ID for payment confirmation.");
       return;
     }
 
@@ -174,6 +147,9 @@ export default function RazorpayCheckoutModal({
           : "Custom Milestone"
       })`;
 
+      const isUpiVpa = phone.includes("@");
+      const prefillContact = isUpiVpa ? "" : phone.replace(/[^0-9+]/g, "");
+
       const orderRes = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -188,6 +164,7 @@ export default function RazorpayCheckoutModal({
           notes: {
             customerNotes: notes,
             paymentType: paymentOption,
+            contactIdentifier: phone,
           },
         }),
       });
@@ -217,7 +194,7 @@ export default function RazorpayCheckoutModal({
         prefill: {
           name,
           email,
-          contact: phone,
+          contact: prefillContact,
         },
         notes: {
           plan: item.name,
@@ -570,145 +547,77 @@ export default function RazorpayCheckoutModal({
                   </div>
                 </div>
 
-                {/* Toggle: Form vs On-The-Go QR */}
-                <div className="flex border border-gray-200 rounded-xl p-1 bg-gray-50">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("gateway")}
-                    className={`flex-1 py-1.5 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition ${
-                      activeTab === "gateway"
-                        ? "bg-white text-blue-700 shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    <CreditCard className="w-3.5 h-3.5" /> Razorpay Checkout
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("qr")}
-                    className={`flex-1 py-1.5 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition ${
-                      activeTab === "qr"
-                        ? "bg-white text-emerald-700 shadow-sm"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    <QrCode className="w-3.5 h-3.5" /> Scan UPI QR
-                  </button>
-                </div>
-
-                {/* TAB 1: FORM CHECKOUT */}
-                {activeTab === "gateway" ? (
-                  <form onSubmit={handleSubmit} className="space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-700 mb-1">
-                          Full Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="e.g. Rahul Sharma"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-700 mb-1">
-                          Mobile Phone <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="tel"
-                          placeholder="e.g. +91 9876543210"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
-                          required
-                        />
-                      </div>
-                    </div>
-
+                {/* FORM CHECKOUT */}
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1">
-                        Billing Email Address <span className="text-red-500">*</span>
+                        Full Name <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type="email"
-                        placeholder="client@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type="text"
+                        placeholder="e.g. Rahul Sharma"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                         required
                       />
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={loading || finalAmount <= 0}
-                      className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Connecting to Gateway...
-                        </>
-                      ) : (
-                        <>
-                          Pay ₹{finalAmount.toLocaleString("en-IN")} via Razorpay{" "}
-                          <ArrowRight className="w-4 h-4" />
-                        </>
-                      )}
-                    </button>
-                  </form>
-                ) : (
-                  /* TAB 2: LIVE QR SCAN */
-                  <div className="space-y-3 text-center">
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 inline-block mx-auto shadow-sm">
-                      {qrCodeDataUrl ? (
-                        <img
-                          src={qrCodeDataUrl}
-                          alt="Scan to pay"
-                          className="w-44 h-44 mx-auto rounded-lg"
-                        />
-                      ) : (
-                        <div className="w-44 h-44 flex items-center justify-center">
-                          <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-                        </div>
-                      )}
-                      <div className="mt-1.5 text-xs font-bold text-gray-900">
-                        Scan to Pay ₹{finalAmount.toLocaleString("en-IN")}
-                      </div>
-                      <div className="text-[11px] text-gray-500">GPay, PhonePe, Paytm, BHIM</div>
-                    </div>
-
-                    <div className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs">
-                      <span className="text-gray-500 font-medium">UPI ID:</span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-gray-900 font-semibold">{upiId}</span>
-                        <button
-                          type="button"
-                          onClick={handleCopyUpiId}
-                          className="text-blue-600 hover:text-blue-800 p-0.5"
-                          title="Copy UPI ID"
-                        >
-                          {copiedUpi ? (
-                            <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
-                      </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1">
+                        Mobile Number / UPI ID <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 9876543210 or name@upi"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
+                        required
+                      />
                     </div>
                   </div>
-                )}
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Billing Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="client@company.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || finalAmount <= 0}
+                    className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Connecting to Gateway...
+                      </>
+                    ) : (
+                      <>
+                        Pay ₹{finalAmount.toLocaleString("en-IN")} via Razorpay{" "}
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                </form>
 
                 {/* Established Platform Safeguard Badges */}
                 <div className="pt-3 border-t border-gray-100 space-y-2">
                   <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
                     <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
-                      <span className="block font-semibold text-gray-800">UPI Instant</span>
-                      <span className="text-gray-500">GPay • PhonePe</span>
+                      <span className="block font-semibold text-gray-800">UPI &amp; Dynamic QR</span>
+                      <span className="text-gray-500">GPay • PhonePe • QR</span>
                     </div>
                     <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
                       <span className="block font-semibold text-gray-800">Cards & EMI</span>

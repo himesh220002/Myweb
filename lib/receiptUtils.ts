@@ -65,6 +65,39 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       border-radius: 8px;
       padding: 24px;
       background: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+    .watermark-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 480px;
+      height: 480px;
+      max-width: 88%;
+      max-height: 88%;
+      pointer-events: none;
+      opacity: 0.03;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .watermark-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .header-row,
+    .total-banner,
+    .section-title,
+    .detail-table,
+    .compliance-footer {
+      position: relative;
+      z-index: 1;
     }
     .header-row {
       display: flex;
@@ -74,12 +107,36 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       padding-bottom: 16px;
       margin-bottom: 16px;
     }
+    .brand-header-flex {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo-badge {
+      width: 38px;
+      height: 38px;
+      background: #000000;
+      border: 1.5px solid #ff4655;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+    .brand-logo-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
     .brand-title {
       font-size: 20px;
       font-weight: 900;
       letter-spacing: -0.5px;
       color: #0f172a;
       text-transform: uppercase;
+      line-height: 1.1;
     }
     .brand-subtitle {
       font-size: 10px;
@@ -89,7 +146,7 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       margin-top: 1px;
     }
     .merchant-info {
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 11px;
       color: #475569;
       line-height: 1.4;
@@ -123,6 +180,35 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       font-size: 11px;
       color: #64748b;
       margin-top: 2px;
+    }
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+      }
+      .receipt-container {
+        border: 1.5px solid #0f172a !important;
+        box-shadow: none !important;
+      }
+      .watermark-overlay {
+        opacity: 0.03 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .status-badge {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .total-banner {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .brand-logo-badge {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
     }
     .total-banner {
       background: #f8fafc;
@@ -234,10 +320,71 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
 </head>
 <body>
   <div class="receipt-container">
+    <!-- Centered Cross & Tactical Security Watermark (0.03 opacity) -->
+    <div class="watermark-overlay" aria-hidden="true">
+      <svg viewBox="0 0 600 600" class="watermark-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Main Tactical Precision Cross (+) -->
+        <line x1="300" y1="20" x2="300" y2="580" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+        <line x1="20" y1="300" x2="580" y2="300" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+        
+        <!-- Precision Cross End-Caps / Crosshair Ticks -->
+        <line x1="270" y1="40" x2="330" y2="40" stroke="#0f172a" stroke-width="2" />
+        <line x1="270" y1="560" x2="330" y2="560" stroke="#0f172a" stroke-width="2" />
+        <line x1="40" y1="270" x2="40" y2="330" stroke="#0f172a" stroke-width="2" />
+        <line x1="560" y1="270" x2="560" y2="330" stroke="#0f172a" stroke-width="2" />
+        
+        <!-- Secondary Diagonal Crosshair Lines (X) -->
+        <line x1="120" y1="120" x2="480" y2="480" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="10 8" />
+        <line x1="480" y1="120" x2="120" y2="480" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="10 8" />
+        
+        <!-- Concentric Security Target Rings -->
+        <circle cx="300" cy="300" r="260" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-dasharray="14 10" />
+        <circle cx="300" cy="300" r="180" fill="none" stroke="#0f172a" stroke-width="2" />
+        <circle cx="300" cy="300" r="100" fill="none" stroke="#0f172a" stroke-width="1.5" />
+        
+        <!-- Tactical Diamond in Center -->
+        <rect x="282" y="282" width="36" height="36" fill="none" stroke="#0f172a" stroke-width="2" transform="rotate(45 300 300)" />
+        
+        <!-- Center CypherTech Hexagonal Emblem Watermark -->
+        <g transform="translate(200, 200) scale(1)">
+          <polygon points="100,25 180,55 180,145 100,175 25,145 25,55" fill="#0f172a" stroke="#0f172a" stroke-width="5" stroke-linejoin="round" />
+          <polygon points="40,70 95,93 95,103 50,85 50,130 95,147 95,157 40,135" fill="#ffffff" />
+          <polygon points="105,92 165,70 165,80 140,90 140,145 133,148 133,92 105,102" fill="#0f172a" />
+        </g>
+      </svg>
+    </div>
+
     <div class="header-row">
       <div>
-        <div class="brand-title">CypherTech</div>
-        <div class="brand-subtitle">DIGITAL SOLUTIONS</div>
+        <div class="brand-header-flex">
+          <div class="brand-logo-badge">
+            <svg viewBox="0 0 200 200" class="brand-logo-svg" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="100,25 180,55 180,145 100,175 25,145 25,55" fill="#1C2026" stroke="#3A434F" stroke-width="5" stroke-linejoin="round" />
+              <polygon points="100,35 170,60 170,140 100,165 35,140 35,60" fill="none" stroke="#252B33" stroke-width="2" />
+              <polygon points="40,70 95,93 95,103 50,85 50,130 95,147 95,157 40,135" fill="#ffffff" stroke="#ff5555" stroke-width="2" />
+              <polygon points="105,92 165,70 165,80 140,90 140,145 133,148 133,92 105,102" fill="#ff0000" stroke="#ff5555" stroke-width="2" />
+              <line x1="86" y1="40" x2="86" y2="70" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+              <line x1="85" y1="40" x2="85" y2="60" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="85" y1="65" x2="85" y2="70" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="93" y1="60" x2="93" y2="80" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+              <line x1="92" y1="60" x2="92" y2="70" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="92" y1="75" x2="92" y2="80" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="100" y1="45" x2="100" y2="75" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+              <line x1="99" y1="45" x2="99" y2="65" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="99" y1="70" x2="99" y2="75" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="107" y1="60" x2="107" y2="80" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+              <line x1="106" y1="60" x2="106" y2="70" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="106" y1="75" x2="106" y2="80" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="114" y1="40" x2="114" y2="70" stroke="#f00000" stroke-width="4" stroke-linecap="round" />
+              <line x1="113" y1="40" x2="113" y2="60" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+              <line x1="113" y1="65" x2="113" y2="70" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+            </svg>
+          </div>
+          <div>
+            <div class="brand-title">CypherTech</div>
+            <div class="brand-subtitle">DIGITAL SOLUTIONS</div>
+          </div>
+        </div>
         <div class="merchant-info">
           Merchant Legal Entity: <strong>CypherTech</strong><br/>
           Support: <strong>satyamhimesh@gmail.com</strong>
