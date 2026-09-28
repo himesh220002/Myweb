@@ -131,7 +131,8 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5" style={{ fontFamily: "var(--font-raj)" }}>
               {[
-                { href: "/blog", label: "Blog" },
+                { href: "/pricing", label: "Pricing & Plans" },
+                { href: "/pay", label: "Pay Online" },
                 { href: "/skills", label: "Skills & Tech" },
                 { href: "/clients", label: "Clients" },
                 { href: "/contact", label: "Contact" },
@@ -170,8 +171,66 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Razorpay Merchant Compliance & Policies */}
+        <div className="mt-8 pt-5 border-t border-[#1e2d3a] flex flex-col lg:flex-row items-center justify-between gap-4 text-center lg:text-left bg-[#0a131c]/70 p-4 border border-[#1e2d3a]" style={{ clipPath: CLIP_BTN }}>
+          <div className="space-y-1">
+            <p className="text-[12px] font-bold tracking-wide text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>
+              Merchant Legal Entity Name: <span className="text-[#00E5FF]">DataByte</span>
+            </p>
+            <p className="text-[11px] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>
+              Last updated on Sep 18th 2025 • Official Razorpay Verified Merchant
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center lg:justify-end gap-x-3.5 gap-y-1.5 text-[11px] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>
+            <a
+              href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#00E5FF] transition-colors underline underline-offset-4"
+            >
+              Terms &amp; Conditions
+            </a>
+            <span className="text-[#2a3c4d] hidden sm:inline">•</span>
+            <a
+              href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#00E5FF] transition-colors underline underline-offset-4"
+            >
+              Privacy Policy
+            </a>
+            <span className="text-[#2a3c4d] hidden sm:inline">•</span>
+            <a
+              href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/refund"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#00E5FF] transition-colors underline underline-offset-4"
+            >
+              Refund Policy
+            </a>
+            <span className="text-[#2a3c4d] hidden sm:inline">•</span>
+            <a
+              href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/shipping"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#00E5FF] transition-colors underline underline-offset-4"
+            >
+              Shipping Policy
+            </a>
+            <span className="text-[#2a3c4d] hidden sm:inline">•</span>
+            <a
+              href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/contact_us"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#00E5FF] transition-colors underline underline-offset-4"
+            >
+              Contact Us
+            </a>
+          </div>
+        </div>
+
         {/* bottom bar */}
-        <div className="mt-10 pt-6 border-t border-[#1e2d3a] flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-6 pt-5 border-t border-[#1e2d3a] flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-[11px] tracking-[0.16em] text-[#768079] flex items-center gap-2" style={{ fontFamily: "var(--font-mono)" }}>
             <span className="w-1.5 h-1.5 bg-[#FF4655] animate-pulse" /> © {new Date().getFullYear()} CYPHERTECH // ALL RIGHTS RESERVED // VLR-09
           </p>

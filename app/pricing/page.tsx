@@ -36,6 +36,7 @@ import {
   type PlanId,
   type Currency,
 } from "@/lib/pricing";
+import RazorpayCheckoutModal, { CheckoutItem } from "@/components/RazorpayCheckoutModal";
 
 // ── VALORANT FONTS ──
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
@@ -164,6 +165,13 @@ export default function PricingPage() {
   const [billingPeriod, setBillingPeriod] = useState<"project" | "retainer">("project");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currency, setCurrency] = useState<"USD" | "INR">("INR");
+  const [checkoutItem, setCheckoutItem] = useState<CheckoutItem | null>(null);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+
+  const handleOpenCheckout = (item: CheckoutItem) => {
+    setCheckoutItem(item);
+    setIsCheckoutOpen(true);
+  };
 
   useEffect(() => {
     fetch("https://ipapi.co/json/")
@@ -670,18 +678,49 @@ export default function PricingPage() {
                       ))}
                     </div>
 
-                    {/* CTA */}
-                    <Link
-                      href={plan.ctaHref}
-                      className={`mt-auto w-full py-3.5 text-center text-xs font-black tracking-[0.16em] transition-colors flex items-center justify-center gap-2 ${
-                        plan.popular
-                          ? "bg-[#FF4655] text-white hover:bg-[#e03a49] border border-[#FF4655]"
-                          : "bg-[#ECE8E1] text-[#0F1923] hover:bg-white border border-[#ECE8E1] hover:border-white"
-                      }`}
-                      style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
-                    >
-                      {plan.btnText} <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                    {/* CTA Actions */}
+                    <div className="mt-auto space-y-2">
+                      {typeof plan.price === "number" ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleOpenCheckout({
+                                id: plan.id,
+                                name: `${plan.name} Tier (${billingPeriod === "project" ? "Project" : "Monthly Retainer"})`,
+                                price: plan.price as number,
+                                currency: currency,
+                                billingNote: plan.billingNote,
+                                accent: plan.accent,
+                              })
+                            }
+                            className={`w-full py-3.5 text-center text-xs font-black tracking-[0.16em] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(255,70,85,0.2)] ${
+                              plan.popular
+                                ? "bg-[#FF4655] text-white hover:bg-[#e03a49] border border-[#FF4655]"
+                                : "bg-[#ECE8E1] text-[#0F1923] hover:bg-white border border-[#ECE8E1] hover:border-white"
+                            }`}
+                            style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
+                          >
+                            PAY ONLINE // INITIATE <ArrowRight className="w-3.5 h-3.5" />
+                          </button>
+                          <Link
+                            href={plan.ctaHref}
+                            className="w-full py-2 text-center text-[10px] font-bold tracking-[0.14em] text-[#768079] hover:text-[#ECE8E1] bg-[#0a131c] hover:bg-[#111A23] border border-[#1e2d3a] transition-colors flex items-center justify-center gap-1.5"
+                            style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
+                          >
+                            OR SCHEDULE DISCOVERY CALL
+                          </Link>
+                        </>
+                      ) : (
+                        <Link
+                          href={plan.ctaHref}
+                          className="w-full py-3.5 text-center text-xs font-black tracking-[0.16em] transition-colors flex items-center justify-center gap-2 bg-[#ECE8E1] text-[#0F1923] hover:bg-white border border-[#ECE8E1] hover:border-white"
+                          style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
+                        >
+                          {plan.btnText} <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      )}
+                    </div>
 
                     <p className="text-center text-[10px] tracking-[0.14em] text-[#768079]/60 mt-3" style={{ fontFamily: "var(--font-mono)" }}>
                       {plan.trust}
@@ -911,9 +950,28 @@ export default function PricingPage() {
                       </p>
                     </div>
 
-                    <div className="mt-4 flex items-center gap-1.5 text-[11px] tracking-widest font-bold relative z-10" style={{ fontFamily: "var(--font-mono)", color: addon.accent }}>
-                      <span className="w-1 h-1" style={{ background: addon.accent }} /> TACTICAL // READY
+                    <div className="mt-4 flex items-center justify-between text-[11px] tracking-widest font-bold relative z-10" style={{ fontFamily: "var(--font-mono)", color: addon.accent }}>
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-1 h-1" style={{ background: addon.accent }} /> TACTICAL // READY
+                      </span>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleOpenCheckout({
+                          id: `addon-${aIdx}`,
+                          name: addon.title,
+                          price: Math.round(addon.prices[currency as "USD" | "INR"] * 0.4),
+                          currency: currency,
+                          accent: addon.accent,
+                        })
+                      }
+                      className="mt-3.5 w-full py-2 bg-[#0a131c] hover:bg-[#FF4655] text-[#ECE8E1] hover:text-white border border-[#1e2d3a] hover:border-[#FF4655] text-[10px] font-black tracking-widest transition-colors flex items-center justify-center gap-1.5 cursor-pointer relative z-10"
+                      style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
+                    >
+                      PURCHASE ADD-ON <ArrowRight className="w-3 h-3" />
+                    </button>
                   </div>
                 </motion.div>
               );
@@ -1069,6 +1127,13 @@ export default function PricingPage() {
           <span className="w-6 h-px bg-[#1e2d3a]" /> CYPHER TECH // VLR-PRICING // EST. 2026 <span className="w-6 h-px bg-[#1e2d3a]" />
         </div>
       </div>
+
+      {/* Razorpay Interactive Checkout Modal */}
+      <RazorpayCheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        item={checkoutItem}
+      />
     </motion.div>
   );
 }
