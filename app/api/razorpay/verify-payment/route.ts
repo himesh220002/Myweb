@@ -147,7 +147,7 @@ export async function POST(req: NextRequest) {
                 </div>
 
                 <div style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 20px; font-size: 11px; color: #64748b; text-align: center; line-height: 1.5;">
-                  <div style="font-weight: 600; color: #334155; margin-bottom: 4px;">Merchant Legal Entity: DataByte</div>
+                  <div style="font-weight: 600; color: #334155; margin-bottom: 4px;">Merchant Legal Entity: CypherTech</div>
                   <div style="color: #94a3b8;">CypherTech Automated Billing Gateway • 256-Bit SSL Encrypted</div>
                 </div>
               </div>
@@ -282,7 +282,7 @@ export async function POST(req: NextRequest) {
 
                   <!-- Professional Razorpay Compliance & Policy Footer -->
                   <div style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 18px 16px; font-size: 11px; color: #64748b; text-align: center; line-height: 1.6;">
-                    <p style="margin: 0 0 3px; font-weight: 700; color: #1e293b; font-size: 12px;">Merchant Legal Entity: DataByte</p>
+                    <p style="margin: 0 0 3px; font-weight: 700; color: #1e293b; font-size: 12px;">Merchant Legal Entity: CypherTech</p>
                     <p style="margin: 0 0 8px; color: #64748b; font-size: 11px;">Last updated on Sep 18th 2025 • Bank-Grade 256-Bit SSL Encrypted</p>
 
                     <!-- Mandatory Razorpay Policy Links -->
@@ -299,7 +299,7 @@ export async function POST(req: NextRequest) {
                     </div>
 
                     <p style="margin: 6px 0 0; color: #94a3b8; font-size: 10px;">
-                      This is an automated transaction receipt for DataByte via Razorpay. Please retain for your accounting records.
+                      This is an automated transaction receipt for CypherTech via Razorpay. Please retain for your accounting records.
                     </p>
                   </div>
 

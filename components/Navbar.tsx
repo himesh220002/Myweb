@@ -290,12 +290,7 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-            <div className="hidden xl:flex items-center gap-2 pr-3 border-r border-[#1e2d3a]/60">
-              <span className="w-1.5 h-1.5 bg-emerald-400 animate-pulse" />
-              <span className="text-[11px] tracking-[0.14em] text-[#768079] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
-                ONLINE
-              </span>
-            </div>
+
             {/* Buy Coffee Button */}
             <Link
               href="/pay?coffee=true"
@@ -303,7 +298,7 @@ export default function Navbar() {
               style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
               title="Support our work with a coffee"
             >
-              <Coffee className="w-3.5 h-3.5 text-amber-400" /> BUY COFFEE ☕
+              <Coffee className="w-3.5 h-3.5 text-amber-400" /> BUY COFFEE
             </Link>
 
             <Link

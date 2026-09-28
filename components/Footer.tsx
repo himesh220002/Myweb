@@ -175,7 +175,7 @@ export default function Footer() {
         <div className="mt-8 pt-5 border-t border-[#1e2d3a] flex flex-col lg:flex-row items-center justify-between gap-4 text-center lg:text-left bg-[#0a131c]/70 p-4 border border-[#1e2d3a]" style={{ clipPath: CLIP_BTN }}>
           <div className="space-y-1">
             <p className="text-[12px] font-bold tracking-wide text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>
-              Merchant Legal Entity Name: <span className="text-[#00E5FF]">DataByte</span>
+              Merchant Legal Entity Name: <span className="text-[#00E5FF]">CypherTech</span>
             </p>
             <p className="text-[11px] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>
               Last updated on Sep 18th 2025 • Official Razorpay Verified Merchant

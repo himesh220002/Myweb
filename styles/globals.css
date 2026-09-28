@@ -411,3 +411,48 @@ body {
     animation: none;
   }
 }
+
+/* ─── Dedicated Print Stylesheet for Invoices & Receipts ─── */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Hide entire page chrome elements */
+  header,
+  nav,
+  footer,
+  aside,
+  .no-print,
+  button,
+  a[href^="#"],
+  .fixed,
+  .sticky {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  #receipt-print-area {
+    width: 100% !important;
+    max-width: 650px !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: 1.5px solid #0f172a !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    page-break-inside: avoid !important;
+  }
+}

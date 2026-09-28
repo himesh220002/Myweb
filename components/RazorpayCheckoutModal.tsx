@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -17,9 +17,17 @@ import {
   Check,
   Building2,
   CheckCheck,
+  Download,
+  FileCode,
 } from "lucide-react";
 import QRCode from "qrcode";
 import { loadRazorpayScript } from "@/lib/loadRazorpay";
+import {
+  printReceiptIsolated,
+  downloadReceiptTxt,
+  downloadReceiptHtml,
+  ReceiptData,
+} from "@/lib/receiptUtils";
 
 export interface CheckoutItem {
   id: string;
@@ -57,6 +65,15 @@ export default function RazorpayCheckoutModal({
   const [copiedId, setCopiedId] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
 
+  const modalBodyRef = useRef<HTMLDivElement | null>(null);
+
+  // Auto-scroll modal to top when payment completes so confirmation is immediately visible
+  useEffect(() => {
+    if (successData && modalBodyRef.current) {
+      modalBodyRef.current.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [successData]);
+
   // Reset state when opening
   useEffect(() => {
     if (isOpen) {
@@ -85,12 +102,13 @@ export default function RazorpayCheckoutModal({
       : Number(customAmount) || 0;
 
   const currencyCode = "INR";
-  const upiId = "satyamhimesh@okaxis";
+  const upiId = process.env.NEXT_PUBLIC_UPI_ID || "satyamhimesh@pingpay";
+  const upiPayeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME || "Himesh Satyam";
 
   // Generate dynamic QR code on the go
   useEffect(() => {
     if (finalAmount > 0) {
-      const upiUrl = `upi://pay?pa=${upiId}&pn=CypherTech&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(item?.name || "CypherTech Payment")}`;
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiPayeeName)}&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(item?.name || "CypherTech Payment")}`;
       QRCode.toDataURL(upiUrl, {
         width: 240,
         margin: 1.5,
@@ -99,7 +117,7 @@ export default function RazorpayCheckoutModal({
         .then((url) => setQrCodeDataUrl(url))
         .catch((err) => console.error("Error generating QR:", err));
     }
-  }, [finalAmount, item?.name]);
+  }, [finalAmount, item?.name, upiId, upiPayeeName]);
 
   const handleCopyPaymentId = (id: string) => {
     navigator.clipboard.writeText(id);
@@ -113,9 +131,6 @@ export default function RazorpayCheckoutModal({
     setTimeout(() => setCopiedUpi(false), 2000);
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -333,82 +348,110 @@ export default function RazorpayCheckoutModal({
           </div>
 
           {/* Modal Body */}
-          <div className="p-6 max-h-[82vh] overflow-y-auto space-y-4">
+          <div ref={modalBodyRef} className="p-4 sm:p-6 max-h-[82vh] overflow-y-auto space-y-4">
             {/* SUCCESS RECEIPT STATE */}
             {successData ? (
-              <div className="space-y-5">
-                <div className="text-center py-4 bg-emerald-50 border border-emerald-200 rounded-xl p-6">
-                  <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <CheckCircle2 className="w-7 h-7" />
+              <div className="space-y-4">
+                <div id="receipt-print-area" className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 space-y-3.5">
+                  <div className="text-center py-2 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                    <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-1.5">
+                      <CheckCircle2 className="w-6 h-6" />
+                    </div>
+                    <h4 className="text-base font-bold text-emerald-950">
+                      Payment Successfully Completed
+                    </h4>
+                    <p className="text-xs text-emerald-800 mt-0.5">
+                      An official digital tax receipt has been emailed to{" "}
+                      <strong className="text-gray-900">{successData.customerEmail}</strong>.
+                    </p>
+                    <p className="text-xl font-extrabold text-emerald-700 mt-1">
+                      ₹{Number(successData.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                    </p>
                   </div>
-                  <h4 className="text-xl font-bold text-emerald-800">
-                    Payment Successfully Completed
-                  </h4>
-                  <p className="text-sm text-gray-600 mt-1">
-                    An official digital tax receipt has been emailed to{" "}
-                    <strong className="text-gray-900">{successData.customerEmail}</strong>.
-                  </p>
-                  <p className="text-2xl font-extrabold text-emerald-700 mt-2">
-                    ₹{Number(successData.amount).toLocaleString("en-IN")}
-                  </p>
-                </div>
 
-                {/* Receipt Details Box */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2.5 text-xs text-gray-600">
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                    <span className="font-medium text-gray-500">Transaction Reference ID</span>
-                    <div className="flex items-center gap-1.5 font-mono text-gray-900 font-semibold">
-                      <span>{successData.paymentId}</span>
-                      <button
-                        onClick={() => handleCopyPaymentId(successData.paymentId)}
-                        className="text-gray-400 hover:text-blue-600 p-1"
-                        title="Copy Transaction ID"
-                      >
-                        {copiedId ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
+                  {/* Receipt Details Box */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-2 text-xs text-gray-700">
+                    <div className="flex justify-between items-center pb-1.5 border-b border-gray-200">
+                      <span className="font-medium text-gray-500">Transaction Reference ID</span>
+                      <div className="flex items-center gap-1.5 font-mono text-gray-900 font-semibold">
+                        <span>{successData.paymentId}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyPaymentId(successData.paymentId)}
+                          className="no-print text-gray-400 hover:text-blue-600 p-0.5 cursor-pointer"
+                          title="Copy ID"
+                        >
+                          {copiedId ? <CheckCheck className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center pb-1.5 border-b border-gray-200">
+                      <span className="font-medium text-gray-500">Razorpay Order ID</span>
+                      <span className="font-mono text-gray-800">{successData.orderId}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center pb-1.5 border-b border-gray-200">
+                      <span className="font-medium text-gray-500">Service / Package</span>
+                      <span className="font-semibold text-gray-900">{successData.planName}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center pb-1.5 border-b border-gray-200">
+                      <span className="font-medium text-gray-500">Payer Name</span>
+                      <span className="font-semibold text-gray-900">{successData.customerName}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-gray-500">Date &amp; Time</span>
+                      <span className="text-gray-800">
+                        {new Date().toLocaleString("en-IN", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                    <span className="font-medium text-gray-500">Razorpay Order ID</span>
-                    <span className="font-mono text-gray-800">{successData.orderId}</span>
-                  </div>
-
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                    <span className="font-medium text-gray-500">Service / Package</span>
-                    <span className="font-semibold text-gray-900">{successData.planName}</span>
-                  </div>
-
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-200">
-                    <span className="font-medium text-gray-500">Payer Name</span>
-                    <span className="font-semibold text-gray-900">{successData.customerName}</span>
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-gray-500">Date & Time</span>
-                    <span className="text-gray-800">
-                      {new Date().toLocaleString("en-IN", {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
-                    </span>
+                  <div className="border-t border-gray-200 pt-2 text-center text-[10px] text-gray-500 space-y-0.5">
+                    <p className="font-semibold text-gray-700">
+                      Merchant Legal Entity: CypherTech • Razorpay 256-Bit SSL Encrypted
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-x-2 text-[9px] text-blue-600">
+                      <a href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/terms" target="_blank" rel="noopener noreferrer">Terms</a>
+                      <span>•</span>
+                      <a href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/privacy" target="_blank" rel="noopener noreferrer">Privacy</a>
+                      <span>•</span>
+                      <a href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/refund" target="_blank" rel="noopener noreferrer">Refunds</a>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="no-print grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                   <button
-                    onClick={handlePrint}
-                    className="flex-1 py-2.5 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition cursor-pointer"
+                    type="button"
+                    onClick={() => printReceiptIsolated(successData)}
+                    className="py-2 px-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-98"
                   >
-                    <Printer className="w-4 h-4" /> Print Receipt
+                    <Printer className="w-3.5 h-3.5 text-blue-600" /> Print / Save PDF
                   </button>
                   <button
+                    type="button"
+                    onClick={() => downloadReceiptHtml(successData)}
+                    className="py-2 px-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-98"
+                  >
+                    <FileCode className="w-3.5 h-3.5 text-indigo-600" /> Download .html
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => downloadReceiptTxt(successData)}
+                    className="py-2 px-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-98"
+                  >
+                    <Download className="w-3.5 h-3.5 text-emerald-600" /> Download .txt
+                  </button>
+                  <button
+                    type="button"
                     onClick={onClose}
-                    className="flex-1 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition shadow-sm cursor-pointer"
+                    className="py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition shadow-xs cursor-pointer active:scale-98 text-center"
                   >
                     Done
                   </button>
@@ -692,7 +735,7 @@ export default function RazorpayCheckoutModal({
                   {/* Merchant Compliance Notice & Policies */}
                   <div className="pt-2 text-center text-[11px] text-gray-500 border-t border-gray-100">
                     <p className="font-semibold text-gray-700">
-                      Merchant Legal Entity: <span className="text-blue-700">DataByte</span>
+                      Merchant Legal Entity: <span className="text-blue-700 font-bold">CypherTech</span>
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] pt-1 text-blue-600">
                       <a
