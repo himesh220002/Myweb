@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono } from "next/font/google";
+import VerifiedCredentialsDossier from "@/components/VerifiedCredentialsDossier";
 
 // ── VALORANT FONTS ──
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
@@ -614,6 +615,9 @@ export default function SkillsPage() {
             </div>
           ))}
         </motion.div>
+
+        {/* ── VERIFIED DEVELOPER CREDENTIALS & GOOGLE AUTHORITY ── */}
+        <VerifiedCredentialsDossier />
 
         {/* ── CTA — SPIKE PLANT ── */}
         <motion.div

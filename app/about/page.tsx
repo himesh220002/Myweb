@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Skull, Crosshair, ShieldCheck, Target, Radio, Swords, Zap, Layers, Cpu, Award, Calendar, MapPin, Mail, Globe, ExternalLink } from "lucide-react";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono } from "next/font/google";
+import VerifiedCredentialsDossier from "@/components/VerifiedCredentialsDossier";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 const bebas = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-bebas" });
@@ -75,6 +76,7 @@ export default function AboutPage() {
                     {[
                       { Icon: ExternalLink, href: "https://github.com/himesh220002", label: "GH" },
                       { Icon: Globe, href: "https://www.linkedin.com/in/himesh-satyam/", label: "IN" },
+                      { Icon: Globe, href: "https://g.dev/cyphertech", label: "GD" },
                       { Icon: Mail, href: "mailto:satyamhimesh@gmail.com", label: "ML" },
                       { Icon: Globe, href: "https://x.com/CypherHarley", label: "X" },
                     ].map(({ Icon, href }, i) => (
@@ -177,6 +179,9 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
+
+        {/* Verified Developer Accreditations & Google Developers Authority */}
+        <VerifiedCredentialsDossier />
       </div>
     </div>
   );
