@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyPaymentSignature, getRazorpayClient } from "@/lib/razorpay";
 import { sendEmail } from "@/lib/email";
+import { signReceiptToken } from "@/lib/jwt";
 
 export async function POST(req: NextRequest) {
   try {
@@ -64,6 +65,29 @@ export async function POST(req: NextRequest) {
       ? (paymentDetails.amount / 100).toFixed(2)
       : amount || "N/A";
     const paymentMethod = paymentDetails?.method?.toUpperCase() || "ONLINE";
+
+    // 3. Mint cryptographically signed, tamper-proof Receipt & Refund JWT
+    let receiptToken = "";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://cyphertech.online";
+    try {
+      receiptToken = await signReceiptToken({
+        paymentId: razorpay_payment_id,
+        orderId: razorpay_order_id,
+        amount: verifiedAmount,
+        currency,
+        customerEmail: customerEmail || "",
+        customerName: customerName || "Valued Client",
+        customerPhone: customerPhone || "",
+        planName: planName || "CypherTech Service",
+      });
+    } catch (jwtErr) {
+      console.error("JWT signing error:", jwtErr);
+    }
+
+    const refundClaimUrl = receiptToken
+      ? `${baseUrl}/refund?token=${encodeURIComponent(receiptToken)}`
+      : `${baseUrl}/contact`;
+
 
     // 3. Send email receipt to customer and notification to admin
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
@@ -275,6 +299,19 @@ export async function POST(req: NextRequest) {
                       </p>
                     </div>
 
+                    <!-- Tamper-Proof Refund & Transaction Resolution Card -->
+                    <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 14px 16px; margin-bottom: 18px; text-align: center;">
+                      <div style="font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">
+                        🛡️ Transaction Protection &amp; Resolution Guarantee
+                      </div>
+                      <p style="margin: 0 0 10px; font-size: 11px; line-height: 1.5; color: #64748b;">
+                        If you need milestone adjustments or wish to lodge a formal refund resolution request within statutory guidelines, you can use your cryptographically signed transaction token below:
+                      </p>
+                      <a href="${refundClaimUrl}" style="display: inline-block; background-color: #2563eb; color: #ffffff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">
+                        Manage Transaction / Request Refund &rarr;
+                      </a>
+                    </div>
+
                     <p style="font-size: 12px; line-height: 1.5; color: #64748b; margin: 0;">
                       If you have questions regarding this payment or project scope, feel free to reply directly to this email or reach us at <a href="mailto:${process.env.EMAIL_USER}" style="color: #2563eb; text-decoration: none; font-weight: 500;">${process.env.EMAIL_USER}</a>.
                     </p>
@@ -320,6 +357,8 @@ export async function POST(req: NextRequest) {
       orderId: razorpay_order_id,
       amount: verifiedAmount,
       currency,
+      receiptToken,
+      refundClaimUrl,
       message: "Payment successfully verified and recorded",
     });
   } catch (error: any) {

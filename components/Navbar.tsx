@@ -7,6 +7,8 @@ import { Menu, X, ChevronDown, ArrowRight, Crosshair, Coffee } from "lucide-reac
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono } from "next/font/google";
+import ProfileDropdown from "@/components/ProfileDropdown";
+
 
 // ── VALORANT FONTS (match clients/page.tsx & Footer.tsx) ──
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
@@ -290,7 +292,6 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-
             {/* Buy Coffee Button */}
             <Link
               href="/pay?coffee=true"
@@ -300,6 +301,9 @@ export default function Navbar() {
             >
               <Coffee className="w-3.5 h-3.5 text-amber-400" /> BUY COFFEE
             </Link>
+
+            {/* Profile Dropdown in between Buy Coffee and Request A Quote */}
+            <ProfileDropdown />
 
             <Link
               href="/contact"
@@ -313,16 +317,22 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden relative w-10 h-10 flex items-center justify-center bg-[#0a131c] border border-[#1e2d3a] text-[#ECE8E1] hover:border-[#FF4655]/40 hover:text-[#FF4655] transition-colors shrink-0"
-            style={{ clipPath: CLIP_BTN }}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
-          >
-            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile Profile & Menu Toggle */}
+          <div className="lg:hidden flex items-center gap-2 shrink-0">
+            {/* Cornercut profile icon placed just left side of hamburger icon */}
+            <ProfileDropdown isMobile={true} />
+
+            <button
+              className="relative w-10 h-10 flex items-center justify-center bg-[#0a131c] border border-[#1e2d3a] text-[#ECE8E1] hover:border-[#FF4655]/40 hover:text-[#FF4655] transition-colors shrink-0"
+              style={{ clipPath: CLIP_BTN }}
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+            >
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
 
         {/* bottom hairline glow when scrolled */}
         <div

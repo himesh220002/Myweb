@@ -14,10 +14,34 @@ export interface ReceiptData {
   customerPhone?: string;
   date?: string;
   paymentMethod?: string;
+  receiptToken?: string;
+  refundClaimUrl?: string;
 }
 
+export function getReceiptRefundUrl(data: ReceiptData): string {
+  if (data.refundClaimUrl) return data.refundClaimUrl;
+  const origin =
+    typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_BASE_URL || "https://cyphertech.online";
+
+  if (data.receiptToken) {
+    return `${origin}/refund?token=${encodeURIComponent(data.receiptToken)}`;
+  }
+  return `${origin}/refund`;
+}
+
+
 export function generatePrintableReceiptHtml(data: ReceiptData): string {
+  const refundUrl = getReceiptRefundUrl(data);
+  const tokenSnippet = data.receiptToken
+    ? `${data.receiptToken.slice(0, 10)}...`
+    : data.paymentId
+    ? `${data.paymentId.slice(0, 10)}...`
+    : "N/A";
+
   const formattedDate = data.date
+
     ? new Date(data.date).toLocaleString("en-IN", {
         dateStyle: "medium",
         timeStyle: "short",
@@ -32,6 +56,7 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -78,8 +103,8 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       max-width: 88%;
       max-height: 88%;
       pointer-events: none;
-      opacity: 0.03;
-      z-index: 0;
+      opacity: 0.055;
+      z-index: 2;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -91,13 +116,25 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       height: 100%;
       display: block;
     }
+    /* Containers form base layer behind watermark */
     .header-row,
     .total-banner,
     .section-title,
     .detail-table,
+    .refund-box,
     .compliance-footer {
       position: relative;
       z-index: 1;
+    }
+    /* Text, figures, and buttons float directly in front of watermark */
+    .header-row *,
+    .total-banner > *,
+    .section-title,
+    .detail-table td,
+    .refund-box > *,
+    .compliance-footer * {
+      position: relative;
+      z-index: 3;
     }
     .header-row {
       display: flex;
@@ -107,6 +144,7 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       padding-bottom: 16px;
       margin-bottom: 16px;
     }
+
     .brand-header-flex {
       display: flex;
       align-items: center;
@@ -193,7 +231,8 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
         box-shadow: none !important;
       }
       .watermark-overlay {
-        opacity: 0.03 !important;
+        opacity: 0.055 !important;
+        z-index: 2 !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
@@ -211,7 +250,7 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       }
     }
     .total-banner {
-      background: #f8fafc;
+      background: rgba(248, 250, 252, 0.5);
       border: 1.5px solid #cbd5e1;
       border-radius: 6px;
       padding: 14px 18px;
@@ -220,6 +259,7 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       justify-content: space-between;
       align-items: center;
     }
+
     .total-label {
       font-size: 11px;
       text-transform: uppercase;
@@ -269,7 +309,7 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       border-bottom: none;
     }
     .detail-table tr:nth-child(even) {
-      background: #fafafa;
+      background: rgba(15, 23, 42, 0.02);
     }
     .detail-table td {
       padding: 8px 12px;
@@ -316,7 +356,58 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       font-size: 9.5px;
       color: #94a3b8;
     }
+    .refund-box {
+      position: relative;
+      z-index: 1;
+      margin-top: 14px;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      background: rgba(248, 250, 252, 0.5);
+      border: 1.5px dashed #94a3b8;
+      border-radius: 6px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .refund-title {
+      font-weight: 800;
+      color: #0f172a;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .refund-desc {
+      color: #475569;
+      margin-bottom: 8px;
+      font-size: 10.5px;
+    }
+    .refund-btn-link {
+      display: inline-block;
+      background-color: #2563eb;
+      color: #ffffff !important;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+      text-decoration: none !important;
+      letter-spacing: 0.2px;
+    }
+    .token-footnote {
+      margin-top: 6px;
+      font-size: 9.5px;
+      color: #64748b;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    .token-footnote code {
+      background: #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #0f172a;
+      font-weight: 700;
+    }
   </style>
+
+
 </head>
 <body>
   <div class="receipt-container">
@@ -448,7 +539,24 @@ export function generatePrintableReceiptHtml(data: ReceiptData): string {
       </tr>
     </table>
 
+    <div class="refund-box">
+      <div class="refund-title">&#x1F6E1;&#xFE0F; STATUTORY RESOLUTION &amp; REFUND GUARANTEE</div>
+      <div class="refund-desc">
+        Your payment is covered by our 24&ndash;48h merchant resolution SLA. To request milestone adjustments, invoice dispute, or a statutory refund, click the resolution portal link below:
+      </div>
+      <div style="margin: 8px 0 6px;">
+        <a href="${refundUrl}" target="_blank" rel="noopener noreferrer" class="refund-btn-link">
+          Request Milestone Resolution / Refund &rarr;
+        </a>
+      </div>
+      <div class="token-footnote">
+        Verification Token: <code>${tokenSnippet}</code> (Click button above to auto-verify in resolution portal)
+      </div>
+    </div>
+
+
     <div class="compliance-footer">
+
       <div>Merchant Legal Entity: <strong>CypherTech</strong> &bull; Policy Update: <strong>Sep 18th 2025</strong></div>
       <div class="policy-links">
         <a href="https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/terms" target="_blank">Terms</a> &bull;
@@ -541,6 +649,7 @@ export function downloadReceiptHtml(data: ReceiptData): void {
  * Downloads a compact, official .txt receipt file.
  */
 export function downloadReceiptTxt(data: ReceiptData): void {
+  const refundUrl = getReceiptRefundUrl(data);
   const formattedDate = data.date
     ? new Date(data.date).toLocaleString("en-IN", {
         dateStyle: "medium",
@@ -552,6 +661,11 @@ export function downloadReceiptTxt(data: ReceiptData): void {
       });
 
   const numericAmount = Number(data.amount) || 0;
+  const tokenSnippet = data.receiptToken
+    ? `${data.receiptToken.slice(0, 10)}...`
+    : data.paymentId
+    ? `${data.paymentId.slice(0, 10)}...`
+    : "N/A";
 
   const content = `============================================================
               OFFICIAL PAYMENT RECEIPT
@@ -573,6 +687,14 @@ Amount Paid:    INR ${numericAmount.toFixed(2)}
 Payment Method: Razorpay Online Gateway (256-Bit SSL)
 Tax / GST:      Included (18% Digital Invoicing)
 ------------------------------------------------------------
+STATUTORY RESOLUTION & REFUND GUARANTEE:
+Your payment is covered by our 24-48h merchant resolution SLA.
+To request milestone adjustments, invoice dispute, or a statutory refund,
+visit your resolution link:
+${refundUrl}
+Token Reference: ${tokenSnippet}
+------------------------------------------------------------
+
 MERCHANT & COMPLIANCE DETAILS:
 Legal Entity:   CypherTech
 Last Updated:   Sep 18th 2025
@@ -585,6 +707,7 @@ Contact Us:     https://merchant.razorpay.com/policy/OCnAcIcFs79Xzt/contact_us
 ============================================================
 This is an authentic computer-generated digital transaction receipt.
 Please retain this file for your tax and accounting records.`;
+
 
   const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);

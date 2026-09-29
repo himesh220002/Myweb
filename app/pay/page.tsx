@@ -2,6 +2,7 @@
 
 import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
   ShieldCheck,
   Lock,
@@ -24,7 +25,10 @@ import {
   ArrowLeft,
   FileText,
   FileCode,
+  ExternalLink,
+  LifeBuoy,
 } from "lucide-react";
+
 import { loadRazorpayScript } from "@/lib/loadRazorpay";
 import {
   printReceiptIsolated,
@@ -32,6 +36,8 @@ import {
   downloadReceiptHtml,
   ReceiptData,
 } from "@/lib/receiptUtils";
+import { addPaymentToHistory, getStoredUser } from "@/lib/authStorage";
+
 
 function PaymentPortalContent() {
   const searchParams = useSearchParams();
@@ -171,10 +177,23 @@ function PaymentPortalContent() {
       : null
   );
   const [copiedId, setCopiedId] = useState(false);
+  const [receiptToken, setReceiptToken] = useState<string | null>(null);
+  const [refundClaimUrl, setRefundClaimUrl] = useState<string | null>(null);
+  const [copiedClaimLink, setCopiedClaimLink] = useState(false);
 
   const successContainerRef = useRef<HTMLDivElement | null>(null);
 
+  // Pre-fill user details if logged in
+  useEffect(() => {
+    const user = getStoredUser();
+    if (user) {
+      if (!name && user.name) setName(user.name);
+      if (!email && user.email) setEmail(user.email);
+    }
+  }, []);
+
   // When payment succeeds, forcefully scroll directly to top so confirmation receipt is immediately visible
+
   useEffect(() => {
     if (successData) {
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -336,6 +355,12 @@ function PaymentPortalContent() {
               throw new Error(verifyData.error || "Payment signature verification failed.");
             }
 
+            const claimUrl =
+              verifyData.refundClaimUrl ||
+              (verifyData.receiptToken
+                ? `/refund?token=${encodeURIComponent(verifyData.receiptToken)}`
+                : undefined);
+
             const receiptPayload: ReceiptData = {
               paymentId: response.razorpay_payment_id,
               orderId: response.razorpay_order_id,
@@ -346,10 +371,22 @@ function PaymentPortalContent() {
               customerPhone: phone,
               date: new Date().toISOString(),
               paymentMethod: "Razorpay Gateway (256-Bit SSL)",
+              receiptToken: verifyData.receiptToken,
+              refundClaimUrl: claimUrl,
             };
+
+            if (verifyData.receiptToken) {
+              setReceiptToken(verifyData.receiptToken);
+              setRefundClaimUrl(claimUrl || null);
+            }
+
+            // Persist to payment history and last receipt in localStorage
+            addPaymentToHistory(receiptPayload);
 
             setSuccessData(receiptPayload);
             setLoading(false);
+
+
           } catch (verifyErr: any) {
             console.error("Verification error:", verifyErr);
             setErrorMessage(verifyErr.message || "Payment verification failed.");
@@ -601,6 +638,61 @@ function PaymentPortalContent() {
               <strong>Next Steps:</strong> Your payment confirmation has reached our delivery squad. Milestone briefings and contact details have been dispatched to your email.
             </div>
 
+            {/* Tamper-Proof Refund & Resolution Access Card */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 sm:p-4 text-xs space-y-2.5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 font-bold text-gray-900">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Statutory Refund &amp; Resolution Guarantee</span>
+                </div>
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full border border-emerald-300">
+                  24–48h SLA
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-600 leading-relaxed">
+                Need milestone modifications, invoice adjustments, or a statutory refund? Your transaction has a cryptographically signed digital proof. You can access our resolution center directly:
+              </p>
+              <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                <Link
+                  href={
+                    refundClaimUrl ||
+                    (receiptToken
+                      ? `/refund?token=${encodeURIComponent(receiptToken)}`
+                      : `/refund`)
+                  }
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer active:scale-98 shadow-2xs"
+                >
+                  <LifeBuoy className="w-3.5 h-3.5" />
+                  <span>Request Refund / Resolution &rarr;</span>
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const urlToCopy =
+                      refundClaimUrl ||
+                      `${window.location.origin}/refund?token=${encodeURIComponent(receiptToken || "")}`;
+                    navigator.clipboard.writeText(urlToCopy);
+                    setCopiedClaimLink(true);
+                    setTimeout(() => setCopiedClaimLink(false), 2500);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-lg text-xs font-medium transition cursor-pointer active:scale-98"
+                >
+                  {copiedClaimLink ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Copied Resolution Link!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-gray-500" />
+                      <span>Copy Resolution Link</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
             {/* Statutory Compliance Footer */}
             <div className="border-t border-gray-200 pt-3 text-[10px] text-gray-500 text-center space-y-1">
               <p className="font-semibold text-gray-700">
@@ -623,7 +715,7 @@ function PaymentPortalContent() {
             </div>
           </div>
 
-          {/* Action Buttons: Isolated Print, Direct HTML/TXT Download, and Return */}
+          {/* Action Buttons: Isolated Print, Direct HTML/TXT Download, Refund, and Return */}
           <div className="no-print grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
             <button
               type="button"
@@ -652,6 +744,19 @@ function PaymentPortalContent() {
               <span>Download Text Receipt (.txt)</span>
             </button>
 
+            <Link
+              href={
+                refundClaimUrl ||
+                (receiptToken
+                  ? `/refund?token=${encodeURIComponent(receiptToken)}`
+                  : `/refund`)
+              }
+              className="py-2.5 px-3 bg-white border border-amber-300 hover:bg-amber-50 text-amber-900 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition shadow-2xs cursor-pointer active:scale-98"
+            >
+              <LifeBuoy className="w-3.5 h-3.5 text-amber-600" />
+              <span>Resolution &amp; Refund Center</span>
+            </Link>
+
             <button
               type="button"
               onClick={() => {
@@ -660,13 +765,14 @@ function PaymentPortalContent() {
                 setMobileStep("package");
                 window.scrollTo({ top: 0, behavior: "instant" });
               }}
-              className="py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition shadow-xs cursor-pointer active:scale-98"
+              className="sm:col-span-2 py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition shadow-xs cursor-pointer active:scale-98"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Make Another Payment</span>
             </button>
           </div>
         </div>
+
       ) : (
         /* ─── MAIN CHECKOUT PORTAL ─── */
         <div className="space-y-3 sm:space-y-4">
