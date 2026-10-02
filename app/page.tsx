@@ -545,544 +545,544 @@ export default function Home() {
         </div>
       </section>
 
-        {/* ══════════ NEW · SERVICES (just below hero) ══════════ */}
-        <section id="services" className="relative bg-[#0F1923] px-6 py-16 md:py-20">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeading
-              eyebrow="SERVICES"
-              title="What we build"
-              accent="for you"
-              description="Four focused offerings. No jargon, no filler — just the work that moves revenue."
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {SERVICES.map((s, i) => (
-                <Reveal key={s.title} delay={i * 0.07}>
-                  <div className="group h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl overflow-hidden hover:border-white/20 hover:bg-white/[0.06] hover:-translate-y-1 transition-all duration-300">
-                    <div className="relative h-40 overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={s.image}
-                        alt={s.title}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-[#0F1923]/30 to-transparent" />
-                      <span className="absolute bottom-3 left-4 w-10 h-10 rounded-2xl bg-black/55 backdrop-blur border border-white/15 flex items-center justify-center text-white">
-                        <s.icon className="w-5 h-5" />
-                      </span>
-                    </div>
-                    <div className="p-5">
-                      <h3 className="font-bold text-white text-[17px]" style={{ fontFamily: "var(--font-raj)" }}>
-                        {s.title}
-                      </h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
-                        {s.desc}
-                      </p>
-                      <ul className="mt-4 space-y-1.5">
-                        {s.points.map((p) => (
-                          <li key={p} className="flex items-center gap-2 text-[13px] text-white/70" style={{ fontFamily: "var(--font-raj)" }}>
-                            <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> {p}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            {/* results band */}
-            <Reveal delay={0.1} className="mt-6">
-              <div className="rounded-3xl border border-white/10 bg-black/35 backdrop-blur-xl px-6 py-5 md:px-8 flex flex-col md:flex-row items-center gap-5 justify-between">
-                <div className="flex items-center gap-4">
-                  <span className="w-11 h-11 rounded-2xl bg-[#FF4655]/15 border border-[#FF4655]/25 flex items-center justify-center">
-                    <Globe className="w-5 h-5 text-[#FF4655]" />
-                  </span>
-                  <div>
-                    <p className="font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>
-                      Deployed globally on the edge — fast everywhere.
-                    </p>
-                    <p className="text-sm text-white/50" style={{ fontFamily: "var(--font-raj)" }}>
-                      Vercel / AWS · CI/CD · monitoring included in every build.
-                    </p>
-                  </div>
-                </div>
-                <Link
-                  href="/projects"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 transition-colors shrink-0"
-                  style={{ fontFamily: "var(--font-raj)" }}
-                >
-                  See case studies <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </Reveal>
-            {/* ── showreel: full 3:54 video, muted loop + unmute option ── */}
-            <Reveal delay={0.15} className="mt-6">
-              <div className="relative rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl overflow-hidden">
-                <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-                  <div className="lg:col-span-7 relative min-h-[260px] md:min-h-[400px] bg-black">
-                    <div id="cypher-showreel" className="absolute inset-0 w-full h-full" aria-label="CypherTech showreel video" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0F1923]/60 pointer-events-none" />
-                    <span className="absolute top-2 left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur border border-white/15 text-[11px] tracking-[0.14em] text-white/80" style={{ fontFamily: "var(--font-mono)" }}>
-                      <span className="w-2 h-2 rounded-full bg-[#FF4655] animate-pulse" /> CHAMPIONS · 2026
+      {/* ══════════ NEW · SERVICES (just below hero) ══════════ */}
+      <section id="services" className="relative bg-[#0F1923] px-6 py-16 md:py-20">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeading
+            eyebrow="SERVICES"
+            title="What we build"
+            accent="for you"
+            description="Four focused offerings. No jargon, no filler — just the work that moves revenue."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {SERVICES.map((s, i) => (
+              <Reveal key={s.title} delay={i * 0.07}>
+                <div className="group h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl overflow-hidden hover:border-white/20 hover:bg-white/[0.06] hover:-translate-y-1 transition-all duration-300">
+                  <div className="relative h-40 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={s.image}
+                      alt={s.title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-[#0F1923]/30 to-transparent" />
+                    <span className="absolute bottom-3 left-4 w-10 h-10 rounded-2xl bg-black/55 backdrop-blur border border-white/15 flex items-center justify-center text-white">
+                      <s.icon className="w-5 h-5" />
                     </span>
-                    <button
-                      onClick={toggleShowreelMute}
-                      className="absolute bottom-1 right-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-black/60 backdrop-blur border border-white/20 text-white text-xs font-bold tracking-widest hover:bg-black/80 hover:border-[#FF4655]/60 transition-colors"
-                      style={{ fontFamily: "var(--font-mono)" }}
-                      aria-label={showreelMuted ? "Unmute showreel" : "Mute showreel"}
-                    >
-                      {showreelMuted ? <VolumeX className="w-4 h-4 text-[#FF4655]" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
-                      {showreelMuted ? "UNMUTE" : "MUTE"}
-                    </button>
                   </div>
-                  <div className="lg:col-span-5 p-6 md:p-8 flex flex-col justify-center">
-                    <p className="text-[11px] tracking-[0.18em] text-[#FF4655] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
-                      THE FULL STORY · 03:54
-                    </p>
-                    <h3 className="mt-2 text-2xl md:text-3xl text-white leading-tight" style={{ fontFamily: "var(--font-anton)" }}>
-                      Watch what we mean by <span className="text-[#FF4655]">modern.</span>
+                  <div className="p-5">
+                    <h3 className="font-bold text-white text-[17px]" style={{ fontFamily: "var(--font-raj)" }}>
+                      {s.title}
                     </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
-                      The full cut — plays muted on loop. Hit unmute anytime for
-                      the complete experience with sound.
+                    <p className="mt-1.5 text-sm leading-relaxed text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
+                      {s.desc}
                     </p>
-                    <div className="mt-5">
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-2 rounded-full bg-[#FF4655] px-6 py-3 text-sm font-bold text-white hover:bg-[#e03a49] transition-colors"
-                        style={{ fontFamily: "var(--font-raj)" }}
-                      >
-                        Digitalize my business <ArrowRight className="w-4 h-4" />
-                      </Link>
-                    </div>
+                    <ul className="mt-4 space-y-1.5">
+                      {s.points.map((p) => (
+                        <li key={p} className="flex items-center gap-2 text-[13px] text-white/70" style={{ fontFamily: "var(--font-raj)" }}>
+                          <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> {p}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            ))}
           </div>
-        </section>
 
-        {/* ══════════ PROCESS ══════════ */}
-        <RoadmapSection />
-
-        {/* ══════════ ADVANTAGE — rebuilt with modern imagery ══════════ */}
-        <section id="why" className="relative bg-[#0F1923] px-6 py-16 md:py-24">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeading
-              eyebrow="WHY CYPHERTECH"
-              title="Clean builds,"
-              accent="real outcomes"
-              description="We keep it simple: fast pages, honest design and infrastructure you can trust."
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {ADVANTAGES.map((a, i) => (
-                <Reveal key={a.title} delay={i * 0.08}>
-                  <article className="h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl overflow-hidden hover:border-white/20 hover:-translate-y-1 transition-all duration-300">
-                    <div className="relative h-48 overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={a.image} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-[#0F1923]/25 to-transparent" />
-                      <span className="absolute top-4 left-4 w-10 h-10 rounded-2xl bg-black/55 backdrop-blur border border-white/15 flex items-center justify-center text-white">
-                        <a.icon className="w-5 h-5" />
-                      </span>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>
-                        {a.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
-                        {a.desc}
-                      </p>
-                      <div className="grid grid-cols-3 gap-2 mt-5">
-                        {a.metrics.map((m) => (
-                          <div key={m.k} className="rounded-2xl bg-black/30 border border-white/10 py-2.5 text-center">
-                            <p className="text-white text-[15px]" style={{ fontFamily: "var(--font-anton)" }}>{m.k}</p>
-                            <p className="text-[11px] text-white/50">{m.v}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <ul className="mt-5 space-y-1.5 border-t border-white/10 pt-4">
-                        {a.points.map((p) => (
-                          <li key={p} className="flex items-center gap-2 text-[13px] text-white/70" style={{ fontFamily: "var(--font-raj)" }}>
-                            <Check className="w-3.5 h-3.5 text-[#FF4655] shrink-0" /> {p}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════ NEW · STACK + DELIVERY (below advantages) ══════════ */}
-        <section className="relative bg-[#0F1923] px-6 pb-16 md:pb-20">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <Reveal>
-              <div className="h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 md:p-8">
-                <p className="text-[11px] tracking-[0.18em] text-white/50" style={{ fontFamily: "var(--font-mono)" }}>
-                  OUR STACK
-                </p>
-                <h3 className="mt-2 text-2xl md:text-3xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
-                  Modern tools, <span className="text-[#FF4655]">proven in production.</span>
-                </h3>
-                <div className="mt-6 space-y-5">
-                  {STACK.map((g) => (
-                    <div key={g.group}>
-                      <p className="text-xs font-bold tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
-                        {g.group.toUpperCase()}
-                      </p>
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {g.items.map((t) => (
-                          <span key={t.label} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/35 border border-white/10 text-[13px] text-white/75 hover:border-white/25 hover:text-white transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
-                            <span className="flex items-center gap-1.5 shrink-0">
-                              {t.icons.map((src) => (
-                                /* eslint-disable-next-line @next/next/no-img-element */
-                                <img
-                                  key={src}
-                                  src={src}
-                                  alt=""
-                                  loading="lazy"
-                                  className={"wordmark" in t && t.wordmark ? "h-3.5 w-auto brightness-0 invert" : "w-4 h-4"}
-                                />
-                              ))}
-                            </span>
-                            {t.label}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <div className="h-full rounded-3xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl">
-                <div className="relative h-56">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/skills_frontend_bg.png" alt="Delivery" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-[#0F1923]/40 to-transparent" />
-                  <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between">
-                    <p className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>
-                      How we deliver
-                    </p>
-                    <span className="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/25 text-emerald-300 text-xs font-semibold">
-                      On time, on budget
-                    </span>
-                  </div>
-                </div>
-                <ul className="p-6 md:p-8 space-y-4">
-                  {[
-                    { t: "Fixed scope & timeline", d: "You approve milestones before we write code." },
-                    { t: "Weekly demos", d: "See progress every week — no surprises at launch." },
-                    { t: "Launch + 30-day care", d: "Monitoring, fixes and handover docs included." },
-                  ].map((r) => (
-                    <li key={r.t} className="flex gap-3">
-                      <span className="mt-0.5 w-6 h-6 rounded-full bg-[#FF4655]/15 border border-[#FF4655]/25 flex items-center justify-center shrink-0">
-                        <Check className="w-3.5 h-3.5 text-[#FF4655]" />
-                      </span>
-                      <div>
-                        <p className="font-bold text-white text-[15px]" style={{ fontFamily: "var(--font-raj)" }}>{r.t}</p>
-                        <p className="text-sm text-white/55" style={{ fontFamily: "var(--font-raj)" }}>{r.d}</p>
-                      </div>
-                    </li>
-                  ))}
-                  <Link
-                    href="/contact"
-                    className="mt-2 inline-flex items-center gap-2 rounded-full bg-white text-[#0F1923] px-6 py-3 text-sm font-bold hover:bg-white/85 transition-colors"
-                    style={{ fontFamily: "var(--font-raj)" }}
-                  >
-                    Get a free estimate <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </ul>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ══════════ ENGAGEMENT — replaces ROI graph ══════════ */}
-        <section id="pricing" className="relative px-6 py-16 md:py-20 border-y border-white/10 bg-[#0C141D]">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeading
-              eyebrow="ENGAGEMENT"
-              title="Simple plans,"
-              accent="honest pricing"
-              description="Pick the fit for where you are. Every plan includes design, build, launch and support."
-            />
-            <div className="flex justify-center mb-8">
-              <div className="inline-flex rounded-full border border-white/10 bg-black/40 p-1 gap-1">
-                {(["starter", "growth", "enterprise"] as const).map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setActivePlan(p)}
-                    className={`px-5 py-2 rounded-full text-xs font-bold tracking-widest capitalize transition-colors ${activePlan === p ? "bg-[#FF4655] text-white" : "text-white/55 hover:text-white"}`}
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {PLANS.map((plan, i) => {
-                const active = activePlan === plan.id;
-                return (
-                  <Reveal key={plan.id} delay={i * 0.08}>
-                    <div
-                      className={`relative h-full rounded-3xl border p-6 md:p-7 transition-all duration-300 ${"popular" in plan && plan.popular
-                        ? "border-[#FF4655]/50 bg-[#FF4655]/[0.07] backdrop-blur-xl"
-                        : active
-                          ? "border-white/25 bg-white/[0.06] backdrop-blur-xl"
-                          : "border-white/10 bg-white/[0.03] backdrop-blur-xl hover:border-white/20"
-                        }`}
-                    >
-                      {"popular" in plan && plan.popular && (
-                        <span className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-[#FF4655] text-white text-[11px] font-bold tracking-widest" style={{ fontFamily: "var(--font-mono)" }}>
-                          MOST POPULAR
-                        </span>
-                      )}
-                      <p className="text-[11px] tracking-[0.18em] text-white/50" style={{ fontFamily: "var(--font-mono)" }}>
-                        {plan.name.toUpperCase()} · {plan.tag}
-                      </p>
-                      <p className="mt-2 text-3xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
-                        {plan.pricePrimary}
-                      </p>
-                      {/* <p className="mt-1 text-sm font-bold text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
-                        {plan.priceSecondary}
-                      </p> */}
-                      <p className="mt-1 text-[11px] tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
-                        {plan.billingNote.toUpperCase()}
-                      </p>
-                      <p className="mt-2 text-sm text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
-                        {plan.blurb}
-                      </p>
-                      <ul className="mt-5 space-y-2.5 border-t border-white/10 pt-5">
-                        {plan.features.map((f) => (
-                          <li key={f} className="flex items-center gap-2 text-sm text-white/75" style={{ fontFamily: "var(--font-raj)" }}>
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0" /> {f}
-                          </li>
-                        ))}
-                      </ul>
-                      <Link
-                        href={plan.ctaHref}
-                        className={`mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold transition-colors ${"popular" in plan && plan.popular
-                          ? "bg-[#FF4655] text-white hover:bg-[#e03a49]"
-                          : "border border-white/15 text-white hover:bg-white/10"
-                          }`}
-                        style={{ fontFamily: "var(--font-raj)" }}
-                      >
-                        {plan.cta} <ArrowRight className="w-4 h-4" />
-                      </Link>
-                      <p className="mt-3 text-center text-[10px] tracking-[0.14em] text-white/40" style={{ fontFamily: "var(--font-mono)" }}>
-                        {plan.trust}
-                      </p>
-                    </div>
-                  </Reveal>
-                );
-              })}
-            </div>
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
-              <Link
-                href="/pricing"
-                className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.14em] text-white/70 hover:text-white transition-colors"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                COMPARE ALL FEATURES <ArrowRight className="w-3.5 h-3.5 text-[#FF4655]" />
-              </Link>
-              <span className="hidden sm:inline text-white/20">·</span>
-              <span className="text-[11px] tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
-                Non-Disclosure-Agreement-FIRST // 48H PROPOSAL
-              </span>
-            </div>
-            <Reveal delay={0.15} className="mt-6">
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-5 flex flex-col md:flex-row items-center gap-4 justify-between">
-                <div className="flex items-center gap-1 text-[#FF4655]">
-                  {[...Array(5)].map((_, k) => (
-                    <Star key={k} className="w-4 h-4 fill-current" />
-                  ))}
-                  <p className="ml-3 text-sm text-white/70 italic" style={{ fontFamily: "var(--font-raj)" }}>
-                    “CypherTech rebuilt our booking flow — saved 15h/week and doubled bookings in two months.”
+          {/* results band */}
+          <Reveal delay={0.1} className="mt-6">
+            <div className="rounded-3xl border border-white/10 bg-black/35 backdrop-blur-xl px-6 py-5 md:px-8 flex flex-col md:flex-row items-center gap-5 justify-between">
+              <div className="flex items-center gap-4">
+                <span className="w-11 h-11 rounded-2xl bg-[#FF4655]/15 border border-[#FF4655]/25 flex items-center justify-center">
+                  <Globe className="w-5 h-5 text-[#FF4655]" />
+                </span>
+                <div>
+                  <p className="font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>
+                    Deployed globally on the edge — fast everywhere.
+                  </p>
+                  <p className="text-sm text-white/50" style={{ fontFamily: "var(--font-raj)" }}>
+                    Vercel / AWS · CI/CD · monitoring included in every build.
                   </p>
                 </div>
-                <p className="text-xs tracking-[0.14em] text-white/45 shrink-0" style={{ fontFamily: "var(--font-mono)" }}>
-                  SARAH J. · OPERATIONS DIRECTOR
-                </p>
               </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ══════════ TESTIMONIALS ══════════ */}
-        <section className="relative  px-6 py-16 md:py-20">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeading
-              eyebrow="TESTIMONIALS"
-              title="Loved by"
-              accent="founders & teams"
-              description="Real feedback from real launches."
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {[
-                { quote: "CypherTech completely transformed our digital presence. The new site is blazing fast, and conversions have doubled since launch.", author: "Sarah Jenkins", role: "Director of E-Commerce", image: "/testimonial_1.png" },
-                { quote: "Himesh is not just a developer; he's a strategic partner. He understood our goals immediately and engineered the perfect solution.", author: "David Chen", role: "Founder, TechFlow AI", image: "/testimonial_2.png" },
-                { quote: "The attention to detail is unmatched. A product that looks incredible and holds up flawlessly under heavy load.", author: "Marcus Thorne", role: "CTO, Global Logistics", image: "/testimonial_3.png" },
-              ].map((t, i) => (
-                <Reveal key={t.author} delay={i * 0.08}>
-                  <figure className="h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 flex flex-col hover:border-white/20 transition-colors">
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(5)].map((_, k) => (
-                        <Star key={k} className="w-3.5 h-3.5 fill-[#FF4655] text-[#FF4655]" />
-                      ))}
-                    </div>
-                    <blockquote className="text-[15px] leading-relaxed text-white/80 flex-1" style={{ fontFamily: "var(--font-raj)" }}>
-                      “{t.quote}”
-                    </blockquote>
-                    <figcaption className="flex items-center gap-3 mt-6 pt-5 border-t border-white/10">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={t.image} alt={t.author} className="w-11 h-11 rounded-full object-cover border border-white/15" />
-                      <div>
-                        <p className="text-sm font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>{t.author}</p>
-                        <p className="text-xs text-white/50" style={{ fontFamily: "var(--font-raj)" }}>{t.role}</p>
-                      </div>
-                    </figcaption>
-                  </figure>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════ BLOG ══════════ */}
-        <section className="relative px-6 pb-16 md:pb-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-              <div>
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF]" /> INSIGHTS
-                </span>
-                <h2 className="mt-4 text-4xl md:text-5xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
-                  Latest <span className="text-[#00E5FF]">thinking</span>
-                </h2>
-              </div>
-              <Link href="/blog" className="hidden md:inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-xs font-bold tracking-widest text-white hover:bg-white/10 transition-colors" style={{ fontFamily: "var(--font-mono)" }}>
-                VIEW ALL <ArrowRight className="w-3.5 h-3.5 text-[#FF4655]" />
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 transition-colors shrink-0"
+                style={{ fontFamily: "var(--font-raj)" }}
+              >
+                See case studies <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {[
-                { slug: "rsc-ecommerce", category: "Engineering", title: "Why React Server Components are the future of e-commerce", date: "Oct 12, 2026", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80&auto=format&fit=crop" },
-                { slug: "micro-interactions", category: "Design", title: "The psychology of micro-interactions in SaaS dashboards", date: "Sep 28, 2026", image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80&auto=format&fit=crop" },
-                { slug: "scaling-agency", category: "Strategy", title: "Scaling your agency: from freelancer to firm transformation", date: "Sep 15, 2026", image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80&auto=format&fit=crop" },
-              ].map((post, i) => (
-                <Reveal key={post.slug} delay={i * 0.08}>
-                  <Link href={`/blog/${post.slug}`} className="group block rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl overflow-hidden hover:border-white/20 transition-colors">
-                    <div className="relative h-48 overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={post.image} alt={post.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#FF4655] text-white text-[11px] font-bold tracking-widest" style={{ fontFamily: "var(--font-mono)" }}>
-                        {post.category.toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-bold text-white leading-snug group-hover:text-[#FF4655] transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
-                        {post.title}
-                      </h3>
-                      <p className="mt-3 text-xs tracking-widest text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
-                        {post.date.toUpperCase()}
-                      </p>
-                    </div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════ ABOUT ══════════ */}
-        <section className="relative px-6 pb-16 md:pb-20">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 md:p-10">
-            <Reveal>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FF4655]" /> ABOUT
-              </span>
-              <h2 className="mt-4 text-4xl md:text-5xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
-                Hi, I&apos;m <span className="text-[#FF4655]">Himesh.</span>
-              </h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-white/60" style={{ fontFamily: "var(--font-raj)" }}>
-                Full-stack engineer and designer working at the intersection of robust
-                backend architecture and beautiful front-ends.
-              </p>
-              <p className="mt-3 text-[15px] leading-relaxed text-white/60" style={{ fontFamily: "var(--font-raj)" }}>
-                I help companies turn complex requirements into elegant,
-                high-performance products — from first sketch to global scale.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/about" className="px-6 py-3 rounded-full border border-white/15 text-white text-sm font-bold hover:bg-white/10 transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
-                  More about me
-                </Link>
-                <Link href="/contact" className="px-6 py-3 rounded-full bg-[#FF4655] text-white text-sm font-bold hover:bg-[#e03a49] transition-colors inline-flex items-center gap-2" style={{ fontFamily: "var(--font-raj)" }}>
-                  Let&apos;s connect <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </Reveal>
-            <Reveal delay={0.1} className="flex justify-center">
-              <div className="relative w-full max-w-[420px] rounded-3xl overflow-hidden border border-white/10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/profile_avatar.png" alt="Himesh" className="w-full aspect-square object-cover" />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur px-5 py-4 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>HIMESH SATYAM</p>
-                    <p className="text-[11px] tracking-[0.14em] text-white/55" style={{ fontFamily: "var(--font-mono)" }}>FULL-STACK ENGINEER</p>
-                  </div>
+          </Reveal>
+          {/* ── showreel: full 3:54 video, muted loop + unmute option ── */}
+          <Reveal delay={0.15} className="mt-6">
+            <div className="relative rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+                <div className="lg:col-span-7 relative min-h-[260px] md:min-h-[400px] bg-black">
+                  <div id="cypher-showreel" className="absolute inset-0 w-full h-full" aria-label="CypherTech showreel video" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0F1923]/60 pointer-events-none" />
+                  <span className="absolute top-2 left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur border border-white/15 text-[11px] tracking-[0.14em] text-white/80" style={{ fontFamily: "var(--font-mono)" }}>
+                    <span className="w-2 h-2 rounded-full bg-[#FF4655] animate-pulse" /> CHAMPIONS · 2026
+                  </span>
+                  <button
+                    onClick={toggleShowreelMute}
+                    className="absolute bottom-1 right-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-black/60 backdrop-blur border border-white/20 text-white text-xs font-bold tracking-widest hover:bg-black/80 hover:border-[#FF4655]/60 transition-colors"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                    aria-label={showreelMuted ? "Unmute showreel" : "Mute showreel"}
+                  >
+                    {showreelMuted ? <VolumeX className="w-4 h-4 text-[#FF4655]" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+                    {showreelMuted ? "UNMUTE" : "MUTE"}
+                  </button>
                 </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ══════════ PLAYZONE (kept, calmed) ══════════ */}
-        <section className="hidden lg:block relative px-6 pb-16">
-          <div className="max-w-6xl mx-auto rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 md:p-8">
-            <div className="text-center mb-6">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
-                TRAINING GROUND
-              </span>
-              <h2 className="mt-3 text-4xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
-                Play<span className="text-[#FF4655]">zone</span>
-              </h2>
-              <p className="mt-2 text-sm text-white/50" style={{ fontFamily: "var(--font-raj)" }}>
-                StarWarZ — hit PLAY for the full-page arena. ESC pauses, EXIT brings you back here.
-              </p>
-            </div>
-            <StarWarGame />
-          </div>
-        </section>
-
-        {/* ══════════ FINAL CTA ══════════ */}
-        <section className="relative px-6 pb-20">
-          <Reveal className="max-w-7xl mx-auto">
-            <div className="relative rounded-3xl overflow-hidden bg-[#FF4655] px-8 py-12 md:p-14 text-center">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/25" />
-              <div className="relative">
-                <h2 className="text-4xl md:text-5xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
-                  HAVE AN IDEA? LET&apos;S SHIP IT.
-                </h2>
-                <p className="mt-3 text-white/85 max-w-xl mx-auto" style={{ fontFamily: "var(--font-raj)" }}>
-                  Tell us about your project — get a clear scope, timeline and fixed quote within 48 hours.
-                </p>
-                <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
-                  <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-[#0F1923] hover:bg-white/90 transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
-                    Get my free quote <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <Link href="/projects" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
-                    Browse work
-                  </Link>
+                <div className="lg:col-span-5 p-6 md:p-8 flex flex-col justify-center">
+                  <p className="text-[11px] tracking-[0.18em] text-[#FF4655] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
+                    THE FULL STORY · 03:54
+                  </p>
+                  <h3 className="mt-2 text-2xl md:text-3xl text-white leading-tight" style={{ fontFamily: "var(--font-anton)" }}>
+                    Watch what we mean by <span className="text-[#FF4655]">modern.</span>
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
+                    The full cut — plays muted on loop. Hit unmute anytime for
+                    the complete experience with sound.
+                  </p>
+                  <div className="mt-5">
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#FF4655] px-6 py-3 text-sm font-bold text-white hover:bg-[#e03a49] transition-colors"
+                      style={{ fontFamily: "var(--font-raj)" }}
+                    >
+                      Digitalize my business <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </Reveal>
-        </section>
+        </div>
+      </section>
+
+      {/* ══════════ PROCESS ══════════ */}
+      <RoadmapSection />
+
+      {/* ══════════ ADVANTAGE — rebuilt with modern imagery ══════════ */}
+      <section id="why" className="relative px-6 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeading
+            eyebrow="WHY CYPHERTECH"
+            title="Clean builds,"
+            accent="real outcomes"
+            description="We keep it simple: fast pages, honest design and infrastructure you can trust."
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {ADVANTAGES.map((a, i) => (
+              <Reveal key={a.title} delay={i * 0.08}>
+                <article className="h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl overflow-hidden hover:border-white/20 hover:-translate-y-1 transition-all duration-300">
+                  <div className="relative h-48 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={a.image} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-[#0F1923]/25 to-transparent" />
+                    <span className="absolute top-4 left-4 w-10 h-10 rounded-2xl bg-black/55 backdrop-blur border border-white/15 flex items-center justify-center text-white">
+                      <a.icon className="w-5 h-5" />
+                    </span>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>
+                      {a.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
+                      {a.desc}
+                    </p>
+                    <div className="grid grid-cols-3 gap-2 mt-5">
+                      {a.metrics.map((m) => (
+                        <div key={m.k} className="rounded-2xl bg-black/30 border border-white/10 py-2.5 text-center">
+                          <p className="text-white text-[15px]" style={{ fontFamily: "var(--font-anton)" }}>{m.k}</p>
+                          <p className="text-[11px] text-white/50">{m.v}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <ul className="mt-5 space-y-1.5 border-t border-white/10 pt-4">
+                      {a.points.map((p) => (
+                        <li key={p} className="flex items-center gap-2 text-[13px] text-white/70" style={{ fontFamily: "var(--font-raj)" }}>
+                          <Check className="w-3.5 h-3.5 text-[#FF4655] shrink-0" /> {p}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ NEW · STACK + DELIVERY (below advantages) ══════════ */}
+      <section className="relative px-6 pb-16 md:pb-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <Reveal>
+            <div className="h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 md:p-8">
+              <p className="text-[11px] tracking-[0.18em] text-white/50" style={{ fontFamily: "var(--font-mono)" }}>
+                OUR STACK
+              </p>
+              <h3 className="mt-2 text-2xl md:text-3xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
+                Modern tools, <span className="text-[#FF4655]">proven in production.</span>
+              </h3>
+              <div className="mt-6 space-y-5">
+                {STACK.map((g) => (
+                  <div key={g.group}>
+                    <p className="text-xs font-bold tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
+                      {g.group.toUpperCase()}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {g.items.map((t) => (
+                        <span key={t.label} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/35 border border-white/10 text-[13px] text-white/75 hover:border-white/25 hover:text-white transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
+                          <span className="flex items-center gap-1.5 shrink-0">
+                            {t.icons.map((src) => (
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img
+                                key={src}
+                                src={src}
+                                alt=""
+                                loading="lazy"
+                                className={"wordmark" in t && t.wordmark ? "h-3.5 w-auto brightness-0 invert" : "w-4 h-4"}
+                              />
+                            ))}
+                          </span>
+                          {t.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="h-full rounded-3xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl">
+              <div className="relative h-56">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/skills_frontend_bg.png" alt="Delivery" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-[#0F1923]/40 to-transparent" />
+                <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between">
+                  <p className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>
+                    How we deliver
+                  </p>
+                  <span className="px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/25 text-emerald-300 text-xs font-semibold">
+                    On time, on budget
+                  </span>
+                </div>
+              </div>
+              <ul className="p-6 md:p-8 space-y-4">
+                {[
+                  { t: "Fixed scope & timeline", d: "You approve milestones before we write code." },
+                  { t: "Weekly demos", d: "See progress every week — no surprises at launch." },
+                  { t: "Launch + 30-day care", d: "Monitoring, fixes and handover docs included." },
+                ].map((r) => (
+                  <li key={r.t} className="flex gap-3">
+                    <span className="mt-0.5 w-6 h-6 rounded-full bg-[#FF4655]/15 border border-[#FF4655]/25 flex items-center justify-center shrink-0">
+                      <Check className="w-3.5 h-3.5 text-[#FF4655]" />
+                    </span>
+                    <div>
+                      <p className="font-bold text-white text-[15px]" style={{ fontFamily: "var(--font-raj)" }}>{r.t}</p>
+                      <p className="text-sm text-white/55" style={{ fontFamily: "var(--font-raj)" }}>{r.d}</p>
+                    </div>
+                  </li>
+                ))}
+                <Link
+                  href="/contact"
+                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-white text-[#0F1923] px-6 py-3 text-sm font-bold hover:bg-white/85 transition-colors"
+                  style={{ fontFamily: "var(--font-raj)" }}
+                >
+                  Get a free estimate <ArrowRight className="w-4 h-4" />
+                </Link>
+              </ul>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════ ENGAGEMENT — replaces ROI graph ══════════ */}
+      <section id="pricing" className="relative px-6 py-16 md:py-20 border-y border-white/10 bg-[#0C141D]">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeading
+            eyebrow="ENGAGEMENT"
+            title="Simple plans,"
+            accent="honest pricing"
+            description="Pick the fit for where you are. Every plan includes design, build, launch and support."
+          />
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex rounded-full border border-white/10 bg-black/40 p-1 gap-1">
+              {(["starter", "growth", "enterprise"] as const).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setActivePlan(p)}
+                  className={`px-5 py-2 rounded-full text-xs font-bold tracking-widest capitalize transition-colors ${activePlan === p ? "bg-[#FF4655] text-white" : "text-white/55 hover:text-white"}`}
+                  style={{ fontFamily: "var(--font-mono)" }}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {PLANS.map((plan, i) => {
+              const active = activePlan === plan.id;
+              return (
+                <Reveal key={plan.id} delay={i * 0.08}>
+                  <div
+                    className={`relative h-full rounded-3xl border p-6 md:p-7 transition-all duration-300 ${"popular" in plan && plan.popular
+                      ? "border-[#FF4655]/50 bg-[#FF4655]/[0.07] backdrop-blur-xl"
+                      : active
+                        ? "border-white/25 bg-white/[0.06] backdrop-blur-xl"
+                        : "border-white/10 bg-white/[0.03] backdrop-blur-xl hover:border-white/20"
+                      }`}
+                  >
+                    {"popular" in plan && plan.popular && (
+                      <span className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-[#FF4655] text-white text-[11px] font-bold tracking-widest" style={{ fontFamily: "var(--font-mono)" }}>
+                        MOST POPULAR
+                      </span>
+                    )}
+                    <p className="text-[11px] tracking-[0.18em] text-white/50" style={{ fontFamily: "var(--font-mono)" }}>
+                      {plan.name.toUpperCase()} · {plan.tag}
+                    </p>
+                    <p className="mt-2 text-3xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
+                      {plan.pricePrimary}
+                    </p>
+                    {/* <p className="mt-1 text-sm font-bold text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
+                        {plan.priceSecondary}
+                      </p> */}
+                    <p className="mt-1 text-[11px] tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
+                      {plan.billingNote.toUpperCase()}
+                    </p>
+                    <p className="mt-2 text-sm text-white/55" style={{ fontFamily: "var(--font-raj)" }}>
+                      {plan.blurb}
+                    </p>
+                    <ul className="mt-5 space-y-2.5 border-t border-white/10 pt-5">
+                      {plan.features.map((f) => (
+                        <li key={f} className="flex items-center gap-2 text-sm text-white/75" style={{ fontFamily: "var(--font-raj)" }}>
+                          <Check className="w-4 h-4 text-emerald-400 shrink-0" /> {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href={plan.ctaHref}
+                      className={`mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold transition-colors ${"popular" in plan && plan.popular
+                        ? "bg-[#FF4655] text-white hover:bg-[#e03a49]"
+                        : "border border-white/15 text-white hover:bg-white/10"
+                        }`}
+                      style={{ fontFamily: "var(--font-raj)" }}
+                    >
+                      {plan.cta} <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    <p className="mt-3 text-center text-[10px] tracking-[0.14em] text-white/40" style={{ fontFamily: "var(--font-mono)" }}>
+                      {plan.trust}
+                    </p>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.14em] text-white/70 hover:text-white transition-colors"
+              style={{ fontFamily: "var(--font-mono)" }}
+            >
+              COMPARE ALL FEATURES <ArrowRight className="w-3.5 h-3.5 text-[#FF4655]" />
+            </Link>
+            <span className="hidden sm:inline text-white/20">·</span>
+            <span className="text-[11px] tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
+              Non-Disclosure-Agreement-FIRST // 48H PROPOSAL
+            </span>
+          </div>
+          <Reveal delay={0.15} className="mt-6">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-5 flex flex-col md:flex-row items-center gap-4 justify-between">
+              <div className="flex items-center gap-1 text-[#FF4655]">
+                {[...Array(5)].map((_, k) => (
+                  <Star key={k} className="w-4 h-4 fill-current" />
+                ))}
+                <p className="ml-3 text-sm text-white/70 italic" style={{ fontFamily: "var(--font-raj)" }}>
+                  “CypherTech rebuilt our booking flow — saved 15h/week and doubled bookings in two months.”
+                </p>
+              </div>
+              <p className="text-xs tracking-[0.14em] text-white/45 shrink-0" style={{ fontFamily: "var(--font-mono)" }}>
+                SARAH J. · OPERATIONS DIRECTOR
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════ TESTIMONIALS ══════════ */}
+      <section className="relative  px-6 py-16 md:py-20">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeading
+            eyebrow="TESTIMONIALS"
+            title="Loved by"
+            accent="founders & teams"
+            description="Real feedback from real launches."
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              { quote: "CypherTech completely transformed our digital presence. The new site is blazing fast, and conversions have doubled since launch.", author: "Sarah Jenkins", role: "Director of E-Commerce", image: "/testimonial_1.png" },
+              { quote: "Himesh is not just a developer; he's a strategic partner. He understood our goals immediately and engineered the perfect solution.", author: "David Chen", role: "Founder, TechFlow AI", image: "/testimonial_2.png" },
+              { quote: "The attention to detail is unmatched. A product that looks incredible and holds up flawlessly under heavy load.", author: "Marcus Thorne", role: "CTO, Global Logistics", image: "/testimonial_3.png" },
+            ].map((t, i) => (
+              <Reveal key={t.author} delay={i * 0.08}>
+                <figure className="h-full rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 flex flex-col hover:border-white/20 transition-colors">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, k) => (
+                      <Star key={k} className="w-3.5 h-3.5 fill-[#FF4655] text-[#FF4655]" />
+                    ))}
+                  </div>
+                  <blockquote className="text-[15px] leading-relaxed text-white/80 flex-1" style={{ fontFamily: "var(--font-raj)" }}>
+                    “{t.quote}”
+                  </blockquote>
+                  <figcaption className="flex items-center gap-3 mt-6 pt-5 border-t border-white/10">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={t.image} alt={t.author} className="w-11 h-11 rounded-full object-cover border border-white/15" />
+                    <div>
+                      <p className="text-sm font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>{t.author}</p>
+                      <p className="text-xs text-white/50" style={{ fontFamily: "var(--font-raj)" }}>{t.role}</p>
+                    </div>
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ BLOG ══════════ */}
+      <section className="relative px-6 pb-16 md:pb-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+            <div>
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF]" /> INSIGHTS
+              </span>
+              <h2 className="mt-4 text-4xl md:text-5xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
+                Latest <span className="text-[#00E5FF]">thinking</span>
+              </h2>
+            </div>
+            <Link href="/blog" className="hidden md:inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-xs font-bold tracking-widest text-white hover:bg-white/10 transition-colors" style={{ fontFamily: "var(--font-mono)" }}>
+              VIEW ALL <ArrowRight className="w-3.5 h-3.5 text-[#FF4655]" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              { slug: "rsc-ecommerce", category: "Engineering", title: "Why React Server Components are the future of e-commerce", date: "Oct 12, 2026", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80&auto=format&fit=crop" },
+              { slug: "micro-interactions", category: "Design", title: "The psychology of micro-interactions in SaaS dashboards", date: "Sep 28, 2026", image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80&auto=format&fit=crop" },
+              { slug: "scaling-agency", category: "Strategy", title: "Scaling your agency: from freelancer to firm transformation", date: "Sep 15, 2026", image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80&auto=format&fit=crop" },
+            ].map((post, i) => (
+              <Reveal key={post.slug} delay={i * 0.08}>
+                <Link href={`/blog/${post.slug}`} className="group block rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl overflow-hidden hover:border-white/20 transition-colors">
+                  <div className="relative h-48 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={post.image} alt={post.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#FF4655] text-white text-[11px] font-bold tracking-widest" style={{ fontFamily: "var(--font-mono)" }}>
+                      {post.category.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-white leading-snug group-hover:text-[#FF4655] transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
+                      {post.title}
+                    </h3>
+                    <p className="mt-3 text-xs tracking-widest text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
+                      {post.date.toUpperCase()}
+                    </p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ ABOUT ══════════ */}
+      <section className="relative px-6 pb-16 md:pb-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 md:p-10">
+          <Reveal>
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF4655]" /> ABOUT
+            </span>
+            <h2 className="mt-4 text-4xl md:text-5xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
+              Hi, I&apos;m <span className="text-[#FF4655]">Himesh.</span>
+            </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-white/60" style={{ fontFamily: "var(--font-raj)" }}>
+              Full-stack engineer and designer working at the intersection of robust
+              backend architecture and beautiful front-ends.
+            </p>
+            <p className="mt-3 text-[15px] leading-relaxed text-white/60" style={{ fontFamily: "var(--font-raj)" }}>
+              I help companies turn complex requirements into elegant,
+              high-performance products — from first sketch to global scale.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/about" className="px-6 py-3 rounded-full border border-white/15 text-white text-sm font-bold hover:bg-white/10 transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
+                More about me
+              </Link>
+              <Link href="/contact" className="px-6 py-3 rounded-full bg-[#FF4655] text-white text-sm font-bold hover:bg-[#e03a49] transition-colors inline-flex items-center gap-2" style={{ fontFamily: "var(--font-raj)" }}>
+                Let&apos;s connect <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1} className="flex justify-center">
+            <div className="relative w-full max-w-[420px] rounded-3xl overflow-hidden border border-white/10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/profile_avatar.png" alt="Himesh" className="w-full aspect-square object-cover" />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur px-5 py-4 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>HIMESH SATYAM</p>
+                  <p className="text-[11px] tracking-[0.14em] text-white/55" style={{ fontFamily: "var(--font-mono)" }}>FULL-STACK ENGINEER</p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══════════ PLAYZONE (kept, calmed) ══════════ */}
+      <section className="hidden lg:block relative px-6 pb-16">
+        <div className="max-w-6xl mx-auto rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 md:p-8">
+          <div className="text-center mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
+              TRAINING GROUND
+            </span>
+            <h2 className="mt-3 text-4xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
+              Play<span className="text-[#FF4655]">zone</span>
+            </h2>
+            <p className="mt-2 text-sm text-white/50" style={{ fontFamily: "var(--font-raj)" }}>
+              StarWarZ — hit PLAY for the full-page arena. ESC pauses, EXIT brings you back here.
+            </p>
+          </div>
+          <StarWarGame />
+        </div>
+      </section>
+
+      {/* ══════════ FINAL CTA ══════════ */}
+      <section className="relative px-6 pb-20">
+        <Reveal className="max-w-7xl mx-auto">
+          <div className="relative rounded-3xl overflow-hidden bg-[#FF4655] px-8 py-12 md:p-14 text-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/25" />
+            <div className="relative">
+              <h2 className="text-4xl md:text-5xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
+                HAVE AN IDEA? LET&apos;S SHIP IT.
+              </h2>
+              <p className="mt-3 text-white/85 max-w-xl mx-auto" style={{ fontFamily: "var(--font-raj)" }}>
+                Tell us about your project — get a clear scope, timeline and fixed quote within 48 hours.
+              </p>
+              <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
+                <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-[#0F1923] hover:bg-white/90 transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
+                  Get my free quote <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link href="/projects" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 px-8 py-4 text-sm font-bold text-white hover:bg-white/10 transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
+                  Browse work
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
     </div>
   );
 }
