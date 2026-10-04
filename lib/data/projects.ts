@@ -807,9 +807,9 @@ export const projects: Project[] = [
         id: 31,
         title: "IGVictory",
         description: "Serverless tactical gaming media platform and live telemetry relay hub featuring direct AWS S3 presigned video ingestion (bypassing 4.5MB serverless limits), CloudFront CDN edge delivery, Twitch embeds, tournament intel, and Discord ops alerts.",
-        image: "/projects/igvictory/images/igvictorysc1.png",
+        image: "/projects/igvictory/images/igvictorysc1.jpg",
         images: [
-            "/projects/igvictory/images/igvictorysc1.png",
+            "/projects/igvictory/images/igvictorysc1.jpg",
             "/projects/igvictory/images/igvictorysc2.jpg",
 
         ],
