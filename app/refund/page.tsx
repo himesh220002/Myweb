@@ -258,13 +258,18 @@ function RefundContent() {
       <div className="bg-white border border-gray-200/90 rounded-2xl shadow-xl overflow-hidden">
         {/* Banner Header */}
         <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 p-6 sm:p-8 text-white">
-          <div className="flex items-center gap-2.5 text-xs font-semibold text-blue-200 mb-2">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Bank-Grade Escrow &amp; Statutory Resolution</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5 text-xs font-semibold text-blue-200 mb-2">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Bank-Grade Escrow &amp; Statutory Resolution</span>
+            </div>
+            <button onClick={() => window.history.back()} className="px-3 py-1.5 bg-gray-800/10 hover:bg-gray-800/20 shadow-xs shadow-gray-800 backdrop-blur-sm rounded-lg transition">Back</button>
+
           </div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
             Transaction Resolution &amp; Refund Request
           </h1>
+
           <p className="text-xs sm:text-sm text-blue-100 mt-1 max-w-xl leading-relaxed">
             All payments made to CypherTech are protected by Razorpay. Submit your request below with instant digital cryptographic verification.
           </p>
@@ -450,11 +455,10 @@ function RefundContent() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 <label
                   onClick={() => setRefundMode("source")}
-                  className={`border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition ${
-                    refundMode === "source"
-                      ? "border-blue-600 bg-blue-50/50 text-blue-900 font-semibold"
-                      : "border-gray-200 hover:border-gray-300 text-gray-700"
-                  }`}
+                  className={`border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition ${refundMode === "source"
+                    ? "border-blue-600 bg-blue-50/50 text-blue-900 font-semibold"
+                    : "border-gray-200 hover:border-gray-300 text-gray-700"
+                    }`}
                 >
                   <input
                     type="radio"
@@ -473,11 +477,10 @@ function RefundContent() {
 
                 <label
                   onClick={() => setRefundMode("upi")}
-                  className={`border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition ${
-                    refundMode === "upi"
-                      ? "border-blue-600 bg-blue-50/50 text-blue-900 font-semibold"
-                      : "border-gray-200 hover:border-gray-300 text-gray-700"
-                  }`}
+                  className={`border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition ${refundMode === "upi"
+                    ? "border-blue-600 bg-blue-50/50 text-blue-900 font-semibold"
+                    : "border-gray-200 hover:border-gray-300 text-gray-700"
+                    }`}
                 >
                   <input
                     type="radio"

@@ -84,6 +84,7 @@ const navLinks = [
   { name: "Services", href: "/services" },
   { name: "Portfolio", href: "/projects" },
   { name: "Pricing", href: "/pricing" },
+  { name: "Contact", href: "/contact" },
   {
     name: "More",
     dropdown: [
@@ -91,7 +92,6 @@ const navLinks = [
       { name: "Skills", href: "/skills" },
       { name: "Clients", href: "/clients" },
       { name: "Pay Online", href: "/pay" },
-      { name: "Contact", href: "/contact" },
     ],
   },
 ];
@@ -162,17 +162,17 @@ export default function Navbar() {
               </span>
             </div>
             {/* desktop tac meta */}
-            <div className="hidden xl:flex items-center gap-2 ml-4 pl-4 border-l border-[#1e2d3a]/80">
+            {/* <div className="hidden xl:flex items-center gap-2 ml-4 pl-4 border-l border-[#1e2d3a]/80">
               <Crosshair className="w-3.5 h-3.5 text-[#FF4655]/60" />
               <span className="text-[10px] tracking-[0.16em] text-[#768079] font-bold" style={{ fontFamily: "var(--font-mono)" }}>
                 TACTICAL // HQ
               </span>
               <span className="w-1.5 h-1.5 bg-emerald-400 animate-pulse ml-1" />
-            </div>
+            </div> */}
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = link.href ? pathname === link.href : false;
 
@@ -218,7 +218,7 @@ export default function Navbar() {
                             className="text-[10px] tracking-[0.16em] font-black text-[#FF4655]"
                             style={{ fontFamily: "var(--font-mono)" }}
                           >
-                            // MORE // OPERATIONS
+                            // OPERATIONS
                           </span>
                           <Crosshair className="ml-auto w-3 h-3 text-[#FF4655]/40" />
                         </div>
@@ -291,7 +291,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3 shrink-0">
+          <div className="hidden xl:flex items-center gap-3 shrink-0">
             {/* Buy Coffee Button */}
             <Link
               href="/pay?coffee=true"
@@ -318,7 +318,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Profile & Menu Toggle */}
-          <div className="lg:hidden flex items-center gap-2 shrink-0">
+          <div className="xl:hidden flex items-center gap-2 shrink-0">
             {/* Cornercut profile icon placed just left side of hamburger icon */}
             <ProfileDropdown isMobile={true} />
 

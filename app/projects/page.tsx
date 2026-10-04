@@ -233,7 +233,7 @@ export default function ProjectsPage() {
           <span className="hidden sm:inline-flex items-center gap-2 text-[11px] tracking-[0.16em] text-[#768079] font-black mr-1" style={{ fontFamily: "var(--font-mono)" }}>
             <Filter className="w-3.5 h-3.5 text-[#FF4655]" /> FILTER //
           </span>
-          <div className="inline-flex flex-wrap gap-1.5 p-1.5 bg-[#0a131c] border border-[#1e2d3a]" style={{ clipPath: CLIP_PANEL }}>
+          <div className="hidden sm:inline-flex flex-wrap gap-1.5 p-1.5 bg-[#0a131c] border border-[#1e2d3a]" style={{ clipPath: CLIP_PANEL }}>
             {categoryGroups.map((group) => {
               const active = activeTab === group.label;
               return (

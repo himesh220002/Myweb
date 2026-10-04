@@ -179,7 +179,7 @@ export default function ContactPage() {
         {/* ── HEADER HUD ── */}
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="space-y-6">
           {/* top HUD badges */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="hidden md:flex flex-wrap items-center gap-3">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FF4655] text-white" style={{ clipPath: CLIP_BTN }}>
               <Swords className="w-3.5 h-3.5" />
               <span className="text-[11px] font-black tracking-[0.18em]" style={{ fontFamily: "var(--font-mono)" }}>
@@ -200,7 +200,7 @@ export default function ContactPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 md:gap-8  items-center">
             {/* title */}
             <div className="lg:col-span-7 space-y-5">
               <div className="relative">
@@ -225,7 +225,7 @@ export default function ContactPage() {
                 <span className="text-[#ECE8E1] font-semibold">Tell us about your project, timeline and firepower.</span>
                 <span className="text-[#768079] font-medium"> We respond within 24H with a tactical plan — no fluff, just extraction-ready strategy.</span>
               </p>
-              <div className="flex flex-wrap gap-2 pt-1" style={{ fontFamily: "var(--font-mono)" }}>
+              <div className="hidden md:flex flex-wrap gap-2 pt-1" style={{ fontFamily: "var(--font-mono)" }}>
                 {[
                   { k: "RESPONSE", v: "<24H", dot: "bg-emerald-400" },
                   { k: "COMMS", v: "ENCRYPTED" },
@@ -252,7 +252,7 @@ export default function ContactPage() {
               transition={{ delay: 0.25, duration: 0.6 }}
               className="lg:col-span-5 relative"
             >
-              <div className="relative bg-[#111A23] border border-[#243442] p-[1px] overflow-hidden" style={{ clipPath: CLIP_CARD }}>
+              <div className="hidden lg:block relative bg-[#111A23] border border-[#243442] p-[1px] overflow-hidden" style={{ clipPath: CLIP_CARD }}>
                 <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#FF4655]" />
                 <div className="absolute top-0 left-[3px] right-0 h-[2px] bg-[#FF4655]/50" />
                 <div className="relative bg-[#0F1923] overflow-hidden" style={{ clipPath: CLIP_CARD }}>
@@ -356,7 +356,7 @@ export default function ContactPage() {
                       <Mail className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      
+
                       <p className="text-sm font-bold tracking-wide text-[#ECE8E1] truncate group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
                         satyamhimesh@gmail.com
                       </p>
@@ -378,7 +378,7 @@ export default function ContactPage() {
                       <Phone className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      
+
                       <p className="text-sm font-bold tracking-wide text-[#ECE8E1] group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-raj)" }}>
                         +91-8105542318
                       </p>
@@ -395,7 +395,7 @@ export default function ContactPage() {
                       <MapPin className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      
+
                       <p className="text-sm font-bold tracking-wide text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>
                         Remote Worldwide
                       </p>
@@ -520,10 +520,8 @@ export default function ContactPage() {
                       <Send className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[11px] tracking-[0.18em] text-[#FF4655] font-black" style={{ fontFamily: "var(--font-mono)" }}>
-                        // INQUIRY DOSSIER // VLR-CT
-                      </p>
-                      <p className="text-sm font-bold tracking-wide text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>
+
+                      <p className="text-sm xl:text-lg font-bold tracking-wide text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>
                         INITIATE CONTACT PROTOCOL
                       </p>
                     </div>
@@ -592,13 +590,12 @@ export default function ContactPage() {
                               <button
                                 key={type.id}
                                 onClick={() => setFormData({ ...formData, type: type.id })}
-                                className={`group relative flex flex-col items-center justify-center gap-3 p-6 border text-center transition-all text-left overflow-hidden ${
-                                  active
-                                    ? "bg-[#FF4655] border-[#FF4655] text-white shadow-[0_0_20px_rgba(255,70,85,0.35)]"
-                                    : guiding
-                                      ? "guide-glow bg-[#0a131c] hover:bg-[#111A23] text-[#ECE8E1]"
-                                      : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
-                                }`}
+                                className={`group relative flex flex-col items-center justify-center gap-3 p-6 border text-center transition-all text-left overflow-hidden ${active
+                                  ? "bg-[#FF4655] border-[#FF4655] text-white shadow-[0_0_20px_rgba(255,70,85,0.35)]"
+                                  : guiding
+                                    ? "guide-glow bg-[#0a131c] hover:bg-[#111A23] text-[#ECE8E1]"
+                                    : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
+                                  }`}
                                 style={{ clipPath: CLIP_BTN }}
                               >
                                 {active && <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/80" />}
@@ -670,13 +667,12 @@ export default function ContactPage() {
                               <button
                                 key={budget}
                                 onClick={() => setFormData({ ...formData, budget })}
-                                className={`relative p-6 border text-center transition-all overflow-hidden group ${
-                                  active
-                                    ? "bg-[#FF4655] border-[#FF4655] text-white shadow-[0_0_20px_rgba(255,70,85,0.35)]"
-                                    : guiding
-                                      ? "guide-glow bg-[#0a131c] hover:bg-[#111A23] text-[#ECE8E1]"
-                                      : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
-                                }`}
+                                className={`relative p-6 border text-center transition-all overflow-hidden group ${active
+                                  ? "bg-[#FF4655] border-[#FF4655] text-white shadow-[0_0_20px_rgba(255,70,85,0.35)]"
+                                  : guiding
+                                    ? "guide-glow bg-[#0a131c] hover:bg-[#111A23] text-[#ECE8E1]"
+                                    : "bg-[#0a131c] border-[#1e2d3a] hover:border-[#FF4655]/60 hover:bg-[#111A23] text-[#ECE8E1]"
+                                  }`}
                                 style={{ clipPath: CLIP_BTN }}
                               >
                                 {active && <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/80" />}
@@ -686,7 +682,7 @@ export default function ContactPage() {
                                     <span className="relative inline-flex h-2 w-2 bg-[#FF4655]" />
                                   </span>
                                 )}
-                                
+
                                 <p className={`text-lg tracking-wide mt-1 ${active ? "text-white" : "text-[#ECE8E1]"}`} style={{ fontFamily: "var(--font-anton)" }}>
                                   {budget.toUpperCase()}
                                 </p>
