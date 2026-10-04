@@ -776,9 +776,10 @@ export const projects: Project[] = [
         id: 30,
         title: "Toolip",
         description: "Universal Swiss-Army developer and productivity suite featuring 30+ browser-native micro-applications across PDF engineering, code conversion, multimedia manipulation, math/finance calculators, and real-time collaborative shared rooms with Socket.io and MongoDB.",
-        image: "/projects/toolip/images/toolipsc1.png",
+        image: "/projects/toolip/images/toolip1.png",
         images: [
-            "/projects/toolip/images/toolipsc1.png",
+            "/projects/toolip/images/toolip1.png",
+            "/projects/toolip/images/toolipsc2.png"
         ],
         demoUrl: "https://toolip-three.vercel.app/",
         github: "https://github.com/himesh220002/Toolip",
