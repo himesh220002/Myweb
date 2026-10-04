@@ -717,7 +717,6 @@ export const projects: Project[] = [
         image: "/projects/networkgraph/images/networkgraphsc1.jpg",
         images: [
             "/projects/networkgraph/images/networkgraphsc1.jpg",
-            "/projects/networkgraph/images/logo.png"
         ],
         demoUrl: "https://nodedir.com",
         github: "https://github.com/himesh220002/networkgraphv",
@@ -780,9 +779,6 @@ export const projects: Project[] = [
         image: "/projects/toolip/images/toolipsc1.png",
         images: [
             "/projects/toolip/images/toolipsc1.png",
-            "/projects/toolip/images/Tooliplogo.svg",
-            "/projects/toolip/images/Tooliplogo1.svg",
-            "/projects/toolip/images/Tooliplogo3.svg"
         ],
         demoUrl: "https://toolip-three.vercel.app/",
         github: "https://github.com/himesh220002/Toolip",
@@ -815,7 +811,7 @@ export const projects: Project[] = [
         images: [
             "/projects/igvictory/images/igvictorysc1.png",
             "/projects/igvictory/images/igvictorysc2.jpg",
-            "/projects/igvictory/images/igvictorysc3.jpg"
+
         ],
         demoUrl: "https://stream.cyphertech.online",
         github: "https://github.com/himesh220002/awsec2",
