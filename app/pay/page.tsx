@@ -1136,11 +1136,11 @@ function PaymentPortalContent() {
                           {/* <span className="text-xs text-slate-500 font-medium">
                             • Up to 5 Pages
                           </span> */}
-                          {currentMilestone.isDeposit && (
+                          {/* {currentMilestone.isDeposit && (
                             <span className={`text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
                               Kickoff Deposit (30%)
                             </span>
-                          )}
+                          )} */}
                         </div>
                         <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight flex flex-wrap items-center gap-1.5">
                           <span>Starter Package —</span>
@@ -1161,9 +1161,9 @@ function PaymentPortalContent() {
                         <span className={`text-xl sm:text-2xl font-black text-slate-900 block leading-tight ${jetmono.className}`}>
                           ₹{currentMilestone.amount.toLocaleString("en-IN")}
                         </span>
-                        <span className={`text-xs font-semibold text-blue-700 block ${jetmono.className}`}>
+                        {/* <span className={`text-xs font-semibold text-blue-700 block ${jetmono.className}`}>
                           {currentMilestone.percentage}% {currentMilestone.label} Deposit
-                        </span>
+                        </span> */}
                         <span className={`text-[10px] text-slate-400 block font-medium ${jetmono.className}`}>
                           Total Scope: ₹49,999
                         </span>
@@ -1256,11 +1256,11 @@ function PaymentPortalContent() {
                           {/* <span className="text-xs text-slate-500 font-medium">
                             • Full-Stack Scale
                           </span> */}
-                          {currentMilestone.isDeposit && (
+                          {/* {currentMilestone.isDeposit && (
                             <span className={`text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
                               Kickoff Deposit (30%)
                             </span>
-                          )}
+                          )} */}
                         </div>
                         <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight flex flex-wrap items-center gap-1.5">
                           <span>Growth Package —</span>
@@ -1281,9 +1281,9 @@ function PaymentPortalContent() {
                         <span className={`text-xl sm:text-2xl font-black text-slate-900 block leading-tight ${jetmono.className}`}>
                           ₹{currentMilestone.amount.toLocaleString("en-IN")}
                         </span>
-                        <span className={`text-xs font-semibold text-indigo-700 block ${jetmono.className}`}>
+                        {/* <span className={`text-xs font-semibold text-indigo-700 block ${jetmono.className}`}>
                           {currentMilestone.percentage}% {currentMilestone.label} Deposit
-                        </span>
+                        </span> */}
                         <span className={`text-[10px] text-slate-400 block font-medium ${jetmono.className}`}>
                           Total Scope: ₹1,49,999
                         </span>
@@ -1515,12 +1515,12 @@ function PaymentPortalContent() {
                     </div>
                   )}
 
-                  <div className="flex justify-between items-center text-xs sm:text-sm border-t border-gray-200/80 pt-2">
+                  {/* <div className="flex justify-between items-center text-xs sm:text-sm border-t border-gray-200/80 pt-2">
                     <span className="text-gray-500 font-medium">Applicable Taxes (GST 18%)</span>
                     <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded text-[11px] sm:text-xs">
                       Included (Tax-Compliant)
                     </span>
-                  </div>
+                  </div> */}
 
                   <div className="flex justify-between items-baseline border-t border-gray-200 pt-2 sm:pt-2.5">
                     <div>
@@ -1564,9 +1564,9 @@ function PaymentPortalContent() {
                       className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
                       required
                     />
-                    <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
+                    {/* <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
                       Official digital tax receipt emailed here automatically.
-                    </span>
+                    </span> */}
                   </div>
 
                   <div>
@@ -1581,9 +1581,9 @@ function PaymentPortalContent() {
                       className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
                       required
                     />
-                    <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
+                    {/* <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
                       Used for UPI payment routing and instant SMS confirmation.
-                    </span>
+                    </span> */}
                   </div>
 
                   <button
