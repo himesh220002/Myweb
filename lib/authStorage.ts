@@ -11,6 +11,8 @@ export interface StoredUser {
   name: string;
   email: string;
   role?: string;
+  phone?: string;
+  company?: string;
   token?: string;
   createdAt: string;
 }

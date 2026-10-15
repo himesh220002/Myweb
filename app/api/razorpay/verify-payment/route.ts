@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyPaymentSignature, getRazorpayClient } from "@/lib/razorpay";
 import { sendEmail } from "@/lib/email";
 import { signReceiptToken } from "@/lib/jwt";
+import { recordPayment } from "@/lib/serverStore";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest) {
       customerName,
       customerEmail,
       customerPhone,
+      userId,
       planName,
       amount,
       currency = "INR",
@@ -350,6 +352,44 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // 4. Record transaction in persistent CRM store
+    let recordedPayment: any = null;
+    let paymentType: "coffee" | "test_payment" | "milestone" | "random_custom" = "random_custom";
+    const numAmount = Number(verifiedAmount) || Number(amount) || 0;
+    if (planName?.toLowerCase().includes("coffee")) {
+      paymentType = "coffee";
+    } else if (planName?.toLowerCase().includes("test") || numAmount === 1) {
+      paymentType = "test_payment";
+    } else if (
+      planName?.toLowerCase().includes("deposit") ||
+      planName?.toLowerCase().includes("package") ||
+      planName?.toLowerCase().includes("milestone") ||
+      planName?.toLowerCase().includes("starter") ||
+      planName?.toLowerCase().includes("growth")
+    ) {
+      paymentType = "milestone";
+    }
+
+    try {
+      recordedPayment = recordPayment({
+        paymentId: razorpay_payment_id,
+        orderId: razorpay_order_id,
+        amount: numAmount,
+        currency,
+        paymentType,
+        method: paymentMethod,
+        customerName: customerName || "Valued Client",
+        customerEmail: customerEmail || "",
+        customerPhone: customerPhone || "",
+        userId: userId || undefined,
+        receiptToken,
+        refundClaimUrl,
+        notes: planName || "Online Payment",
+      });
+    } catch (storeErr) {
+      console.error("Failed to record payment in CRM store:", storeErr);
+    }
+
     return NextResponse.json({
       success: true,
       verified: true,
@@ -359,7 +399,11 @@ export async function POST(req: NextRequest) {
       currency,
       receiptToken,
       refundClaimUrl,
-      message: "Payment successfully verified and recorded",
+      userId: recordedPayment?.userId || userId || null,
+      clientId: recordedPayment?.clientId || null,
+      paymentType,
+      dashboardUrl: "/dashboard",
+      message: "Payment successfully verified and recorded into client portal",
     });
   } catch (error: any) {
     console.error("Error in verify-payment handler:", error);

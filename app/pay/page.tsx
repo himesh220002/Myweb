@@ -180,6 +180,7 @@ function PaymentPortalContent() {
   const [receiptToken, setReceiptToken] = useState<string | null>(null);
   const [refundClaimUrl, setRefundClaimUrl] = useState<string | null>(null);
   const [copiedClaimLink, setCopiedClaimLink] = useState(false);
+  const [userAccount, setUserAccount] = useState<any>(null);
 
   const successContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -187,8 +188,10 @@ function PaymentPortalContent() {
   useEffect(() => {
     const user = getStoredUser();
     if (user) {
+      setUserAccount(user);
       if (!name && user.name) setName(user.name);
       if (!email && user.email) setEmail(user.email);
+      if (!phone && user.phone) setPhone(user.phone);
     }
   }, []);
 

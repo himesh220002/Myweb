@@ -240,52 +240,17 @@ export default function ProfileDropdown({ isMobile = false }: { isMobile?: boole
               </div>
             </div>
 
-            {/* Action Item 1: Payment & Receipt History */}
-            <button
-              type="button"
-              onClick={() => {
-                setShowHistoryModal(true);
-                setIsOpen(false);
-              }}
-              className="w-full flex items-center justify-between px-3 py-2.5 bg-[#0a131c] hover:bg-[#111A23] border border-[#1e2d3a] hover:border-gray-600 text-xs font-semibold text-gray-200 rounded transition group cursor-pointer"
-            >
-              <div className="flex items-center gap-2.5">
-                <History className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
-                <span className="tracking-wide">Payment &amp; Receipt History</span>
-              </div>
-              {history.length > 0 && (
-                <span className="bg-blue-500/20 text-blue-300 border border-blue-500/40 text-[10px] font-bold px-1.5 py-0.5 rounded font-mono">
-                  {history.length}
-                </span>
-              )}
-            </button>
-
-            {/* Action Item 2: Resolution & Refund Request */}
+            {/* View Profile Action (Consolidates all options inside profile page) */}
             <Link
-              href="/refund"
+              href="/profile"
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-between px-3 py-2.5 bg-[#0a131c] hover:bg-[#111A23] border border-[#1e2d3a] hover:border-amber-500/50 text-xs font-semibold text-gray-200 rounded transition group"
+              className="w-full flex items-center justify-between px-3.5 py-3 bg-[#0a131c] hover:bg-[#111A23] border border-[#1e2d3a] hover:border-[#FF4655]/60 text-xs font-bold text-white rounded transition group cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
-                <RotateCcw className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform" />
-                <span className="tracking-wide">Resolution &amp; Refunds</span>
+                <User className="w-4 h-4 text-[#FF4655] group-hover:scale-110 transition-transform" />
+                <span className="tracking-wider uppercase font-mono">VIEW PROFILE</span>
               </div>
-              <span className="text-[10px] text-gray-400 uppercase tracking-widest font-mono">
-                SLA 24H
-              </span>
-            </Link>
-
-            {/* Action Item 3: Quick Pay Gateway */}
-            <Link
-              href="/pay"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center justify-between px-3 py-2.5 bg-[#0a131c] hover:bg-[#111A23] border border-[#1e2d3a] hover:border-emerald-500/50 text-xs font-semibold text-gray-200 rounded transition group"
-            >
-              <div className="flex items-center gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span className="tracking-wide">Pay Invoices Online</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-gray-500 group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
             </Link>
 
             {/* Auth Toggle: Login / Sign Up vs Logout */}

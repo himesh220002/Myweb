@@ -92,6 +92,7 @@ const navLinks = [
       { name: "Skills", href: "/skills" },
       { name: "Clients", href: "/clients" },
       { name: "Pay Online", href: "/pay" },
+      { name: "Profile & Dashboard", href: "/profile" },
     ],
   },
 ];

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import { sendEmail } from "@/lib/email";
+import { recordPayment } from "@/lib/serverStore";
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,6 +60,42 @@ export async function POST(req: NextRequest) {
           const payerEmail = payment.email || payment.notes?.customerEmail || "N/A";
           const payerName = payment.notes?.customerName || "Customer";
           const planName = payment.notes?.planName || "Cypher Tech Service";
+          const payerPhone = payment.contact || payment.notes?.customerPhone || "";
+          const userId = payment.notes?.userId || undefined;
+
+          // Compute payment type
+          let paymentType: "coffee" | "test_payment" | "milestone" | "random_custom" = "random_custom";
+          const numAmount = Number(amountInCurrency);
+          if (planName.toLowerCase().includes("coffee")) {
+            paymentType = "coffee";
+          } else if (planName.toLowerCase().includes("test") || numAmount === 1) {
+            paymentType = "test_payment";
+          } else if (
+            planName.toLowerCase().includes("deposit") ||
+            planName.toLowerCase().includes("package") ||
+            planName.toLowerCase().includes("milestone")
+          ) {
+            paymentType = "milestone";
+          }
+
+          // Record in persistent CRM store
+          try {
+            recordPayment({
+              paymentId: payment.id,
+              orderId: payment.order_id,
+              amount: numAmount,
+              currency: payment.currency || "INR",
+              paymentType,
+              method: payment.method?.toUpperCase() || "ONLINE",
+              customerName: payerName,
+              customerEmail: payerEmail,
+              customerPhone: payerPhone,
+              userId,
+              notes: planName,
+            });
+          } catch (recErr) {
+            console.error("[Razorpay Webhook] Failed to record payment:", recErr);
+          }
 
           console.log(`[Razorpay Webhook] Payment Captured: ${payment.id} for ${payment.currency} ${amountInCurrency}`);
 

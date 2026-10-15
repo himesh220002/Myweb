@@ -8,6 +8,7 @@ export interface ReceiptData {
   paymentId: string;
   orderId: string;
   amount: number | string;
+  currency?: string;
   planName: string;
   customerName?: string;
   customerEmail?: string;

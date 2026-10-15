@@ -4,7 +4,7 @@ import { getRazorpayClient } from "@/lib/razorpay";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { amount, currency = "INR", planId, planName, customerName, customerEmail, customerPhone, notes } = body;
+    const { amount, currency = "INR", planId, planName, customerName, customerEmail, customerPhone, userId, notes } = body;
 
     // Validate amount
     const parsedAmount = Number(amount);
@@ -13,6 +13,16 @@ export async function POST(req: NextRequest) {
         { error: "Invalid payment amount. Amount must be a positive number." },
         { status: 400 }
       );
+    }
+
+    // Determine payment type
+    let paymentType = "random_custom";
+    if (planId === "coffee" || (notes && notes.presetType === "coffee")) {
+      paymentType = "coffee";
+    } else if (planId === "test_one_rupee" || parsedAmount === 1) {
+      paymentType = "test_payment";
+    } else if (planId?.includes("deposit") || planId?.includes("full") || planId?.includes("milestone")) {
+      paymentType = "milestone";
     }
 
     // Minimum transaction amount check for Razorpay (minimum ₹1 = 100 paise)
@@ -55,6 +65,8 @@ export async function POST(req: NextRequest) {
         customerName: customerName || "Anonymous",
         customerEmail: customerEmail || "",
         customerPhone: customerPhone || "",
+        userId: userId || "",
+        paymentType,
         ...(notes && typeof notes === "object" ? notes : {}),
       },
     };
