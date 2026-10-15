@@ -58,14 +58,21 @@ export async function GET(req: NextRequest) {
     }
 
     // ──────────────── CLIENT DASHBOARD VIEW ────────────────
-    const store = await readStoreAsync();
     const targetLookup =
       currentUser?.email ||
       currentUser?.id ||
       requestedEmail ||
-      store.clients[0]?.email ||
-      store.users.find((u) => u.role === "client")?.email ||
       "";
+
+    if (!targetLookup) {
+      return NextResponse.json({
+        success: true,
+        view: "client",
+        user: null,
+        data: null,
+        unauthenticated: true,
+      });
+    }
 
     const clientData = await getClientDashboardDataAsync(targetLookup);
 

@@ -1500,29 +1500,42 @@ export function getAdminDashboardStats(explicitStore?: CRMStoreData) {
 export function getClientDashboardData(userEmailOrId: string, explicitStore?: CRMStoreData) {
   const store = explicitStore || readStore();
   const clean = (userEmailOrId || "").toLowerCase().trim();
+  if (!clean) {
+    return {
+      client: null,
+      user: null,
+      projects: [],
+      payments: [],
+      trustInfo: null,
+      activeAlerts: [],
+      recentFeeds: [],
+      upcomingPaymentAlerts: [],
+    };
+  }
 
-  let user = clean
-    ? store.users.find(
-        (u) => u.id === userEmailOrId || u.email.toLowerCase().trim() === clean
-      )
-    : null;
+  let user = store.users.find(
+    (u) => u.id === userEmailOrId || u.email.toLowerCase().trim() === clean
+  ) || null;
 
-  let client = clean
-    ? store.clients.find(
-        (c) =>
-          c.email.toLowerCase().trim() === clean ||
-          (user && c.userId === user.id) ||
-          c.id === userEmailOrId
-      )
-    : null;
+  let client = store.clients.find(
+    (c) =>
+      c.email.toLowerCase().trim() === clean ||
+      (user && c.userId === user.id) ||
+      c.id === userEmailOrId
+  ) || null;
 
-  // If no match, fallback to first client in CRM store
-  if (!client && !user && store.clients.length > 0) {
-    client = store.clients[0];
-    user =
-      store.users.find(
-        (u) => u.id === client?.userId || u.email.toLowerCase() === client?.email.toLowerCase()
-      ) || null;
+  // Never fall back to another client's confidential data when no match exists
+  if (!client && !user) {
+    return {
+      client: null,
+      user: null,
+      projects: [],
+      payments: [],
+      trustInfo: null,
+      activeAlerts: [],
+      recentFeeds: [],
+      upcomingPaymentAlerts: [],
+    };
   }
 
   const clientId = client?.id;

@@ -1,16 +1,6 @@
 {
   "users": [
     {
-      "email": "satyamhimesh@gmail.com",
-      "company": "CypherTech",
-      "createdAt": "2026-10-15T08:40:30.645Z",
-      "id": "usr_admin_001",
-      "name": "Himesh Satyam (Owner)",
-      "passwordHash": "14b5ab8df9b660fbb49b6659b9b4f3a1:fc166c47faa3278d8bd8613f7ed8ffab184d1e4aeee951ca00c29698f737a05198f7b39a310c1be34c48eb5fadcfd798fe0d36797c3bc3276fa895f57bc6cdb8",
-      "phone": "+91 9876543210",
-      "role": "admin"
-    },
-    {
       "email": "harleyqn74@gmail.com",
       "createdAt": "2026-10-15T08:41:55.706Z",
       "id": "usr_060c44451631",
@@ -45,6 +35,16 @@
         "website": "",
         "telegramOrDiscord": ""
       }
+    },
+    {
+      "email": "satyamhimesh@gmail.com",
+      "company": null,
+      "createdAt": "2026-10-15T16:00:47.919Z",
+      "id": "usr_c8b0209d25b7",
+      "name": "Himesh satyam",
+      "passwordHash": "e9e5a79efcfaf5ffb87e5780214ec67b:db7c4f17cba24946ccb3921932e0ff0cc6e84a335dd708cc5e9fa553e540929bf35d8f192ad5d464f5d6f7045491ae3998e3653a1fd7fd691d2d8ddb2b920daf",
+      "phone": null,
+      "role": "admin"
     }
   ],
   "clients": [
@@ -58,18 +58,18 @@
       "phone": "9471283523",
       "projectIds": [],
       "status": "active",
-      "totalPaid": 1,
+      "totalPaid": 2,
       "trustFactors": {
         "prepaidBonus": 0,
         "promptPayments": 0,
-        "testVerified": 0,
+        "testVerified": 10,
         "delayedPenalties": 0,
         "holdsOrDisputes": 0,
         "profileVerifiedBonus": 15
       },
-      "trustLevel": "Trusted",
-      "trustScore": 85,
-      "updatedAt": "2026-10-15T14:07:23.902Z",
+      "trustLevel": "VIP",
+      "trustScore": 95,
+      "updatedAt": "2026-10-15T16:08:21.402Z",
       "userId": "usr_060c44451631",
       "callConfirmed": true,
       "businessProfile": {
@@ -134,7 +134,28 @@
           "interchanges": "",
           "createdAt": "2026-10-15T14:07:23.902Z"
         }
-      ]
+      ],
+      "lastPayment": {
+        "amount": 1,
+        "payDate": "2026-10-15T16:08:21.402Z",
+        "paymentId": "pay_ToFD3a0OlTsPvy",
+        "method": "UPI",
+        "planName": "Live Test Verification — ₹1.00"
+      }
+    },
+    {
+      "id": "cli_00b929ca05f0",
+      "company": "",
+      "createdAt": "2026-10-15T16:00:47.919Z",
+      "email": "satyamhimesh@gmail.com",
+      "name": "Himesh satyam",
+      "notes": "Account registered online.",
+      "phone": "",
+      "projectIds": [],
+      "status": "lead",
+      "totalPaid": 0,
+      "updatedAt": "2026-10-15T16:00:47.919Z",
+      "userId": "usr_c8b0209d25b7"
     }
   ],
   "projects": [],
@@ -159,6 +180,29 @@
       "status": "captured",
       "testCallConfirmed": true,
       "userId": "usr_060c44451631"
+    },
+    {
+      "paymentId": "pay_ToFD3a0OlTsPvy",
+      "amount": 1,
+      "clientId": "cli_7eb046a6552f",
+      "createdAt": "2026-10-15T16:08:21.402Z",
+      "currency": "INR",
+      "customerEmail": "satyamhimesh@gmail.com",
+      "customerName": "Himesh satyam",
+      "customerPhone": "9471283523",
+      "id": "rec_90c0fc15d455",
+      "isManual": false,
+      "method": "UPI",
+      "milestoneId": null,
+      "notes": "Live Test Verification — ₹1.00",
+      "orderId": "order_ToFCZWPacGwL4S",
+      "paymentType": "test_payment",
+      "projectId": null,
+      "receiptToken": "eyJhbGciOiJIUzI1NiJ9.eyJwYXltZW50SWQiOiJwYXlfVG9GRDNhME9sVHNQdnkiLCJvcmRlcklkIjoib3JkZXJfVG9GQ1pXUGFjR3dMNFMiLCJhbW91bnQiOiIxLjAwIiwiY3VycmVuY3kiOiJJTlIiLCJjdXN0b21lckVtYWlsIjoic2F0eWFtaGltZXNoQGdtYWlsLmNvbSIsImN1c3RvbWVyTmFtZSI6IkhpbWVzaCBzYXR5YW0iLCJjdXN0b21lclBob25lIjoiOTQ3MTI4MzUyMyIsInBsYW5OYW1lIjoiTGl2ZSBUZXN0IFZlcmlmaWNhdGlvbiDigJQg4oK5MS4wMCIsInN1YiI6Imd1ZXN0X3JlY2VpcHRfY2xhaW0iLCJpYXQiOjE3OTIwODA0OTgsImV4cCI6MTc5NDY3MjQ5OH0.9E849_SFRX_FlNB7-HhR__olR8AnO1nMk4hjL62X1hI",
+      "refundClaimUrl": "https://cyphertech.online/refund?token=eyJhbGciOiJIUzI1NiJ9.eyJwYXltZW50SWQiOiJwYXlfVG9GRDNhME9sVHNQdnkiLCJvcmRlcklkIjoib3JkZXJfVG9GQ1pXUGFjR3dMNFMiLCJhbW91bnQiOiIxLjAwIiwiY3VycmVuY3kiOiJJTlIiLCJjdXN0b21lckVtYWlsIjoic2F0eWFtaGltZXNoQGdtYWlsLmNvbSIsImN1c3RvbWVyTmFtZSI6IkhpbWVzaCBzYXR5YW0iLCJjdXN0b21lclBob25lIjoiOTQ3MTI4MzUyMyIsInBsYW5OYW1lIjoiTGl2ZSBUZXN0IFZlcmlmaWNhdGlvbiDigJQg4oK5MS4wMCIsInN1YiI6Imd1ZXN0X3JlY2VpcHRfY2xhaW0iLCJpYXQiOjE3OTIwODA0OTgsImV4cCI6MTc5NDY3MjQ5OH0.9E849_SFRX_FlNB7-HhR__olR8AnO1nMk4hjL62X1hI",
+      "status": "captured",
+      "testCallConfirmed": false,
+      "userId": "usr_c8b0209d25b7"
     }
   ]
 }

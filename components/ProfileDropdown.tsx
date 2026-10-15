@@ -69,13 +69,23 @@ export default function ProfileDropdown({ isMobile = false }: { isMobile?: boole
 
     refreshData();
 
+    const handleOpenAuthModal = (e: any) => {
+      if (e.detail?.mode) {
+        setAuthMode(e.detail.mode);
+      }
+      setShowAuthModal(true);
+      setIsOpen(false);
+    };
+
     window.addEventListener("cyphertech_auth_change", refreshData);
     window.addEventListener("cyphertech_history_change", refreshData);
+    window.addEventListener("cyphertech_open_auth", handleOpenAuthModal);
     window.addEventListener("storage", refreshData);
 
     return () => {
       window.removeEventListener("cyphertech_auth_change", refreshData);
       window.removeEventListener("cyphertech_history_change", refreshData);
+      window.removeEventListener("cyphertech_open_auth", handleOpenAuthModal);
       window.removeEventListener("storage", refreshData);
     };
   }, []);

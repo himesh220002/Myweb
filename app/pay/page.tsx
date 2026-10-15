@@ -374,15 +374,26 @@ function PaymentPortalContent() {
 
   const successContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // Pre-fill user details if logged in
+  // Pre-fill and synchronize user details when logged in
   useEffect(() => {
-    const user = getStoredUser();
-    if (user) {
+    const syncUser = () => {
+      const user = getStoredUser();
       setUserAccount(user);
-      if (!name && user.name) setName(user.name);
-      if (!email && user.email) setEmail(user.email);
-      if (!phone && user.phone) setPhone(user.phone);
-    }
+      if (user) {
+        setName(user.name || "");
+        setEmail(user.email || "");
+        if (user.phone) setPhone(user.phone);
+      } else {
+        setUserAccount(null);
+      }
+    };
+    syncUser();
+    window.addEventListener("cyphertech_auth_change", syncUser);
+    window.addEventListener("storage", syncUser);
+    return () => {
+      window.removeEventListener("cyphertech_auth_change", syncUser);
+      window.removeEventListener("storage", syncUser);
+    };
   }, []);
 
   // When payment succeeds, forcefully scroll directly to top so confirmation receipt is immediately visible
@@ -477,10 +488,12 @@ function PaymentPortalContent() {
           customerName: name,
           customerEmail: email,
           customerPhone: phone,
+          userId: userAccount?.id || undefined,
           notes: {
             customDescription: description,
             presetType: selectedPreset,
             contactIdentifier: phone,
+            userId: userAccount?.id || "",
           },
         }),
       });
@@ -536,6 +549,7 @@ function PaymentPortalContent() {
                 customerName: name,
                 customerEmail: email,
                 customerPhone: phone,
+                userId: userAccount?.id || undefined,
                 planName: planTitle,
                 amount: finalAmount,
                 currency: "INR",
@@ -1538,35 +1552,80 @@ function PaymentPortalContent() {
 
                 {/* RAZORPAY GATEWAY CHECKOUT FORM */}
                 <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
+                  {userAccount ? (
+                    <div className="p-3 bg-blue-50/90 border border-blue-200 rounded-xl flex items-center justify-between text-xs mb-1">
+                      <div className="flex items-center gap-2">
+                        <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+                        <span className="text-blue-900 font-medium">
+                          Logged in: <strong>{userAccount.name}</strong> ({userAccount.email})
+                        </span>
+                      </div>
+                      <span className={`text-[10px] text-blue-700 font-bold bg-white border border-blue-200 px-2 py-0.5 rounded-full shrink-0 ${jetmono.className}`}>
+                        Auto-Bound
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 flex items-center justify-between">
+                      <span className="font-medium text-slate-700">Guest Checkout</span>
+                      <span className="text-[10px] text-slate-500">Auto-attaches to email</span>
+                    </div>
+                  )}
+
                   <div>
-                    <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                      Your Full Name <span className="text-red-500">*</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Your Full Name <span className="text-red-500">*</span>
+                      </label>
+                      {userAccount && (
+                        <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded">
+                          🔒 Verified Account
+                        </span>
+                      )}
+                    </div>
                     <input
                       type="text"
                       placeholder="e.g. Rahul Sharma"
                       value={name}
+                      readOnly={Boolean(userAccount)}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                      className={`w-full px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium focus:outline-none placeholder-gray-400 transition ${
+                        userAccount
+                          ? "bg-slate-100/90 text-slate-700 border border-slate-200 cursor-not-allowed select-none font-semibold"
+                          : "bg-white border border-gray-300 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                      }`}
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
-                      Billing Email Address <span className="text-red-500">*</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-[10px] sm:text-xs font-bold text-gray-700 uppercase tracking-wider">
+                        Billing Email Address <span className="text-red-500">*</span>
+                      </label>
+                      {userAccount && (
+                        <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded">
+                          🔒 Auto-Linked
+                        </span>
+                      )}
+                    </div>
                     <input
                       type="email"
                       placeholder="billing@company.com"
                       value={email}
+                      readOnly={Boolean(userAccount)}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                      className={`w-full px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium focus:outline-none placeholder-gray-400 transition ${
+                        userAccount
+                          ? "bg-slate-100/90 text-slate-700 border border-slate-200 cursor-not-allowed select-none font-semibold"
+                          : "bg-white border border-gray-300 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                      }`}
                       required
                     />
-                    {/* <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
-                      Official digital tax receipt emailed here automatically.
-                    </span> */}
+                    {!userAccount && (
+                      <span className="block text-[10px] text-gray-500 mt-1">
+                        Receipt and future sprint milestone access will auto-bind to this email.
+                      </span>
+                    )}
                   </div>
 
                   <div>
@@ -1581,9 +1640,9 @@ function PaymentPortalContent() {
                       className="w-full px-3 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
                       required
                     />
-                    {/* <span className="block text-[10px] sm:text-xs text-gray-400 mt-1">
+                    <span className="block text-[10px] text-gray-500 mt-1">
                       Used for UPI payment routing and instant SMS confirmation.
-                    </span> */}
+                    </span>
                   </div>
 
                   <button
