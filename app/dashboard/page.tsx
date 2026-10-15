@@ -254,7 +254,8 @@ export default function AdminDashboardPage() {
       });
       const data = await res.json();
 
-      if (data.success && data.authenticated) {
+      if (data.success || data.authenticated) {
+        setAuthError(null);
         setIsAuthenticated(true);
         triggerToast("Admin Authenticated! 1-week token granted.");
         fetchDashboardData();

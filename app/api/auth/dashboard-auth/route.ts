@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
 
     const res = NextResponse.json({
       success: true,
+      authenticated: true,
       message: "Admin authentication successful. 1-week access token issued.",
       expiresIn: "7 days",
       user: {
