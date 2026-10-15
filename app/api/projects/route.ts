@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createProject, updateProject, readStore } from "@/lib/serverStore";
+import { createProject, updateProject, deleteProject, readStore } from "@/lib/serverStore";
 import { sendEmail } from "@/lib/email";
 
 // POST /api/projects: Create new project with milestones
@@ -126,3 +126,38 @@ export async function PATCH(req: NextRequest) {
     );
   }
 }
+
+// DELETE /api/projects: Delete a project
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const projectId = searchParams.get("projectId");
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: "Project ID is required." },
+        { status: 400 }
+      );
+    }
+
+    const ok = deleteProject(projectId);
+    if (!ok) {
+      return NextResponse.json(
+        { error: "Project not found." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Project successfully deleted.",
+    });
+  } catch (err: any) {
+    console.error("Delete project error:", err);
+    return NextResponse.json(
+      { error: err.message || "Failed to delete project" },
+      { status: 400 }
+    );
+  }
+}
+

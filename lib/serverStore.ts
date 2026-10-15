@@ -843,6 +843,31 @@ export function updateProject(
   return project;
 }
 
+export function deleteProject(projectId: string): boolean {
+  const store = readStore();
+  const index = store.projects.findIndex((p) => p.id === projectId);
+  if (index === -1) return false;
+
+  const [removed] = store.projects.splice(index, 1);
+  if (removed) {
+    const client = store.clients.find((c) => c.id === removed.clientId);
+    if (client) {
+      client.projectIds = client.projectIds.filter((id) => id !== projectId);
+      const trust = computeClientTrust(
+        client,
+        store.projects.filter((p) => p.clientId === client.id),
+        store.payments.filter((p) => p.clientId === client.id)
+      );
+      client.trustScore = trust.score;
+      client.trustLevel = trust.level;
+      client.trustFactors = trust.factors;
+    }
+  }
+
+  writeStore(store);
+  return true;
+}
+
 // ─────────────────────────────────────────────────────────────
 // PROJECT ALERTS & LIVE FEED METHODS
 // ─────────────────────────────────────────────────────────────

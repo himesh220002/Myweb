@@ -496,6 +496,24 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const handleDeleteProject = async (projectId: string, title: string) => {
+    if (!confirm(`Are you sure you want to delete the project "${title}"? This will remove it from dashboard and client profile.`)) return;
+    try {
+      const res = await fetch(`/api/projects?projectId=${projectId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        triggerToast("Project deleted successfully");
+        fetchDashboardData();
+      } else {
+        alert(data.error || "Failed to delete project");
+      }
+    } catch (e: any) {
+      alert("Error: " + e.message);
+    }
+  };
+
   const handleToggleCallConfirmed = async (clientId: string, currentStatus: boolean) => {
     try {
       const res = await fetch("/api/clients", {
@@ -1298,6 +1316,15 @@ export default function AdminDashboardPage() {
                           >
                             <Send className="w-3.5 h-3.5" />
                             <span>Email Update</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteProject(proj.id, proj.title)}
+                            title="Delete project"
+                            className="p-1.5 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-300 text-slate-400 hover:text-rose-600 rounded-lg flex items-center justify-center transition cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </div>
