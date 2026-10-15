@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import { sendEmail } from "@/lib/email";
-import { recordPayment } from "@/lib/serverStore";
+import { recordPaymentAsync } from "@/lib/serverStore";
 
 export async function POST(req: NextRequest) {
   try {
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
 
           // Record in persistent CRM store
           try {
-            recordPayment({
+            await recordPaymentAsync({
               paymentId: payment.id,
               orderId: payment.order_id,
               amount: numAmount,

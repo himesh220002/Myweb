@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createProject, updateProject, deleteProject, readStore } from "@/lib/serverStore";
+import {
+  createProjectAsync,
+  updateProjectAsync,
+  deleteProjectAsync,
+  readStoreAsync,
+} from "@/lib/serverStore";
 import { sendEmail } from "@/lib/email";
 
 // POST /api/projects: Create new project with milestones
@@ -28,7 +33,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const project = createProject({
+    const project = await createProjectAsync({
       clientId,
       title,
       description: description || "Custom engineering deliverables.",
@@ -70,7 +75,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const updatedProject = updateProject(projectId, updates);
+    const updatedProject = await updateProjectAsync(projectId, updates);
 
     // If notifyClient is requested and client has email, send quick update email
     if (notifyClient && updatedProject.clientEmail && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
@@ -140,7 +145,7 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const ok = deleteProject(projectId);
+    const ok = await deleteProjectAsync(projectId);
     if (!ok) {
       return NextResponse.json(
         { error: "Project not found." },

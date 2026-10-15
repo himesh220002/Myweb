@@ -21,7 +21,15 @@ export async function POST(req: NextRequest) {
       paymentType = "coffee";
     } else if (planId === "test_one_rupee" || parsedAmount === 1) {
       paymentType = "test_payment";
-    } else if (planId?.includes("deposit") || planId?.includes("full") || planId?.includes("milestone")) {
+    } else if (
+      planId?.includes("deposit") ||
+      planId?.includes("full") ||
+      planId?.includes("milestone") ||
+      planId?.includes("starter") ||
+      planId?.includes("growth") ||
+      planId?.includes("kickoff") ||
+      planId?.includes("finish")
+    ) {
       paymentType = "milestone";
     }
 

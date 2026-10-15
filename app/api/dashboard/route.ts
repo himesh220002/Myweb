@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifySessionToken } from "@/lib/jwt";
 import {
-  getAdminDashboardStats,
-  getClientDashboardData,
-  findUserById,
-  findUserByEmail,
-  readStore,
+  getAdminDashboardStatsAsync,
+  getClientDashboardDataAsync,
+  findUserByIdAsync,
+  findUserByEmailAsync,
+  readStoreAsync,
 } from "@/lib/serverStore";
 
 export async function GET(req: NextRequest) {
@@ -21,8 +21,8 @@ export async function GET(req: NextRequest) {
       const { valid, payload } = await verifySessionToken(sessionCookie);
       if (valid && payload) {
         currentUser = payload.userId
-          ? findUserById(payload.userId)
-          : findUserByEmail(payload.email);
+          ? await findUserByIdAsync(payload.userId)
+          : await findUserByEmailAsync(payload.email);
         if (!currentUser) {
           currentUser = {
             id: payload.userId,
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
     // ──────────────── ADMIN DASHBOARD VIEW ────────────────
     if (isAdmin) {
-      const stats = getAdminDashboardStats();
+      const stats = await getAdminDashboardStatsAsync();
       return NextResponse.json({
         success: true,
         view: "admin",
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     }
 
     // ──────────────── CLIENT DASHBOARD VIEW ────────────────
-    const store = readStore();
+    const store = await readStoreAsync();
     const targetLookup =
       currentUser?.email ||
       currentUser?.id ||
@@ -67,7 +67,7 @@ export async function GET(req: NextRequest) {
       store.users.find((u) => u.role === "client")?.email ||
       "";
 
-    const clientData = getClientDashboardData(targetLookup);
+    const clientData = await getClientDashboardDataAsync(targetLookup);
 
     return NextResponse.json({
       success: true,

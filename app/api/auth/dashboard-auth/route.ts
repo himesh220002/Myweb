@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { signSessionToken, verifySessionToken } from "@/lib/jwt";
-import { verifyPassword, findUserByEmail, readStore } from "@/lib/serverStore";
+import { verifyPassword, findUserByEmail, readStoreAsync } from "@/lib/serverStore";
 
 const ONE_WEEK_SECONDS = 7 * 24 * 60 * 60; // 604,800 seconds (1 week)
 const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin@CypherTech2026";
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       isValid = true;
     } else {
       // 2. Check against admin accounts stored in CRM
-      const store = readStore();
+      const store = await readStoreAsync();
       const adminUsers = store.users.filter((u) => u.role === "admin" || u.email.toLowerCase().trim() === ADMIN_EMAIL);
       for (const admin of adminUsers) {
         if (verifyPassword(password, admin.passwordHash)) {

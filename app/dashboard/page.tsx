@@ -53,7 +53,17 @@ import {
   ChevronUp,
   Sparkles,
   ListTodo,
+  Building2,
+  Briefcase,
+  Globe,
+  ExternalLink,
+  Tag,
+  Video,
+  Mic,
+  MessageSquare,
+  X,
 } from "lucide-react";
+import { FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
 import { Rajdhani, JetBrains_Mono, Bebas_Neue, Outfit } from "next/font/google";
 import {
   printReceiptIsolated,
@@ -152,6 +162,38 @@ export default function AdminDashboardPage() {
   const [newClientPhone, setNewClientPhone] = useState("");
   const [newClientCompany, setNewClientCompany] = useState("");
   const [newClientNotes, setNewClientNotes] = useState("");
+
+  // Meeting Notes & Deal Psychology Modal States
+  const [showMeetingModal, setShowMeetingModal] = useState(false);
+  const [selectedClientForMeeting, setSelectedClientForMeeting] = useState<any>(null);
+  const [meetingModalTab, setMeetingModalTab] = useState<"log" | "history">("log");
+  const [meetingDate, setMeetingDate] = useState("");
+  const [meetingTime, setMeetingTime] = useState("");
+  const [meetingDuration, setMeetingDuration] = useState("00:30");
+  const [meetingMethod, setMeetingMethod] = useState("Google Meet");
+  const [meetingLink, setMeetingLink] = useState("");
+  const [meetingDealStage, setMeetingDealStage] = useState("Closing / Verbal Yes");
+  const [meetingTags, setMeetingTags] = useState("");
+  const [meetingOverview, setMeetingOverview] = useState("");
+  const [meetingInterchanges, setMeetingInterchanges] = useState("");
+  const [savingMeeting, setSavingMeeting] = useState(false);
+
+  const SUGGESTED_PSYCHOLOGICAL_TAGS = [
+    "#liked-the-deal",
+    "#lets-build",
+    "#will-start-soon",
+    "#confirming-this",
+    "#hold-on",
+    "#have-confusions",
+    "#getback-later",
+    "#found-the-issue",
+    "#budget-approved",
+    "#deposit-ready",
+    "#high-intent",
+    "#needs-scope-clarity",
+    "#comparison-shopping",
+    "#ready-to-sign",
+  ];
 
   // 1. Check for valid 1-week admin token on mount
   useEffect(() => {
@@ -531,6 +573,117 @@ export default function AdminDashboardPage() {
       }
     } catch (e: any) {
       alert("Error: " + e.message);
+    }
+  };
+
+  const handleOpenMeetingModal = (client: any, tab: "log" | "history" = "log") => {
+    setSelectedClientForMeeting(client);
+    setMeetingModalTab(tab);
+    const today = new Date().toISOString().split("T")[0];
+    const nowTime = new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+    setMeetingDate(today);
+    setMeetingTime(nowTime);
+    setMeetingDuration("00:30");
+    setMeetingMethod("Google Meet");
+    setMeetingLink("");
+    setMeetingDealStage("Closing / Verbal Yes");
+    setMeetingTags("#liked-the-deal, #lets-build, #will-start-soon");
+    setMeetingOverview("");
+    setMeetingInterchanges("");
+    setShowMeetingModal(true);
+  };
+
+  const toggleMeetingTag = (tag: string) => {
+    const cleanTag = tag.startsWith("#") ? tag : `#${tag}`;
+    const currentTags = meetingTags
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+    const exists = currentTags.some((t) => t.toLowerCase() === cleanTag.toLowerCase());
+    let nextTags: string[];
+    if (exists) {
+      nextTags = currentTags.filter((t) => t.toLowerCase() !== cleanTag.toLowerCase());
+    } else {
+      nextTags = [...currentTags, cleanTag];
+    }
+    setMeetingTags(nextTags.join(", "));
+  };
+
+  const handleSaveMeetingNote = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedClientForMeeting) return;
+    if (!meetingOverview.trim() && !meetingTags.trim()) {
+      alert("Please provide at least a brief meeting overview or psychological #tags.");
+      return;
+    }
+
+    setSavingMeeting(true);
+    try {
+      const parsedTags = meetingTags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+
+      const res = await fetch("/api/clients", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientId: selectedClientForMeeting.id,
+          newMeeting: {
+            date: meetingDate || new Date().toISOString().split("T")[0],
+            time: meetingTime || "12:00",
+            duration: meetingDuration || "00:30",
+            method: meetingMethod || "Google Meet",
+            link: meetingLink,
+            dealStage: meetingDealStage,
+            tags: parsedTags,
+            overview: meetingOverview,
+            interchanges: meetingInterchanges,
+          },
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        triggerToast("Meeting note & psychological deal tags saved ✓");
+        await fetchDashboardData();
+        if (data.client) {
+          setSelectedClientForMeeting(data.client);
+        }
+        setMeetingModalTab("history");
+      } else {
+        alert(data.error || "Failed to save meeting note");
+      }
+    } catch (err: any) {
+      alert("Error saving meeting: " + err.message);
+    } finally {
+      setSavingMeeting(false);
+    }
+  };
+
+  const handleDeleteMeetingNote = async (meetingId: string) => {
+    if (!selectedClientForMeeting || !confirm("Delete this meeting record?")) return;
+    try {
+      const res = await fetch("/api/clients", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientId: selectedClientForMeeting.id,
+          deleteMeetingId: meetingId,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        triggerToast("Meeting record removed.");
+        await fetchDashboardData();
+        if (data.client) {
+          setSelectedClientForMeeting(data.client);
+        }
+      } else {
+        alert(data.error || "Failed to delete meeting note");
+      }
+    } catch (err: any) {
+      alert("Error: " + err.message);
     }
   };
 
@@ -975,7 +1128,7 @@ export default function AdminDashboardPage() {
             </div>
             <div className={`mt-2 pt-2 border-t border-slate-100 text-[10px] text-slate-500 flex flex-col xs:flex-row xs:items-center justify-between gap-0.5 ${jetmono.className}`}>
               <span className={adminData?.testCallsPending > 0 ? "text-amber-700 font-semibold" : "text-slate-500"}>
-                {adminData?.testCallsPending || 0} Pending Call
+                {adminData?.testCallsPending || 0} Pending Meetings
               </span>
               <span className="text-purple-700 font-medium">Live Gateway</span>
             </div>
@@ -1584,8 +1737,8 @@ export default function AdminDashboardPage() {
                 filteredClients.map((c: any) => (
                   <div key={c.id} className="bg-white border border-slate-200/90 rounded-2xl p-5 space-y-4 shadow-xs">
                     <div className="flex items-start justify-between gap-2">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
+                      <div className="space-y-1 min-w-0 flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <h4 className="font-bold text-slate-900 text-base">{c.name}</h4>
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
                             c.status === "active" ? "bg-emerald-100 text-emerald-800" : "bg-blue-100 text-blue-800"
@@ -1593,19 +1746,120 @@ export default function AdminDashboardPage() {
                             {c.status}
                           </span>
                         </div>
-                        <p className={`text-xs text-slate-500 ${jetmono.className}`}>{c.email}</p>
+                        <p className={`text-xs text-slate-500 break-all ${jetmono.className}`}>{c.email}</p>
                         {c.phone && <p className={`text-xs text-slate-600 ${jetmono.className}`}>📞 {c.phone}</p>}
-                        {c.company && <p className="text-xs text-slate-600">🏢 {c.company}</p>}
+                        
+                        {/* Company & Designation & Stage */}
+                        {(c.company || c.designation || c.businessProfile?.companyName) && (
+                          <div className="pt-1 text-xs text-slate-700 flex items-center gap-1.5 flex-wrap">
+                            <span className="font-semibold flex items-center gap-1">
+                              <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                              <span>{c.businessProfile?.companyName || c.company}</span>
+                            </span>
+                            {(c.designation || c.businessProfile?.designation) && (
+                              <span className="text-slate-500">
+                                ({c.designation || c.businessProfile?.designation})
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Stage badge & Role */}
+                        {c.businessProfile?.companyStage && (
+                          <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${jetmono.className} ${
+                              c.businessProfile.companyStage === "unformed_idea"
+                                ? "bg-amber-50 text-amber-800 border-amber-200"
+                                : c.businessProfile.companyStage === "pre_incorporation"
+                                ? "bg-purple-50 text-purple-800 border-purple-200"
+                                : c.businessProfile.companyStage === "enterprise"
+                                ? "bg-blue-50 text-blue-800 border-blue-200"
+                                : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                            }`}>
+                              {c.businessProfile.companyStage.replace("_", " ").toUpperCase()}
+                            </span>
+                            {c.businessProfile?.userRoleInCompany && (
+                              <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 ${jetmono.className}`}>
+                                {c.businessProfile.userRoleInCompany.replace("_", " ")}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Social Links */}
+                        {(c.socials?.linkedin || c.socials?.github || c.socials?.twitter || c.socials?.website) && (
+                          <div className="flex items-center gap-1.5 pt-1.5 flex-wrap">
+                            {c.socials.linkedin && (
+                              <a
+                                href={c.socials.linkedin.startsWith("http") ? c.socials.linkedin : `https://${c.socials.linkedin}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded hover:bg-blue-100"
+                                title="LinkedIn Profile"
+                              >
+                                <FaLinkedin className="w-2.5 h-2.5" />
+                                <span>LinkedIn</span>
+                                <ExternalLink className="w-2 h-2 opacity-60" />
+                              </a>
+                            )}
+                            {c.socials.github && (
+                              <a
+                                href={c.socials.github.startsWith("http") ? c.socials.github : `https://${c.socials.github}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 bg-slate-100 text-slate-800 border border-slate-200 rounded hover:bg-slate-200"
+                                title="GitHub Profile"
+                              >
+                                <FaGithub className="w-2.5 h-2.5" />
+                                <span>GitHub</span>
+                                <ExternalLink className="w-2 h-2 opacity-60" />
+                              </a>
+                            )}
+                            {c.socials.twitter && (
+                              <a
+                                href={c.socials.twitter.startsWith("http") ? c.socials.twitter : `https://${c.socials.twitter}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 bg-sky-50 text-sky-700 border border-sky-200 rounded hover:bg-sky-100"
+                                title="X / Twitter"
+                              >
+                                <FaTwitter className="w-2.5 h-2.5" />
+                                <span>X</span>
+                                <ExternalLink className="w-2 h-2 opacity-60" />
+                              </a>
+                            )}
+                            {c.socials.website && (
+                              <a
+                                href={c.socials.website.startsWith("http") ? c.socials.website : `https://${c.socials.website}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 bg-slate-50 text-slate-700 border border-slate-200 rounded hover:bg-slate-100"
+                                title="Website"
+                              >
+                                <Globe className="w-2.5 h-2.5" />
+                                <span>Web</span>
+                                <ExternalLink className="w-2 h-2 opacity-60" />
+                              </a>
+                            )}
+                          </div>
+                        )}
                       </div>
 
                       {/* Trust Score */}
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-md border ${jetmono.className} ${
-                        c.trustLevel === "VIP"
-                          ? "bg-indigo-50 text-indigo-700 border-indigo-200"
-                          : "bg-slate-50 text-slate-700 border-slate-200"
-                      }`}>
-                        {c.trustLevel || "Good"} ({c.trustScore || 85}/100)
-                      </span>
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        <span className={`text-xs font-semibold px-2 py-1 rounded-md border ${jetmono.className} ${
+                          c.trustLevel === "VIP"
+                            ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                            : "bg-slate-50 text-slate-700 border-slate-200"
+                        }`}>
+                          {c.trustLevel || "Good"} ({c.trustScore || 85}/100)
+                        </span>
+                        {(c.trustFactors?.profileVerifiedBonus || (c.company && (c.socials?.linkedin || c.socials?.github))) && (
+                          <span className={`text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded ${jetmono.className}`}>
+                            +15 Profile Bonus
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     <div className={`pt-3 border-t border-slate-100 flex items-center justify-between text-xs ${jetmono.className}`}>
@@ -1613,19 +1867,92 @@ export default function AdminDashboardPage() {
                       <strong className="text-slate-900 text-sm">₹{c.totalPaid?.toLocaleString("en-IN") || 0}</strong>
                     </div>
 
-                    <div className="pt-2 flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleToggleCallConfirmed(c.id, Boolean(c.callConfirmed))}
-                        className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold border flex items-center justify-center gap-1.5 transition cursor-pointer ${
-                          c.callConfirmed
-                            ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-                            : "bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200"
-                        }`}
-                      >
-                        <PhoneCall className="w-3.5 h-3.5" />
-                        <span>{c.callConfirmed ? "Call Verified ✓" : "Confirm Call"}</span>
-                      </button>
+                    {/* Outside Meeting Notes, Last Call Date, Overview & Psychological Tags */}
+                    <div className="pt-2.5 border-t border-slate-100 space-y-2">
+                      {c.lastMeeting ? (
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between gap-1 text-[11px]">
+                            <div className="flex items-center gap-1 font-medium text-slate-700">
+                              <Calendar className="w-3 h-3 text-slate-500" />
+                              <span>Last Call: <strong>{c.lastMeeting.date}</strong></span>
+                              {c.lastMeeting.duration && (
+                                <span className={`text-[10px] text-slate-500 px-1 py-0.2 bg-slate-100 rounded ${jetmono.className}`}>
+                                  {c.lastMeeting.duration}
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                              {c.lastMeeting.dealStage || "Active Deal"}
+                            </span>
+                          </div>
+
+                          {/* Meeting Overview / Deal Remarks Quote */}
+                          {c.lastMeeting.overview && (
+                            <div className="p-2 rounded-lg bg-slate-50 border border-slate-200/90 text-[11px] text-slate-700 italic flex items-start gap-1.5">
+                              <MessageSquare className="w-3 h-3 text-slate-400 shrink-0 mt-0.5" />
+                              <p className="line-clamp-2 not-italic text-slate-600">
+                                <span className="italic font-medium text-slate-800">Overview:</span> "{c.lastMeeting.overview}"
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Psychological Mindset Tags (Outside Badges) */}
+                          {c.lastMeeting.tags && c.lastMeeting.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 items-center pt-0.5">
+                              {c.lastMeeting.tags.slice(0, 5).map((tag: string, tidx: number) => {
+                                const clean = tag.startsWith("#") ? tag : `#${tag}`;
+                                const isPositive = ["liked", "build", "confirm", "start", "budget", "deposit", "intent", "ready"].some(k => clean.toLowerCase().includes(k));
+                                const isCaution = ["hold", "confusion", "later", "back", "scope", "delay"].some(k => clean.toLowerCase().includes(k));
+                                return (
+                                  <span
+                                    key={tidx}
+                                    className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border tracking-tight ${
+                                      isPositive
+                                        ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                        : isCaution
+                                        ? "bg-amber-50 text-amber-800 border-amber-200"
+                                        : "bg-indigo-50 text-indigo-800 border-indigo-200"
+                                    } ${jetmono.className}`}
+                                  >
+                                    {clean}
+                                  </span>
+                                );
+                              })}
+                              {c.lastMeeting.tags.length > 5 && (
+                                <span className="text-[10px] font-semibold text-slate-500 px-1">
+                                  +{c.lastMeeting.tags.length - 5}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="p-2 rounded-lg bg-slate-50/70 border border-dashed border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
+                          <span>No meeting notes logged yet</span>
+                          <span className="text-[10px] text-slate-400">Track deal tags</span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-1.5 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenMeetingModal(c, c.meetings && c.meetings.length > 0 ? "history" : "log")}
+                          className="flex-1 py-1.5 px-2.5 rounded-lg text-xs font-semibold border flex items-center justify-center gap-1.5 transition cursor-pointer bg-slate-900 hover:bg-slate-800 text-white shadow-xs"
+                        >
+                          <FileText className="w-3.5 h-3.5 text-slate-300" />
+                          <span>
+                            Meeting Notes & Records ({c.meetings?.length || (c.lastMeeting ? 1 : 0)})
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleOpenMeetingModal(c, "log")}
+                          title="Log new call or meeting"
+                          className="p-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 flex items-center justify-center transition cursor-pointer"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -2362,6 +2689,405 @@ export default function AdminDashboardPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ─── MODAL 6: MEETING NOTES, RECORDS & PSYCHOLOGICAL DEAL TAGS ─── */}
+      {showMeetingModal && selectedClientForMeeting && (
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-slate-200/80 bg-slate-50/60 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-xs">
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span>Meeting Notes & Call Records</span>
+                    <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                      Client Intel
+                    </span>
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    {selectedClientForMeeting.name} • {selectedClientForMeeting.email} {selectedClientForMeeting.company ? `(${selectedClientForMeeting.company})` : ""}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowMeetingModal(false)}
+                className="w-8 h-8 rounded-lg hover:bg-slate-200/70 text-slate-500 flex items-center justify-center transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Sub-Tabs: Log Meeting vs History */}
+            <div className="px-5 pt-3 border-b border-slate-200/80 bg-white flex items-center gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={() => setMeetingModalTab("log")}
+                className={`pb-2.5 text-xs font-semibold border-b-2 transition flex items-center gap-1.5 cursor-pointer ${
+                  meetingModalTab === "log"
+                    ? "border-slate-900 text-slate-900"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Log Call & Deal Intel</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setMeetingModalTab("history")}
+                className={`pb-2.5 text-xs font-semibold border-b-2 transition flex items-center gap-1.5 cursor-pointer ${
+                  meetingModalTab === "history"
+                    ? "border-slate-900 text-slate-900"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
+              >
+                <History className="w-3.5 h-3.5" />
+                <span>
+                  Meeting History ({selectedClientForMeeting.meetings?.length || (selectedClientForMeeting.lastMeeting ? 1 : 0)})
+                </span>
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto flex-1 space-y-4 text-xs">
+              {meetingModalTab === "log" ? (
+                <form onSubmit={handleSaveMeetingNote} className="space-y-4">
+                  {/* Call Date, Time, Duration & Method */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">Date *</label>
+                      <input
+                        type="date"
+                        required
+                        value={meetingDate}
+                        onChange={(e) => setMeetingDate(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 text-xs focus:outline-none focus:border-slate-400 font-medium"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">Time</label>
+                      <input
+                        type="time"
+                        value={meetingTime}
+                        onChange={(e) => setMeetingTime(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 text-xs focus:outline-none focus:border-slate-400 font-medium"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">Total Conv (hh:mm) *</label>
+                      <input
+                        type="text"
+                        placeholder="00:30"
+                        value={meetingDuration}
+                        onChange={(e) => setMeetingDuration(e.target.value)}
+                        className={`w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 text-xs focus:outline-none focus:border-slate-400 font-bold ${jetmono.className}`}
+                      />
+                      <div className="flex gap-1 mt-1">
+                        {["00:15", "00:30", "00:45", "01:00"].map((dur) => (
+                          <button
+                            key={dur}
+                            type="button"
+                            onClick={() => setMeetingDuration(dur)}
+                            className={`text-[9px] px-1 py-0.5 rounded border ${
+                              meetingDuration === dur
+                                ? "bg-slate-900 text-white border-slate-900"
+                                : "bg-slate-100 hover:bg-slate-200 text-slate-600 border-slate-200"
+                            } ${jetmono.className}`}
+                          >
+                            {dur.replace("00:", "").replace("01:00", "60m")}m
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">Connectivity *</label>
+                      <select
+                        value={meetingMethod}
+                        onChange={(e) => setMeetingMethod(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 text-xs focus:outline-none focus:border-slate-400 font-medium"
+                      >
+                        <option value="Google Meet">Google Meet</option>
+                        <option value="Zoom">Zoom Meeting</option>
+                        <option value="Phone / WhatsApp">Phone / WhatsApp</option>
+                        <option value="Telegram Call">Telegram Call</option>
+                        <option value="In-Person">In-Person Meeting</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Meeting Links & Deal Stage */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">
+                        Recording Link / Call URL
+                      </label>
+                      <input
+                        type="url"
+                        placeholder="https://meet.google.com/xyz or Drive URL"
+                        value={meetingLink}
+                        onChange={(e) => setMeetingLink(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 text-xs focus:outline-none focus:border-slate-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">Current Deal Stage</label>
+                      <select
+                        value={meetingDealStage}
+                        onChange={(e) => setMeetingDealStage(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-800 text-xs focus:outline-none focus:border-slate-400 font-medium"
+                      >
+                        <option value="Closing / Verbal Yes">Closing / Verbal Yes (Hot)</option>
+                        <option value="Discovery & Scope">Discovery & Requirement Scope</option>
+                        <option value="Proposal & Pricing">Proposal & Pricing Estimation</option>
+                        <option value="Objection Handling">Objection Handling & Questions</option>
+                        <option value="Follow-up Needed">Follow-up Needed</option>
+                        <option value="Contract & Kickoff">Contract Signed & Kickoff</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Psychological Mindset #tags (Core Feature) */}
+                  <div className="space-y-1.5 p-3 rounded-xl bg-slate-50/80 border border-slate-200">
+                    <div className="flex items-center justify-between">
+                      <label className="font-bold text-slate-900 flex items-center gap-1.5">
+                        <Tag className="w-3.5 h-3.5 text-indigo-600" />
+                        <span>Psychological Mindset #tags</span>
+                        <span className="text-[10px] text-slate-500 font-normal">
+                          (Separated by commas)
+                        </span>
+                      </label>
+                      <span className="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded font-medium">
+                        Solidify Client Mindset
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="#liked-the-deal, #lets-build, #will-start-soon, #have-confusions"
+                      value={meetingTags}
+                      onChange={(e) => setMeetingTags(e.target.value)}
+                      className={`w-full bg-white border border-slate-300 rounded-lg p-2 text-slate-900 text-xs focus:outline-none focus:border-indigo-500 font-semibold ${jetmono.className}`}
+                    />
+                    <div className="pt-1">
+                      <p className="text-[11px] text-slate-500 mb-1.5">
+                        Quick click to add psychological triggers & client confirmation cues:
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {SUGGESTED_PSYCHOLOGICAL_TAGS.map((stag) => {
+                          const isSelected = meetingTags.toLowerCase().includes(stag.toLowerCase().replace("#", ""));
+                          const isPositive = ["liked", "build", "confirm", "start", "budget", "deposit", "intent", "ready"].some(k => stag.includes(k));
+                          const isCaution = ["hold", "confusion", "later", "back", "scope", "comparison"].some(k => stag.includes(k));
+                          return (
+                            <button
+                              key={stag}
+                              type="button"
+                              onClick={() => toggleMeetingTag(stag)}
+                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border transition cursor-pointer ${jetmono.className} ${
+                                isSelected
+                                  ? isPositive
+                                    ? "bg-emerald-600 text-white border-emerald-700 shadow-xs"
+                                    : isCaution
+                                    ? "bg-amber-600 text-white border-amber-700 shadow-xs"
+                                    : "bg-indigo-600 text-white border-indigo-700 shadow-xs"
+                                  : isPositive
+                                  ? "bg-white hover:bg-emerald-50 text-emerald-800 border-emerald-200"
+                                  : isCaution
+                                  ? "bg-white hover:bg-amber-50 text-amber-800 border-amber-200"
+                                  : "bg-white hover:bg-indigo-50 text-indigo-800 border-indigo-200"
+                              }`}
+                            >
+                              {isSelected ? "✓ " : "+ "}{stag}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Meeting Overview & Deal Remarks */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="font-semibold text-slate-700">
+                        Meeting Overview & Deal Remarks *
+                      </label>
+                      <span className="text-[10px] text-slate-400">
+                        Displayed outside as quote tag on client card
+                      </span>
+                    </div>
+                    <textarea
+                      rows={2}
+                      required
+                      placeholder="e.g. Client agreed with the sprint architecture and budget. Wants to initiate with 30% kickoff deposit once invoice link is sent."
+                      value={meetingOverview}
+                      onChange={(e) => setMeetingOverview(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-800 text-xs focus:outline-none focus:border-slate-400 leading-relaxed font-normal"
+                    />
+                  </div>
+
+                  {/* Conversation Interchanges & Exact Quotes */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="font-semibold text-slate-700">
+                        Conversation Interchanges (Client ↔ Admin Dialogue)
+                      </label>
+                      <span className="text-[10px] text-slate-400">
+                        Exact words, objections & solutions exchanged
+                      </span>
+                    </div>
+                    <textarea
+                      rows={3}
+                      placeholder={`Client: "We liked the deal and architecture. Let's build this together soon."\nAdmin: "Explained 30-40-30 sprint breakdown. Sent payment link for initial kickoff deposit."`}
+                      value={meetingInterchanges}
+                      onChange={(e) => setMeetingInterchanges(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-slate-800 text-xs focus:outline-none focus:border-slate-400 font-mono text-[11px] leading-relaxed"
+                    />
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="pt-3 flex justify-end gap-2 border-t border-slate-200">
+                    <button
+                      type="button"
+                      onClick={() => setShowMeetingModal(false)}
+                      className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={savingMeeting}
+                      className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-xs shadow-xs disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                    >
+                      {savingMeeting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
+                      <span>Save Meeting & Solidify Deal</span>
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                /* History Tab */
+                <div className="space-y-3">
+                  {(!selectedClientForMeeting.meetings || selectedClientForMeeting.meetings.length === 0) && !selectedClientForMeeting.lastMeeting ? (
+                    <div className="text-center py-12 text-slate-500 space-y-2">
+                      <MessageSquare className="w-8 h-8 mx-auto text-slate-300" />
+                      <p className="font-medium text-sm text-slate-700">No meeting notes recorded yet</p>
+                      <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                        Log calls, track verbatim statements, and assign psychological tags to maintain high closing rates.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setMeetingModalTab("log")}
+                        className="mt-3 px-3 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 cursor-pointer"
+                      >
+                        Log First Call Now
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {(selectedClientForMeeting.meetings && selectedClientForMeeting.meetings.length > 0
+                        ? selectedClientForMeeting.meetings
+                        : [selectedClientForMeeting.lastMeeting]
+                      ).map((m: any, idx: number) => (
+                        <div
+                          key={m.id || idx}
+                          className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2.5 relative group"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-slate-900 text-xs">
+                                {m.date}
+                              </span>
+                              {m.time && <span className="text-slate-500 text-[11px]">at {m.time}</span>}
+                              <span className={`text-[10px] font-semibold text-slate-700 bg-white border border-slate-200 px-1.5 py-0.5 rounded ${jetmono.className}`}>
+                                ⏱ {m.duration || "N/A"}
+                              </span>
+                              <span className="text-[10px] text-slate-600 bg-slate-200/70 px-1.5 py-0.5 rounded">
+                                {m.method || "Call"}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {m.dealStage && (
+                                <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                                  {m.dealStage}
+                                </span>
+                              )}
+                              {m.id && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteMeetingNote(m.id)}
+                                  title="Delete meeting record"
+                                  className="text-slate-400 hover:text-rose-600 p-1 rounded hover:bg-white transition cursor-pointer"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Recording / Meet Link */}
+                          {m.link && (
+                            <div className="flex items-center gap-1.5 text-[11px] text-indigo-700">
+                              <ExternalLink className="w-3 h-3" />
+                              <a
+                                href={m.link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="underline hover:text-indigo-900 truncate max-w-md"
+                              >
+                                {m.link}
+                              </a>
+                            </div>
+                          )}
+
+                          {/* Overview remarks */}
+                          {m.overview && (
+                            <div className="p-2.5 bg-white rounded-lg border border-slate-200 text-xs text-slate-700">
+                              <span className="font-semibold text-slate-900">Deal Overview: </span>
+                              <span>{m.overview}</span>
+                            </div>
+                          )}
+
+                          {/* Psychological Tags */}
+                          {m.tags && m.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 items-center">
+                              {m.tags.map((t: string, tidx: number) => {
+                                const clean = t.startsWith("#") ? t : `#${t}`;
+                                const isPositive = ["liked", "build", "confirm", "start", "budget", "deposit", "intent", "ready"].some(k => clean.toLowerCase().includes(k));
+                                const isCaution = ["hold", "confusion", "later", "back", "scope", "delay"].some(k => clean.toLowerCase().includes(k));
+                                return (
+                                  <span
+                                    key={tidx}
+                                    className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${jetmono.className} ${
+                                      isPositive
+                                        ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                        : isCaution
+                                        ? "bg-amber-50 text-amber-800 border-amber-200"
+                                        : "bg-indigo-50 text-indigo-800 border-indigo-200"
+                                    }`}
+                                  >
+                                    {clean}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
+
+                          {/* Conversation Interchanges */}
+                          {m.interchanges && (
+                            <div className="bg-slate-100/80 p-2.5 rounded-lg border border-slate-200/80 text-[11px] font-mono whitespace-pre-wrap text-slate-800 leading-relaxed">
+                              {m.interchanges}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

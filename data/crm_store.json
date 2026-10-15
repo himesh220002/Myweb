@@ -1,49 +1,164 @@
 {
   "users": [
     {
+      "email": "satyamhimesh@gmail.com",
+      "company": "CypherTech",
+      "createdAt": "2026-10-15T08:40:30.645Z",
       "id": "usr_admin_001",
       "name": "Himesh Satyam (Owner)",
-      "email": "satyamhimesh@gmail.com",
-      "phone": "+91 9876543210",
       "passwordHash": "14b5ab8df9b660fbb49b6659b9b4f3a1:fc166c47faa3278d8bd8613f7ed8ffab184d1e4aeee951ca00c29698f737a05198f7b39a310c1be34c48eb5fadcfd798fe0d36797c3bc3276fa895f57bc6cdb8",
-      "role": "admin",
-      "createdAt": "2026-10-15T08:40:30.645Z",
-      "company": "CypherTech"
+      "phone": "+91 9876543210",
+      "role": "admin"
     },
     {
+      "email": "harleyqn74@gmail.com",
+      "createdAt": "2026-10-15T08:41:55.706Z",
       "id": "usr_060c44451631",
       "name": "Himesh satyam",
-      "email": "harleyqn74@gmail.com",
       "passwordHash": "d5377cdb8a648a57989f19266e833b39:1bc90f527db8242158cd2d2a4182b4a7d3bf4c57fa03c034b10e76047cbe8d14194b8aecb33cae85c489924f582fbe9ff4ad43571d26693208bfd62388372fe5",
       "role": "client",
-      "createdAt": "2026-10-15T08:41:55.706Z"
+      "businessProfile": {
+        "companyName": "",
+        "companyStage": "registered_business",
+        "userRoleInCompany": "owner_founder",
+        "designation": "",
+        "industry": "Software & SaaS",
+        "teamSize": "2 - 10 people",
+        "country": "India",
+        "city": "",
+        "companyBio": "",
+        "socials": {
+          "linkedin": "https://linkedin.com/in/himesh-satyam",
+          "github": "",
+          "twitter": "",
+          "website": "",
+          "telegramOrDiscord": ""
+        }
+      },
+      "company": "",
+      "designation": "",
+      "phone": "9471283523",
+      "socials": {
+        "linkedin": "https://linkedin.com/in/himesh-satyam",
+        "github": "",
+        "twitter": "",
+        "website": "",
+        "telegramOrDiscord": ""
+      }
     }
   ],
   "clients": [
     {
-      "id": "cli_7eb046a6552f",
-      "userId": "usr_060c44451631",
-      "name": "Himesh satyam",
       "email": "harleyqn74@gmail.com",
-      "phone": "",
       "company": "",
-      "status": "active",
-      "notes": "Account registered online.",
-      "totalPaid": 0,
-      "projectIds": [],
       "createdAt": "2026-10-15T08:41:55.706Z",
-      "updatedAt": "2026-10-15T10:29:55.442Z",
-      "trustScore": 85,
-      "trustLevel": "Trusted",
+      "id": "cli_7eb046a6552f",
+      "name": "Himesh satyam",
+      "notes": "Account registered online.",
+      "phone": "9471283523",
+      "projectIds": [],
+      "status": "active",
+      "totalPaid": 1,
       "trustFactors": {
         "prepaidBonus": 0,
         "promptPayments": 0,
         "testVerified": 0,
         "delayedPenalties": 0,
-        "holdsOrDisputes": 0
-      }
+        "holdsOrDisputes": 0,
+        "profileVerifiedBonus": 15
+      },
+      "trustLevel": "Trusted",
+      "trustScore": 85,
+      "updatedAt": "2026-10-15T14:07:23.902Z",
+      "userId": "usr_060c44451631",
+      "callConfirmed": true,
+      "businessProfile": {
+        "companyName": "",
+        "companyStage": "registered_business",
+        "userRoleInCompany": "owner_founder",
+        "designation": "",
+        "industry": "Software & SaaS",
+        "teamSize": "2 - 10 people",
+        "country": "India",
+        "city": "",
+        "companyBio": "",
+        "socials": {
+          "linkedin": "https://linkedin.com/in/himesh-satyam",
+          "github": "",
+          "twitter": "",
+          "website": "",
+          "telegramOrDiscord": ""
+        },
+        "verifiedAt": "2026-10-15T13:54:12.206Z"
+      },
+      "designation": "",
+      "socials": {
+        "linkedin": "https://linkedin.com/in/himesh-satyam",
+        "github": "",
+        "twitter": "",
+        "website": "",
+        "telegramOrDiscord": ""
+      },
+      "lastMeeting": {
+        "id": "mtg_e64720cca267",
+        "date": "2026-10-15",
+        "time": "19:37",
+        "duration": "00:30",
+        "method": "Google Meet",
+        "link": "",
+        "dealStage": "Closing / Verbal Yes",
+        "tags": [
+          "#liked-the-deal",
+          "#lets-build",
+          "#will-start-soon"
+        ],
+        "overview": "",
+        "interchanges": "",
+        "createdAt": "2026-10-15T14:07:23.902Z"
+      },
+      "meetings": [
+        {
+          "id": "mtg_e64720cca267",
+          "date": "2026-10-15",
+          "time": "19:37",
+          "duration": "00:30",
+          "method": "Google Meet",
+          "link": "",
+          "dealStage": "Closing / Verbal Yes",
+          "tags": [
+            "#liked-the-deal",
+            "#lets-build",
+            "#will-start-soon"
+          ],
+          "overview": "",
+          "interchanges": "",
+          "createdAt": "2026-10-15T14:07:23.902Z"
+        }
+      ]
     }
   ],
   "projects": [],
-  "payments": []
+  "payments": [
+    {
+      "paymentId": "pay_To9PDPBYruirYX",
+      "amount": 1,
+      "clientId": "cli_7eb046a6552f",
+      "createdAt": "2026-10-15T10:27:45.813Z",
+      "currency": "INR",
+      "customerEmail": "harleyqn74@gmail.com",
+      "customerName": "Himesh satyam",
+      "customerPhone": "9471283523",
+      "id": "rec_9377b182ec81",
+      "isManual": false,
+      "method": "UPI",
+      "notes": "Live Test Verification — ₹1.00",
+      "orderId": "order_To9ObteDyfATMu",
+      "paymentType": "test_payment",
+      "receiptToken": "eyJhbGciOiJIUzI1NiJ9.eyJwYXltZW50SWQiOiJwYXlfVG85UERQQllydWlyWVgiLCJvcmRlcklkIjoib3JkZXJfVG85T2J0ZUR5ZkFUTXUiLCJhbW91bnQiOiIxLjAwIiwiY3VycmVuY3kiOiJJTlIiLCJjdXN0b21lckVtYWlsIjoiaGFybGV5cW43NEBnbWFpbC5jb20iLCJjdXN0b21lck5hbWUiOiJIaW1lc2ggc2F0eWFtIiwiY3VzdG9tZXJQaG9uZSI6Ijk0NzEyODM1MjMiLCJwbGFuTmFtZSI6IkxpdmUgVGVzdCBWZXJpZmljYXRpb24g4oCUIOKCuTEuMDAiLCJzdWIiOiJndWVzdF9yZWNlaXB0X2NsYWltIiwiaWF0IjoxNzkyMDYwMDU4LCJleHAiOjE3OTQ2NTIwNTh9.wK9GleEVhJ5tdA7Aj93yxEnrAMha3zIZ_APK4R5H3eo",
+      "refundClaimUrl": "https://cyphertech.online/refund?token=eyJhbGciOiJIUzI1NiJ9.eyJwYXltZW50SWQiOiJwYXlfVG85UERQQllydWlyWVgiLCJvcmRlcklkIjoib3JkZXJfVG85T2J0ZUR5ZkFUTXUiLCJhbW91bnQiOiIxLjAwIiwiY3VycmVuY3kiOiJJTlIiLCJjdXN0b21lckVtYWlsIjoiaGFybGV5cW43NEBnbWFpbC5jb20iLCJjdXN0b21lck5hbWUiOiJIaW1lc2ggc2F0eWFtIiwiY3VzdG9tZXJQaG9uZSI6Ijk0NzEyODM1MjMiLCJwbGFuTmFtZSI6IkxpdmUgVGVzdCBWZXJpZmljYXRpb24g4oCUIOKCuTEuMDAiLCJzdWIiOiJndWVzdF9yZWNlaXB0X2NsYWltIiwiaWF0IjoxNzkyMDYwMDU4LCJleHAiOjE3OTQ2NTIwNTh9.wK9GleEVhJ5tdA7Aj93yxEnrAMha3zIZ_APK4R5H3eo",
+      "status": "captured",
+      "testCallConfirmed": true,
+      "userId": "usr_060c44451631"
+    }
+  ]
 }

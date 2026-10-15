@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addProjectFeedItem } from "@/lib/serverStore";
+import { addProjectFeedItemAsync } from "@/lib/serverStore";
 
 // POST /api/projects/feed: Add manual feed update to project
 export async function POST(req: NextRequest) {
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     const feedType = validTypes.includes(type) ? type : "sprint_update";
 
-    const project = addProjectFeedItem(projectId, {
+    const project = await addProjectFeedItemAsync(projectId, {
       type: feedType as any,
       title,
       description,

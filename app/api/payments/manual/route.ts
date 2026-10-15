@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { recordPayment, readStore } from "@/lib/serverStore";
+import { recordPaymentAsync, readStoreAsync } from "@/lib/serverStore";
 import crypto from "crypto";
 
 // POST /api/payments/manual: Records offline or alternate transaction
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const store = readStore();
+    const store = await readStoreAsync();
     let client = clientId ? store.clients.find((c) => c.id === clientId) : null;
 
     const email = customerEmail || client?.email || "manual_client@record.local";
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     const ref = referenceId?.trim() || `MAN_${Date.now().toString(36).toUpperCase()}_${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
 
-    const payment = recordPayment({
+    const payment = await recordPaymentAsync({
       paymentId: ref,
       orderId: `MAN_ORD_${Date.now().toString(36).toUpperCase()}`,
       amount: parsedAmount,

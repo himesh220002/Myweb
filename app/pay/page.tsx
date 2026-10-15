@@ -27,7 +27,10 @@ import {
   FileCode,
   ExternalLink,
   LifeBuoy,
+  Layers,
+  Zap,
 } from "lucide-react";
+import { Outfit, JetBrains_Mono } from "next/font/google";
 
 import { loadRazorpayScript } from "@/lib/loadRazorpay";
 import {
@@ -38,6 +41,115 @@ import {
 } from "@/lib/receiptUtils";
 import { addPaymentToHistory, getStoredUser } from "@/lib/authStorage";
 
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetmono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const STARTER_CONFIG = {
+  id: "starter",
+  name: "Starter Package",
+  tag: "Up to 5 Pages",
+  totalAmount: 49999,
+  scope: "Up to 5 Pages • High-Performance Responsive UI • SEO Optimized • Cloud Deployment",
+  milestones: [
+    {
+      key: "starter_kickoff",
+      tier: "kickoff" as const,
+      label: "Kickoff",
+      sublabel: "Sprint Kickoff Deposit",
+      percentage: 30,
+      amount: 14999,
+      desc: "30% upfront kickoff deposit to lock engineering sprint & initiate UI/UX wireframes.",
+      isDeposit: true,
+    },
+    {
+      key: "starter_mid",
+      tier: "mid" as const,
+      label: "Mid Sprint",
+      sublabel: "Staging & Backend Review",
+      percentage: 40,
+      amount: 20000,
+      desc: "40% milestone upon core frontend component integration & staging environment walkthrough.",
+      isDeposit: false,
+    },
+    {
+      key: "starter_finish",
+      tier: "finish" as const,
+      label: "Finish",
+      sublabel: "Production Handover",
+      percentage: 30,
+      amount: 15000,
+      desc: "30% balance upon final QA sign-off, domain configuration & production deployment.",
+      isDeposit: false,
+    },
+    {
+      key: "starter_full",
+      tier: "full" as const,
+      label: "Full",
+      sublabel: "100% Upfront Clearance",
+      percentage: 100,
+      amount: 49999,
+      desc: "Complete upfront payment for priority dispatch & 100% milestone clearance.",
+      isDeposit: false,
+    },
+  ],
+};
+
+const GROWTH_CONFIG = {
+  id: "growth",
+  name: "Growth Package",
+  tag: "Up to 20 Routes",
+  totalAmount: 149999,
+  scope: "Up to 20 Routes • Database & Auth • Admin Portal & APIs • 90-Day SLA Support",
+  milestones: [
+    {
+      key: "growth_kickoff",
+      tier: "kickoff" as const,
+      label: "Kickoff",
+      sublabel: "Sprint Kickoff Deposit",
+      percentage: 30,
+      amount: 44999,
+      desc: "30% upfront kickoff deposit for system architecture, schema design & sprint kickoff.",
+      isDeposit: true,
+    },
+    {
+      key: "growth_mid",
+      tier: "mid" as const,
+      label: "Mid Sprint",
+      sublabel: "Core APIs & Database",
+      percentage: 40,
+      amount: 60000,
+      desc: "40% milestone upon functional API routes, database integrations & admin portal walkthrough.",
+      isDeposit: false,
+    },
+    {
+      key: "growth_finish",
+      tier: "finish" as const,
+      label: "Finish",
+      sublabel: "Final Production Handover",
+      percentage: 30,
+      amount: 45000,
+      desc: "30% balance upon security hardening, performance audit & production deployment.",
+      isDeposit: false,
+    },
+    {
+      key: "growth_full",
+      tier: "full" as const,
+      label: "Full",
+      sublabel: "100% Upfront Clearance",
+      percentage: 100,
+      amount: 149999,
+      desc: "Complete upfront payment for maximum sprint velocity & guaranteed delivery SLA.",
+      isDeposit: false,
+    },
+  ],
+};
 
 function PaymentPortalContent() {
   const searchParams = useSearchParams();
@@ -60,6 +172,9 @@ function PaymentPortalContent() {
       desc: string;
       amount: number;
       isDeposit: boolean;
+      packageType?: "starter" | "growth";
+      percentage?: number;
+      milestoneTier?: "kickoff" | "mid" | "finish" | "full";
       category: "coffee" | "test" | "package" | "custom";
     }
   > = {
@@ -81,42 +196,105 @@ function PaymentPortalContent() {
       isDeposit: false,
       category: "test",
     },
-    starter_deposit: {
-      label: "Starter Package — 50% Kickoff Deposit",
-      shortLabel: "Starter Deposit (50%)",
-      tag: "50% Milestone",
-      desc: "50% upfront to initiate sprint kickoff. Balance due upon successful deployment.",
-      amount: 24999,
+    // Starter Package Milestones
+    starter_kickoff: {
+      label: "Starter Package — 30% Kickoff Deposit",
+      shortLabel: "Starter Kickoff (30%)",
+      tag: "30% Kickoff",
+      desc: "30% kickoff deposit to lock engineering sprint, scope architecture & initiate UI/UX wireframes.",
+      amount: 14999,
       isDeposit: true,
+      packageType: "starter",
+      percentage: 30,
+      milestoneTier: "kickoff",
+      category: "package",
+    },
+    starter_mid: {
+      label: "Starter Package — 40% Mid Sprint Milestone",
+      shortLabel: "Starter Mid (40%)",
+      tag: "40% Mid",
+      desc: "40% mid milestone upon core frontend component integration and staging environment walkthrough.",
+      amount: 20000,
+      isDeposit: false,
+      packageType: "starter",
+      percentage: 40,
+      milestoneTier: "mid",
+      category: "package",
+    },
+    starter_finish: {
+      label: "Starter Package — 30% Finish & Delivery",
+      shortLabel: "Starter Finish (30%)",
+      tag: "30% Finish",
+      desc: "30% final milestone upon QA sign-off, domain configuration, and cloud production deployment.",
+      amount: 15000,
+      isDeposit: false,
+      packageType: "starter",
+      percentage: 30,
+      milestoneTier: "finish",
       category: "package",
     },
     starter_full: {
       label: "Starter Package — Full Payment (100%)",
       shortLabel: "Starter Full (100%)",
-      tag: "Full Upfront",
-      desc: "Complete one-time upfront payment for up to 5 routes, responsive design & cloud deploy.",
+      tag: "100% Full",
+      desc: "Complete one-time upfront payment for up to 5 routes, responsive modern UI, and cloud deployment.",
       amount: 49999,
       isDeposit: false,
+      packageType: "starter",
+      percentage: 100,
+      milestoneTier: "full",
       category: "package",
     },
-    growth_deposit: {
-      label: "Growth Package — 50% Kickoff Deposit",
-      shortLabel: "Growth Deposit (50%)",
-      tag: "50% Milestone",
-      desc: "50% upfront for full-stack web applications with database, authentication, and CMS.",
-      amount: 74999,
+    // Growth Package Milestones
+    growth_kickoff: {
+      label: "Growth Package — 30% Kickoff Deposit",
+      shortLabel: "Growth Kickoff (30%)",
+      tag: "30% Kickoff",
+      desc: "30% kickoff deposit to lock full-stack sprint, design database models & initialize authentication APIs.",
+      amount: 44999,
       isDeposit: true,
+      packageType: "growth",
+      percentage: 30,
+      milestoneTier: "kickoff",
+      category: "package",
+    },
+    growth_mid: {
+      label: "Growth Package — 40% Mid Sprint Milestone",
+      shortLabel: "Growth Mid (40%)",
+      tag: "40% Mid",
+      desc: "40% mid milestone upon functional API routes, database integrations & admin portal walkthrough.",
+      amount: 60000,
+      isDeposit: false,
+      packageType: "growth",
+      percentage: 40,
+      milestoneTier: "mid",
+      category: "package",
+    },
+    growth_finish: {
+      label: "Growth Package — 30% Finish & Delivery",
+      shortLabel: "Growth Finish (30%)",
+      tag: "30% Finish",
+      desc: "30% final milestone upon security hardening, performance audit & production deployment.",
+      amount: 45000,
+      isDeposit: false,
+      packageType: "growth",
+      percentage: 30,
+      milestoneTier: "finish",
       category: "package",
     },
     growth_full: {
       label: "Growth Package — Full Payment (100%)",
       shortLabel: "Growth Full (100%)",
-      tag: "Full Upfront",
-      desc: "Complete payment for up to 20 routes, database, authentication, and 90-day support.",
+      tag: "100% Full",
+      desc: "Complete upfront payment for up to 20 routes, database, auth, admin controls, and 90-day SLA support.",
       amount: 149999,
       isDeposit: false,
+      packageType: "growth",
+      percentage: 100,
+      milestoneTier: "full",
       category: "package",
     },
+    // Custom Scope
     custom: {
       label: "Custom Invoice / Milestone Amount",
       shortLabel: "Custom Milestone",
@@ -128,19 +306,31 @@ function PaymentPortalContent() {
     },
   };
 
-  // State
+  // State: default to Starter Package Kickoff 30%
   const [selectedPreset, setSelectedPreset] = useState<string>(
     isCoffeeQuery
       ? "coffee"
       : queryPlan === "test" || queryPlan === "1" || queryAmount === "1"
-      ? "test_one_rupee"
-      : queryPlan === "growth"
-      ? "growth_deposit"
-      : queryPlan === "starter"
-      ? "starter_deposit"
-      : queryAmount
-      ? "custom"
-      : "starter_deposit"
+        ? "test_one_rupee"
+        : queryPlan === "growth" || queryPlan === "growth_deposit" || queryPlan === "growth_kickoff"
+          ? "growth_kickoff"
+          : queryPlan === "growth_mid"
+            ? "growth_mid"
+            : queryPlan === "growth_finish"
+              ? "growth_finish"
+              : queryPlan === "growth_full"
+                ? "growth_full"
+                : queryPlan === "starter_mid"
+                  ? "starter_mid"
+                  : queryPlan === "starter_finish"
+                    ? "starter_finish"
+                    : queryPlan === "starter_full"
+                      ? "starter_full"
+                      : queryPlan === "starter" || queryPlan === "starter_deposit"
+                        ? "starter_kickoff"
+                        : queryAmount
+                          ? "custom"
+                          : "starter_kickoff"
   );
 
   // Mobile 2-step navigation state (package selection vs payment form)
@@ -164,16 +354,16 @@ function PaymentPortalContent() {
   const [successData, setSuccessData] = useState<ReceiptData | null>(
     searchParams.get("test_receipt") === "true"
       ? {
-          paymentId: "pay_R81vLmK829Jz1",
-          orderId: "order_R81v31JmP099x",
-          amount: 24999,
-          planName: "Starter Package — 50% Kickoff Deposit",
-          customerName: "Rahul Sharma",
-          customerEmail: "rahul.sharma@example.com",
-          customerPhone: "+91 9876543210",
-          date: new Date().toISOString(),
-          paymentMethod: "Razorpay Gateway (256-Bit SSL)",
-        }
+        paymentId: "pay_R81vLmK829Jz1",
+        orderId: "order_R81v31JmP099x",
+        amount: 24999,
+        planName: "Starter Package — 50% Kickoff Deposit",
+        customerName: "Rahul Sharma",
+        customerEmail: "rahul.sharma@example.com",
+        customerPhone: "+91 9876543210",
+        date: new Date().toISOString(),
+        paymentMethod: "Razorpay Gateway (256-Bit SSL)",
+      }
       : null
   );
   const [copiedId, setCopiedId] = useState(false);
@@ -223,8 +413,8 @@ function PaymentPortalContent() {
     selectedPreset === "coffee"
       ? coffeeAmount
       : selectedPreset === "custom"
-      ? Number(customAmount) || 0
-      : activePreset.amount;
+        ? Number(customAmount) || 0
+        : activePreset.amount;
 
   const handleCopyPaymentId = (id: string) => {
     navigator.clipboard.writeText(id);
@@ -270,8 +460,8 @@ function PaymentPortalContent() {
         selectedPreset === "coffee"
           ? `Buy Me a Coffee Support (₹${finalAmount})`
           : selectedPreset === "custom"
-          ? description.trim() || "Custom Project Milestone"
-          : activePreset.label;
+            ? description.trim() || "Custom Project Milestone"
+            : activePreset.label;
 
       const isUpiVpa = phone.includes("@");
       const prefillContact = isUpiVpa ? "" : phone.replace(/[^0-9+]/g, "");
@@ -787,11 +977,10 @@ function PaymentPortalContent() {
                 setMobileStep("package");
                 window.scrollTo({ top: 0, behavior: "instant" });
               }}
-              className={`flex-1 py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 transition ${
-                mobileStep === "package"
-                  ? "bg-white text-blue-700 shadow-xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
+              className={`flex-1 py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 transition ${mobileStep === "package"
+                ? "bg-white text-blue-700 shadow-xs font-bold"
+                : "text-gray-600 hover:text-gray-900"
+                }`}
             >
               <span>1. Choose Package</span>
             </button>
@@ -801,11 +990,10 @@ function PaymentPortalContent() {
                 setMobileStep("payment");
                 window.scrollTo({ top: 0, behavior: "instant" });
               }}
-              className={`flex-1 py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 transition ${
-                mobileStep === "payment"
-                  ? "bg-white text-blue-700 shadow-xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
+              className={`flex-1 py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 transition ${mobileStep === "payment"
+                ? "bg-white text-blue-700 shadow-xs font-bold"
+                : "text-gray-600 hover:text-gray-900"
+                }`}
             >
               <span>2. Pay ₹{finalAmount.toLocaleString("en-IN")}</span>
               <ArrowRight className="w-3 h-3" />
@@ -815,250 +1003,456 @@ function PaymentPortalContent() {
           {/* Main Grid: 2 columns on desktop (>= lg), 1 column with step toggle on mobile */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start pb-20 lg:pb-0">
             {/* ─── LEFT COLUMN: PRESET PACKAGE SELECTOR ─── */}
-            <div className={`lg:col-span-7 space-y-2.5 ${mobileStep === "payment" ? "hidden lg:block" : "block"}`}>
+            <div className={`lg:col-span-7 space-y-3 ${mobileStep === "payment" ? "hidden lg:block" : "block"}`}>
               <div className="flex items-center justify-between pb-0.5">
-                <h2 className="text-xs sm:text-sm font-bold text-gray-900">
-                  1. Choose Payment Item or Package
-                </h2>
-                <span className="text-[10px] text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded-full">
+                <div>
+                  <h2 className="text-xs sm:text-sm font-bold text-slate-900">
+                    1. Choose Payment Item or Package
+                  </h2>
+                  <p className="text-[11px] text-slate-500">
+                    Select a sprint milestone deposit (Kickoff 30%, Mid 40%, Finish 30%, Full 100%) or custom SOW invoice.
+                  </p>
+                </div>
+                <span className={`w-fit text-nowrap text-[10px] text-blue-700 font-semibold bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
                   Verified Secure
                 </span>
               </div>
 
-              {/* COFFEE OPTION */}
-              <div
-                onClick={() => setSelectedPreset("coffee")}
-                className={`p-2.5 sm:p-3 rounded-xl border cursor-pointer transition ${
-                  selectedPreset === "coffee"
-                    ? "bg-amber-50/70 border-amber-500 ring-2 ring-amber-200 shadow-xs"
-                    : "bg-white border-amber-200/80 hover:border-amber-400"
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2.5">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
-                      <Coffee className="w-4 h-4 text-amber-600" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[9px] font-bold uppercase tracking-wider bg-amber-200 text-amber-900 px-1 py-0.2 rounded">
-                          Support
-                        </span>
-                        <h3 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">
-                          Buy Me a Coffee ☕
-                        </h3>
+              {/* ── SUPPORT & QUICK TEST COMPACT STRIP ── */}
+              <div className="flex flex-col gap-2.5">
+                {/* 1. COFFEE OPTION */}
+                <div
+                  onClick={() => setSelectedPreset("coffee")}
+                  className={`p-3 rounded-2xl border cursor-pointer transition shadow-xs ${selectedPreset === "coffee"
+                    ? "bg-amber-50/70 border-amber-500 ring-2 ring-amber-200"
+                    : "bg-white border-slate-200/90 hover:border-amber-300"
+                    }`}
+                >
+                  <div className="flex items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <Coffee className="w-4 h-4 text-amber-600" />
                       </div>
-                      <p className="text-[10px] sm:text-[11px] text-gray-500 line-clamp-1">
-                        Fuel our engineering squad with a quick developer tip.
-                      </p>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[9px] font-bold uppercase tracking-wider bg-amber-200 text-amber-900 px-1.5 py-0.2 rounded ${jetmono.className}`}>
+                            Tip
+                          </span>
+                          <h3 className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                            Buy Me a Coffee ☕
+                          </h3>
+                        </div>
+                        <p className="text-[10px] text-slate-500 truncate">
+                          Quick developer squad tip
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="text-right shrink-0">
+                      <span className={`text-base font-bold text-amber-900 block leading-tight ${jetmono.className}`}>
+                        ₹{coffeeAmount}
+                      </span>
+                      <span className="text-[9px] text-slate-400">Dynamic</span>
                     </div>
                   </div>
 
-                  <div className="text-right shrink-0">
-                    <span className="text-base sm:text-lg font-bold text-amber-800 block leading-tight">
-                      ₹{coffeeAmount}
+                  {/* Coffee Dynamic Amount Selector Chips */}
+                  {selectedPreset === "coffee" && (
+                    <div className="mt-2.5 pt-2 border-t border-amber-200/70 space-y-1.5">
+                      <span className="block text-[10px] font-semibold text-slate-700">
+                        Select tip or type custom:
+                      </span>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          { label: "₹50 (1 ☕)", val: 50 },
+                          { label: "₹100 (2 ☕☕)", val: 100 },
+                          { label: "₹250 (🥐 Snack)", val: 250 },
+                          { label: "₹500 (🚀 Fuel)", val: 500 },
+                          { label: "₹5000 (Team Boost)", val: 5000 },
+                        ].map((c) => (
+                          <button
+                            key={c.val}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCoffeeAmount(c.val);
+                            }}
+                            className={`px-2 py-0.5 rounded text-[14px] font-semibold transition cursor-pointer ${coffeeAmount === c.val
+                              ? "bg-amber-600 text-white shadow-2xs"
+                              : "bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
+                              }`}
+                          >
+                            {c.label}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="relative mt-1" onClick={(e) => e.stopPropagation()}>
+                        <span className={`absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-[11px] ${jetmono.className}`}>
+                          Custom ₹
+                        </span>
+                        <input
+                          type="number"
+                          min="1"
+                          placeholder="e.g. 750"
+                          value={coffeeAmount}
+                          onChange={(e) => setCoffeeAmount(Number(e.target.value) || 0)}
+                          className={`w-50 pl-16 pr-3 py-3 bg-white border border-slate-300 rounded-lg text-[14px] font-semibold text-slate-900 focus:outline-none focus:ring-1 focus:ring-amber-500 ${jetmono.className}`}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+
+              </div>
+
+              {/* ── 3. STARTER PACKAGE (4-Milestone Sections, Default: Kickoff 30%) ── */}
+              {(() => {
+                const isStarterActive = selectedPreset.startsWith("starter_");
+                const currentMilestone =
+                  STARTER_CONFIG.milestones.find((m) => m.key === selectedPreset) ||
+                  STARTER_CONFIG.milestones[0];
+
+                return (
+                  <div
+                    className={`bg-white border rounded-2xl p-4 sm:p-5 transition shadow-xs ${isStarterActive
+                      ? "border-blue-600 ring-2 ring-blue-100"
+                      : "border-slate-200/90 hover:border-slate-300"
+                      }`}
+                  >
+                    {/* Header: Clickable to select Starter (default 30% kickoff) */}
+                    <div
+                      onClick={() => {
+                        if (!isStarterActive) setSelectedPreset("starter_kickoff");
+                      }}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer"
+                    >
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
+                            Starter Package
+                          </span>
+                          {/* <span className="text-xs text-slate-500 font-medium">
+                            • Up to 5 Pages
+                          </span> */}
+                          {currentMilestone.isDeposit && (
+                            <span className={`text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
+                              Kickoff Deposit (30%)
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight flex flex-wrap items-center gap-1.5">
+                          <span>Starter Package —</span>
+                          <span className="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-md text-xs sm:text-sm font-semibold">
+                            {currentMilestone.label}
+                          </span>
+                          <span className="bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-md text-xs sm:text-sm font-semibold">
+                            {currentMilestone.percentage}%
+                          </span>
+                          <span>Deposit</span>
+                        </h3>
+                        {/* <p className="text-xs text-slate-500 leading-relaxed">
+                          {STARTER_CONFIG.scope}
+                        </p> */}
+                      </div>
+
+                      <div className="sm:text-right shrink-0">
+                        <span className={`text-xl sm:text-2xl font-black text-slate-900 block leading-tight ${jetmono.className}`}>
+                          ₹{currentMilestone.amount.toLocaleString("en-IN")}
+                        </span>
+                        <span className={`text-xs font-semibold text-blue-700 block ${jetmono.className}`}>
+                          {currentMilestone.percentage}% {currentMilestone.label} Deposit
+                        </span>
+                        <span className={`text-[10px] text-slate-400 block font-medium ${jetmono.className}`}>
+                          Total Scope: ₹49,999
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* The 4 Milestone Sections: Kickoff 30%, Mid 40%, Finish 30%, Full 100% */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3.5 pt-3.5 border-t border-slate-100">
+                      {STARTER_CONFIG.milestones.map((ms) => {
+                        const isSelected = selectedPreset === ms.key;
+                        return (
+                          <button
+                            key={ms.key}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedPreset(ms.key);
+                            }}
+                            className={`p-2.5 sm:p-3 rounded-xl border text-left transition cursor-pointer flex flex-col justify-between ${isSelected
+                              ? "bg-blue-50/90 border-blue-600 ring-2 ring-blue-500/20 text-slate-900 shadow-xs"
+                              : "bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-800"
+                              }`}
+                          >
+                            <div className="flex items-center justify-between gap-1 mb-1.5">
+                              <span
+                                className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${jetmono.className} ${isSelected
+                                  ? "bg-blue-600 text-white shadow-2xs"
+                                  : "bg-slate-100 text-slate-700 border border-slate-200"
+                                  }`}
+                              >
+                                {ms.percentage}% {ms.label}
+                              </span>
+                              {isSelected && <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />}
+                            </div>
+                            <div>
+                              <div className={`text-sm sm:text-base font-extrabold ${jetmono.className} ${isSelected ? "text-blue-950" : "text-slate-900"
+                                }`}>
+                                ₹{ms.amount.toLocaleString("en-IN")}
+                              </div>
+                              <p className={`text-[10px] line-clamp-1 mt-0.5 ${isSelected ? "text-blue-800 font-medium" : "text-slate-500"
+                                }`}>
+                                {ms.sublabel}
+                              </p>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Milestone description briefing */}
+                    {isStarterActive && (
+                      <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-start gap-2 text-xs text-slate-600 bg-slate-50/70 p-2.5 rounded-lg">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
+                        <span>
+                          <strong>{currentMilestone.label} Milestone ({currentMilestone.percentage}%):</strong>{" "}
+                          {currentMilestone.desc}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* ── 4. GROWTH PACKAGE (4-Milestone Sections, Default: Kickoff 30%) ── */}
+              {(() => {
+                const isGrowthActive = selectedPreset.startsWith("growth_");
+                const currentMilestone =
+                  GROWTH_CONFIG.milestones.find((m) => m.key === selectedPreset) ||
+                  GROWTH_CONFIG.milestones[0];
+
+                return (
+                  <div
+                    className={`bg-white border rounded-2xl p-4 sm:p-5 transition shadow-xs ${isGrowthActive
+                      ? "border-indigo-600 ring-2 ring-indigo-100"
+                      : "border-slate-200/90 hover:border-slate-300"
+                      }`}
+                  >
+                    {/* Header: Clickable to select Growth (default 30% kickoff) */}
+                    <div
+                      onClick={() => {
+                        if (!isGrowthActive) setSelectedPreset("growth_kickoff");
+                      }}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer"
+                    >
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
+                            Growth Package
+                          </span>
+                          {/* <span className="text-xs text-slate-500 font-medium">
+                            • Full-Stack Scale
+                          </span> */}
+                          {currentMilestone.isDeposit && (
+                            <span className={`text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
+                              Kickoff Deposit (30%)
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight flex flex-wrap items-center gap-1.5">
+                          <span>Growth Package —</span>
+                          <span className="bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-md text-xs sm:text-sm font-semibold">
+                            {currentMilestone.label}
+                          </span>
+                          <span className="bg-indigo-50 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded-md text-xs sm:text-sm font-semibold">
+                            {currentMilestone.percentage}%
+                          </span>
+                          <span>Deposit</span>
+                        </h3>
+                        {/* <p className="text-xs text-slate-500 leading-relaxed">
+                          {GROWTH_CONFIG.scope}
+                        </p> */}
+                      </div>
+
+                      <div className="sm:text-right shrink-0">
+                        <span className={`text-xl sm:text-2xl font-black text-slate-900 block leading-tight ${jetmono.className}`}>
+                          ₹{currentMilestone.amount.toLocaleString("en-IN")}
+                        </span>
+                        <span className={`text-xs font-semibold text-indigo-700 block ${jetmono.className}`}>
+                          {currentMilestone.percentage}% {currentMilestone.label} Deposit
+                        </span>
+                        <span className={`text-[10px] text-slate-400 block font-medium ${jetmono.className}`}>
+                          Total Scope: ₹1,49,999
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* The 4 Milestone Sections: Kickoff 30%, Mid 40%, Finish 30%, Full 100% */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3.5 pt-3.5 border-t border-slate-100">
+                      {GROWTH_CONFIG.milestones.map((ms) => {
+                        const isSelected = selectedPreset === ms.key;
+                        return (
+                          <button
+                            key={ms.key}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedPreset(ms.key);
+                            }}
+                            className={`p-2.5 sm:p-3 rounded-xl border text-left transition cursor-pointer flex flex-col justify-between ${isSelected
+                              ? "bg-indigo-50/90 border-indigo-600 ring-2 ring-indigo-500/20 text-slate-900 shadow-xs"
+                              : "bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-800"
+                              }`}
+                          >
+                            <div className="flex items-center justify-between gap-1 mb-1.5">
+                              <span
+                                className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${jetmono.className} ${isSelected
+                                  ? "bg-indigo-600 text-white shadow-2xs"
+                                  : "bg-slate-100 text-slate-700 border border-slate-200"
+                                  }`}
+                              >
+                                {ms.percentage}% {ms.label}
+                              </span>
+                              {isSelected && <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0" />}
+                            </div>
+                            <div>
+                              <div className={`text-sm sm:text-base font-extrabold ${jetmono.className} ${isSelected ? "text-indigo-950" : "text-slate-900"
+                                }`}>
+                                ₹{ms.amount.toLocaleString("en-IN")}
+                              </div>
+                              <p className={`text-[10px] line-clamp-1 mt-0.5 ${isSelected ? "text-indigo-800 font-medium" : "text-slate-500"
+                                }`}>
+                                {ms.sublabel}
+                              </p>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Milestone description briefing */}
+                    {isGrowthActive && (
+                      <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-start gap-2 text-xs text-slate-600 bg-slate-50/70 p-2.5 rounded-lg">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600 shrink-0 mt-0.5" />
+                        <span>
+                          <strong>{currentMilestone.label} Milestone ({currentMilestone.percentage}%):</strong>{" "}
+                          {currentMilestone.desc}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* ── 5. CUSTOM INVOICE / MILESTONE AMOUNT ── */}
+              <div
+                onClick={() => setSelectedPreset("custom")}
+                className={`p-4 sm:p-5 rounded-2xl border cursor-pointer transition shadow-xs ${selectedPreset === "custom"
+                  ? "bg-white border-blue-600 ring-2 ring-blue-100"
+                  : "bg-white border-slate-200/90 hover:border-slate-300"
+                  }`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded-full ${jetmono.className}`}>
+                        Custom Scope
+                      </span>
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight">
+                      Custom Invoice / Milestone Amount
+                    </h3>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      Enter the custom milestone amount specified in your formal Statement of Work (SOW).
+                    </p>
+                  </div>
+
+                  <div className="sm:text-right shrink-0">
+                    <span className={`text-base sm:text-lg font-bold text-blue-700 block ${jetmono.className}`}>
+                      {customAmount ? `₹${Number(customAmount).toLocaleString("en-IN")}` : "Custom Amount"}
                     </span>
-                    <span className="text-[9px] text-gray-400">Dynamic</span>
+                    <span className="text-[10px] text-slate-400 block font-medium">SOW Scope</span>
                   </div>
                 </div>
 
-                {/* Coffee Dynamic Amount Selector Chips (Only when selected) */}
-                {selectedPreset === "coffee" && (
-                  <div className="mt-2.5 pt-2 border-t border-amber-200/70 space-y-1.5">
-                    <span className="block text-[10px] font-semibold text-gray-700">
-                      Choose tip amount or type custom:
-                    </span>
-                    <div className="flex flex-wrap gap-1">
-                      {[
-                        { label: "₹50 (1 ☕)", val: 50 },
-                        { label: "₹100 (2 ☕☕)", val: 100 },
-                        { label: "₹250 (🥐 Snack)", val: 250 },
-                        { label: "₹500 (🚀 Fuel)", val: 500 },
-                        { label: "₹5000 (⚡ Boost)", val: 5000 },
-                      ].map((c) => (
-                        <button
-                          key={c.val}
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCoffeeAmount(c.val);
-                          }}
-                          className={`px-2 py-0.5 rounded text-[10px] font-semibold transition cursor-pointer ${
-                            coffeeAmount === c.val
-                              ? "bg-amber-600 text-white shadow-2xs"
-                              : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
-                          }`}
-                        >
-                          {c.label}
-                        </button>
-                      ))}
+                {/* Custom inputs revealed when selected */}
+                {selectedPreset === "custom" && (
+                  <div
+                    className="mt-3.5 pt-3.5 border-t border-slate-100 space-y-3"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Milestone / SOW Amount (INR ₹) <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <span className={`absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm ${jetmono.className}`}>
+                          ₹
+                        </span>
+                        <input
+                          type="number"
+                          min="1"
+                          placeholder="e.g. 25000"
+                          value={customAmount}
+                          onChange={(e) => setCustomAmount(e.target.value)}
+                          className={`w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-slate-400 focus:bg-white transition ${jetmono.className}`}
+                          required
+                        />
+                      </div>
                     </div>
 
-                    <div className="relative mt-1" onClick={(e) => e.stopPropagation()}>
-                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-[11px]">
-                        Custom ₹
-                      </span>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Milestone / Service Description <span className="text-rose-500">*</span>
+                      </label>
                       <input
-                        type="number"
-                        min="1"
-                        placeholder="Type amount (e.g. 750)"
-                        value={coffeeAmount}
-                        onChange={(e) => setCoffeeAmount(Number(e.target.value) || 0)}
-                        className="w-full pl-16 pr-3 py-1 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-900 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        type="text"
+                        placeholder="e.g. Milestone 2 Backend Deployment"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-slate-400 focus:bg-white transition placeholder-slate-400"
+                        required
                       />
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* LIVE ₹1 TEST OPTION */}
+              {/* 2. LIVE ₹1 TEST OPTION */}
               <div
                 onClick={() => setSelectedPreset("test_one_rupee")}
-                className={`p-2.5 sm:p-3 rounded-xl border flex items-center justify-between cursor-pointer transition ${
-                  selectedPreset === "test_one_rupee"
-                    ? "bg-emerald-50 border-emerald-500 ring-2 ring-emerald-200 shadow-xs"
-                    : "bg-white border-emerald-200/80 hover:border-emerald-400"
-                }`}
+                className={`p-3 rounded-2xl border flex items-center justify-between gap-6 cursor-pointer transition shadow-xs ${selectedPreset === "test_one_rupee"
+                  ? "bg-emerald-50/80 border-emerald-500 ring-2 ring-emerald-200"
+                  : "bg-white border-slate-200/90 hover:border-emerald-300"
+                  }`}
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 font-bold text-xs">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={`w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 font-bold text-xs ${jetmono.className}`}>
                     ₹1
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[9px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-1 py-0.2 rounded">
+                      <span className={`text-[9px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded ${jetmono.className}`}>
                         Live Test
                       </span>
-                      <span className="text-xs sm:text-sm font-semibold text-gray-900">
-                        1 Rupee Verification Transfer
+                      <span className="text-xs sm:text-sm font-semibold text-slate-900 truncate">
+                        1 Rupee Verification
                       </span>
                     </div>
-                    <p className="text-[10px] sm:text-[11px] text-gray-500 line-clamp-1">
-                      Live gateway routing test (UPI, Card, NetBanking).
+                    <p className="text-[10px] text-slate-500 truncate">
+                      Live gateway test (UPI, Card, NetBanking)
                     </p>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <span className="text-base sm:text-lg font-bold text-emerald-700 block leading-tight">
+                  <span className={`text-base font-bold text-emerald-700 block leading-tight ${jetmono.className}`}>
                     ₹1.00
                   </span>
-                  <span className="text-[9px] text-gray-400">Click to select</span>
+                  <span className="text-[9px] text-slate-400">Instant test</span>
                 </div>
-              </div>
-
-              {/* ─── 5 PACKAGES: 1st ONE EXPANDED & REMAINING 4 COLLAPSED BY DEFAULT ─── */}
-              <div className="space-y-2">
-                {[
-                  "starter_deposit",
-                  "starter_full",
-                  "growth_deposit",
-                  "growth_full",
-                  "custom",
-                ].map((key) => {
-                  const item = PRESETS[key];
-                  if (!item) return null;
-                  const isSelected = selectedPreset === key;
-
-                  return (
-                    <div
-                      key={key}
-                      onClick={() => setSelectedPreset(key)}
-                      className={`p-2.5 sm:p-3 rounded-xl border cursor-pointer transition ${
-                        isSelected
-                          ? "bg-blue-50/70 border-blue-600 ring-2 ring-blue-100 shadow-xs"
-                          : "bg-white border-gray-200 hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2.5">
-                        <div className="space-y-0.5 min-w-0">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[9px] font-semibold text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded">
-                              {item.tag}
-                            </span>
-                            {item.isDeposit && (
-                              <span className="text-[9px] font-semibold text-blue-700 bg-blue-100 px-1.5 py-0.2 rounded">
-                                Recommended
-                              </span>
-                            )}
-                          </div>
-                          <h3 className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
-                            {item.label}
-                          </h3>
-                          {/* Full description revealed ONLY when expanded/selected */}
-                          {isSelected && (
-                            <p className="text-[10px] sm:text-[11px] text-gray-600 mt-1 leading-relaxed">
-                              {item.desc}
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="text-right shrink-0">
-                          {key === "custom" ? (
-                            <div>
-                              <span className="text-xs font-bold text-blue-700 block">
-                                Custom Amount
-                              </span>
-                              {isSelected && (
-                                <span className="text-[9px] text-gray-400 block">SOW Scope</span>
-                              )}
-                            </div>
-                          ) : (
-                            <div>
-                              <span className="text-base sm:text-lg font-bold text-gray-900 block leading-tight">
-                                ₹{item.amount.toLocaleString("en-IN")}
-                              </span>
-                              <span className="text-[9px] text-gray-400 block">
-                                {item.isDeposit ? "50% Kickoff" : "Full Payment"}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Custom inputs revealed ONLY when Custom is expanded/selected */}
-                      {key === "custom" && isSelected && (
-                        <div
-                          className="mt-2.5 pt-2.5 border-t border-blue-200 space-y-2"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div>
-                            <label className="block text-[10px] font-semibold text-gray-700 mb-0.5">
-                              Milestone / SOW Amount (INR ₹) <span className="text-red-500">*</span>
-                            </label>
-                            <div className="relative">
-                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-xs">
-                                ₹
-                              </span>
-                              <input
-                                type="number"
-                                min="1"
-                                placeholder="e.g. 25000"
-                                value={customAmount}
-                                onChange={(e) => setCustomAmount(e.target.value)}
-                                className="w-full pl-6 pr-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                required
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-[10px] font-semibold text-gray-700 mb-0.5">
-                              Milestone / Service Description <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              placeholder="e.g. Milestone 2 Backend Deployment"
-                              value={description}
-                              onChange={(e) => setDescription(e.target.value)}
-                              className="w-full px-2.5 py-1.5 bg-white border border-gray-300 rounded-lg text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder-gray-400"
-                              required
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
               </div>
             </div>
 
@@ -1107,10 +1501,19 @@ function PaymentPortalContent() {
                       {selectedPreset === "coffee"
                         ? `Coffee Tip (₹${coffeeAmount})`
                         : selectedPreset === "custom"
-                        ? description || "Custom Milestone"
-                        : activePreset.shortLabel}
+                          ? description || "Custom Milestone"
+                          : activePreset.shortLabel}
                     </span>
                   </div>
+
+                  {activePreset.packageType && (
+                    <div className="flex justify-between items-center text-xs text-slate-500 border-t border-gray-200/80 pt-2">
+                      <span className="font-medium">Milestone Split</span>
+                      <span className={`font-semibold text-slate-800 ${jetmono.className}`}>
+                        {activePreset.percentage}% of {activePreset.packageType === "starter" ? "₹49,999" : "₹1,49,999"}
+                      </span>
+                    </div>
+                  )}
 
                   <div className="flex justify-between items-center text-xs sm:text-sm border-t border-gray-200/80 pt-2">
                     <span className="text-gray-500 font-medium">Applicable Taxes (GST 18%)</span>

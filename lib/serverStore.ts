@@ -1,6 +1,41 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import { getDb, isMongoConfigured, ensureMongoIndexes } from "./mongodb";
+
+export type CompanyStage =
+  | "unformed_idea" // Not formed yet / Solo Founder / Stealth
+  | "pre_incorporation" // Bootstrapped / Pre-incorporation
+  | "registered_business" // Registered Company (Pvt Ltd, LLC, Corp)
+  | "enterprise"; // Scale-up / Enterprise Brand
+
+export type UserRoleInCompany =
+  | "owner_founder" // Owner / Founder / Co-Founder
+  | "employee_lead" // Employee / Manager / Tech Lead
+  | "solo_creator" // Solo Creator / Freelancer / Individual
+  | "other";
+
+export interface SocialLinks {
+  linkedin?: string;
+  github?: string;
+  twitter?: string;
+  website?: string;
+  telegramOrDiscord?: string;
+}
+
+export interface BusinessProfile {
+  companyName?: string;
+  companyStage?: CompanyStage;
+  userRoleInCompany?: UserRoleInCompany;
+  designation?: string;
+  industry?: string;
+  teamSize?: string;
+  country?: string;
+  city?: string;
+  companyBio?: string;
+  socials?: SocialLinks;
+  verifiedAt?: string;
+}
 
 export interface StoredUserAccount {
   id: string;
@@ -11,6 +46,9 @@ export interface StoredUserAccount {
   role: "admin" | "client";
   createdAt: string;
   company?: string;
+  designation?: string;
+  businessProfile?: BusinessProfile;
+  socials?: SocialLinks;
 }
 
 export type PaymentType = "coffee" | "test_payment" | "milestone" | "random_custom";
@@ -85,6 +123,7 @@ export interface TrustFactors {
   testVerified: number;
   delayedPenalties: number;
   holdsOrDisputes: number;
+  profileVerifiedBonus?: number;
 }
 
 export interface ProjectMilestone {
@@ -129,6 +168,20 @@ export interface StoredProject {
   updatedAt: string;
 }
 
+export interface MeetingNote {
+  id: string;
+  date: string; // e.g. "15 Oct 2026" or ISO
+  time?: string; // e.g. "04:30 PM"
+  duration: string; // e.g. "00:35" (hh:mm)
+  method: "google_meet" | "zoom" | "phone_whatsapp" | "telegram" | "in_person";
+  link?: string; // Meet link, Loom URL, or call recording
+  dealStage: "confirmed" | "high_intent" | "warm" | "confused" | "on_hold";
+  tags: string[]; // e.g. ["#liked-the-deal", "#lets-build", "#will-start-soon"]
+  overview: string; // Brief call overview & deal remarks
+  interchanges?: string; // Detailed conversation interchanges / psychological remarks
+  createdAt: string;
+}
+
 export interface StoredClient {
   id: string;
   userId?: string;
@@ -136,9 +189,14 @@ export interface StoredClient {
   email: string;
   phone?: string;
   company?: string;
+  designation?: string;
+  businessProfile?: BusinessProfile;
+  socials?: SocialLinks;
   status: "lead" | "active" | "completed" | "inactive" | "dropped" | "on_hold";
   notes?: string;
   callConfirmed?: boolean;
+  meetings?: MeetingNote[];
+  lastMeeting?: MeetingNote;
   totalPaid: number;
   totalRefunded?: number;
   trustScore?: number; // 0 to 100
@@ -221,18 +279,129 @@ function initStoreFile(): CRMStoreData {
   }
 }
 
+let cachedStore: CRMStoreData | null = null;
+
+export async function readStoreAsync(): Promise<CRMStoreData> {
+  if (isMongoConfigured()) {
+    try {
+      await ensureMongoIndexes();
+      const db = await getDb();
+      if (db) {
+        const [users, clients, projects, payments] = await Promise.all([
+          db.collection<StoredUserAccount>("users").find({}, { projection: { _id: 0 } }).toArray(),
+          db.collection<StoredClient>("clients").find({}, { projection: { _id: 0 } }).toArray(),
+          db.collection<StoredProject>("projects").find({}, { projection: { _id: 0 } }).toArray(),
+          db.collection<StoredPayment>("payments").find({}, { projection: { _id: 0 } }).toArray(),
+        ]);
+
+        const storeData: CRMStoreData = {
+          users: (users as any[]) || [],
+          clients: (clients as any[]) || [],
+          projects: (projects as any[]) || [],
+          payments: (payments as any[]) || [],
+        };
+
+        cachedStore = storeData;
+
+        try {
+          if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+          fs.writeFileSync(STORE_FILE, JSON.stringify(storeData, null, 2), "utf8");
+        } catch {}
+
+        return storeData;
+      }
+    } catch (err) {
+      console.error("MongoDB Atlas read error, falling back to local file:", err);
+    }
+  }
+
+  const local = initStoreFile();
+  cachedStore = local;
+  return local;
+}
+
 export function readStore(): CRMStoreData {
-  return initStoreFile();
+  if (cachedStore) return cachedStore;
+  const store = initStoreFile();
+  cachedStore = store;
+  return store;
+}
+
+export async function syncMongoStore(data: CRMStoreData): Promise<void> {
+  if (!isMongoConfigured()) return;
+  try {
+    const db = await getDb();
+    if (!db) return;
+
+    const usersCol = db.collection("users");
+    const clientsCol = db.collection("clients");
+    const projectsCol = db.collection("projects");
+    const paymentsCol = db.collection("payments");
+
+    if (data.users.length > 0) {
+      await Promise.all(
+        data.users.map((u) => usersCol.updateOne({ email: u.email }, { $set: u }, { upsert: true }))
+      );
+    }
+
+    if (data.clients.length > 0) {
+      await Promise.all(
+        data.clients.map((c) => clientsCol.updateOne({ id: c.id }, { $set: c }, { upsert: true }))
+      );
+    }
+
+    const existingProjects = await projectsCol.find({}, { projection: { id: 1, _id: 0 } }).toArray();
+    const currentIds = new Set(data.projects.map((p) => p.id));
+    const toDelete = existingProjects.filter((p: any) => !currentIds.has(p.id)).map((p: any) => p.id);
+    if (toDelete.length > 0) {
+      await projectsCol.deleteMany({ id: { $in: toDelete } });
+    }
+    if (data.projects.length > 0) {
+      await Promise.all(
+        data.projects.map((p) => projectsCol.updateOne({ id: p.id }, { $set: p }, { upsert: true }))
+      );
+    }
+
+    if (data.payments.length > 0) {
+      await Promise.all(
+        data.payments.map((p) => paymentsCol.updateOne({ paymentId: p.paymentId }, { $set: p }, { upsert: true }))
+      );
+    }
+  } catch (mongoErr) {
+    console.error("MongoDB Atlas write error:", mongoErr);
+  }
+}
+
+export async function writeStoreAsync(data: CRMStoreData): Promise<void> {
+  cachedStore = data;
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    const tempFile = `${STORE_FILE}.tmp.${Date.now()}`;
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf8");
+    fs.renameSync(tempFile, STORE_FILE);
+  } catch {}
+
+  await syncMongoStore(data);
 }
 
 export function writeStore(data: CRMStoreData): void {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  cachedStore = data;
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    const tempFile = `${STORE_FILE}.tmp.${Date.now()}`;
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf8");
+    fs.renameSync(tempFile, STORE_FILE);
+  } catch {}
+
+  if (isMongoConfigured()) {
+    syncMongoStore(data).catch((err) =>
+      console.error("Background MongoDB sync error:", err)
+    );
   }
-  // Write to temporary file then atomic rename for crash-safety
-  const tempFile = `${STORE_FILE}.tmp.${Date.now()}`;
-  fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf8");
-  fs.renameSync(tempFile, STORE_FILE);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -667,6 +836,29 @@ export function computeClientTrust(
   if (hasRefund) holdsOrDisputes += 20;
   score -= holdsOrDisputes;
 
+  // 6. Business Profile & Social Connectivity Verification (+8 to +15 pts)
+  let profileVerifiedBonus = 0;
+  const bp = client.businessProfile;
+  const soc = client.socials || bp?.socials;
+  const hasRoleOrCompany = Boolean(
+    client.company ||
+    bp?.companyName ||
+    bp?.companyStage ||
+    bp?.userRoleInCompany ||
+    client.designation ||
+    bp?.designation
+  );
+  const hasSocials = Boolean(
+    soc?.linkedin || soc?.github || soc?.twitter || soc?.website || soc?.telegramOrDiscord
+  );
+
+  if (hasRoleOrCompany && hasSocials) {
+    profileVerifiedBonus = 15;
+  } else if (hasRoleOrCompany || hasSocials) {
+    profileVerifiedBonus = 8;
+  }
+  score += profileVerifiedBonus;
+
   score = Math.max(0, Math.min(100, Math.round(score)));
 
   let level: "VIP" | "Trusted" | "Good" | "Watchlist" = "Good";
@@ -678,7 +870,14 @@ export function computeClientTrust(
   return {
     score,
     level,
-    factors: { prepaidBonus, promptPayments, testVerified, delayedPenalties, holdsOrDisputes },
+    factors: {
+      prepaidBonus,
+      promptPayments,
+      testVerified,
+      delayedPenalties,
+      holdsOrDisputes,
+      profileVerifiedBonus,
+    },
   };
 }
 
@@ -1107,8 +1306,8 @@ export function mapPaymentToProjectMilestone({
 // DASHBOARD STATS AGGREGATOR & BUSINESS INTELLIGENCE
 // ─────────────────────────────────────────────────────────────
 
-export function getAdminDashboardStats() {
-  const store = readStore();
+export function getAdminDashboardStats(explicitStore?: CRMStoreData) {
+  const store = explicitStore || readStore();
   const now = new Date();
 
   // 1. Financials Breakdown
@@ -1298,8 +1497,8 @@ export function getAdminDashboardStats() {
   };
 }
 
-export function getClientDashboardData(userEmailOrId: string) {
-  const store = readStore();
+export function getClientDashboardData(userEmailOrId: string, explicitStore?: CRMStoreData) {
+  const store = explicitStore || readStore();
   const clean = (userEmailOrId || "").toLowerCase().trim();
 
   let user = clean
@@ -1384,6 +1583,9 @@ export function getClientDashboardData(userEmailOrId: string) {
           role: user.role,
           phone: user.phone,
           company: user.company,
+          designation: user.designation,
+          businessProfile: user.businessProfile,
+          socials: user.socials,
         }
       : null,
     client: client
@@ -1400,3 +1602,225 @@ export function getClientDashboardData(userEmailOrId: string) {
     trustInfo,
   };
 }
+
+// ─────────────────────────────────────────────────────────────
+// ASYNC MONGO-AWARE HELPERS FOR API ROUTES & WEBHOOKS
+// ─────────────────────────────────────────────────────────────
+
+export async function getAdminDashboardStatsAsync() {
+  const store = await readStoreAsync();
+  return getAdminDashboardStats(store);
+}
+
+export async function getClientDashboardDataAsync(userEmailOrId: string) {
+  const store = await readStoreAsync();
+  return getClientDashboardData(userEmailOrId, store);
+}
+
+export async function findUserByEmailAsync(email: string): Promise<StoredUserAccount | null> {
+  const store = await readStoreAsync();
+  const cleanEmail = email.toLowerCase().trim();
+  return store.users.find((u) => u.email.toLowerCase().trim() === cleanEmail) || null;
+}
+
+export async function findUserByIdAsync(id: string): Promise<StoredUserAccount | null> {
+  const store = await readStoreAsync();
+  return store.users.find((u) => u.id === id) || null;
+}
+
+export async function registerUserAsync(data: Parameters<typeof registerUser>[0]): Promise<StoredUserAccount> {
+  await readStoreAsync();
+  const user = registerUser(data);
+  await writeStoreAsync(readStore());
+  return user;
+}
+
+export async function authenticateUserAsync(email: string, password: string): Promise<StoredUserAccount> {
+  await readStoreAsync();
+  return authenticateUser(email, password);
+}
+
+export async function getOrCreateClientAsync(data: Parameters<typeof getOrCreateClient>[0]): Promise<StoredClient> {
+  await readStoreAsync();
+  const client = getOrCreateClient(data);
+  await writeStoreAsync(readStore());
+  return client;
+}
+
+export async function recordPaymentAsync(paymentData: Parameters<typeof recordPayment>[0]): Promise<StoredPayment> {
+  await readStoreAsync();
+  const payment = recordPayment(paymentData);
+  await writeStoreAsync(readStore());
+  return payment;
+}
+
+export async function createProjectAsync(data: Parameters<typeof createProject>[0]): Promise<StoredProject> {
+  await readStoreAsync();
+  const project = createProject(data);
+  await writeStoreAsync(readStore());
+  return project;
+}
+
+export async function updateProjectAsync(projectId: string, updates: any): Promise<StoredProject> {
+  await readStoreAsync();
+  const project = updateProject(projectId, updates);
+  await writeStoreAsync(readStore());
+  return project;
+}
+
+export async function deleteProjectAsync(projectId: string): Promise<boolean> {
+  await readStoreAsync();
+  const ok = deleteProject(projectId);
+  await writeStoreAsync(readStore());
+  return ok;
+}
+
+export async function addProjectAlertAsync(projectId: string, alert: Parameters<typeof addProjectAlert>[1]) {
+  await readStoreAsync();
+  const res = addProjectAlert(projectId, alert);
+  await writeStoreAsync(readStore());
+  return res;
+}
+
+export async function dismissProjectAlertAsync(projectId: string, alertId: string) {
+  await readStoreAsync();
+  const res = dismissProjectAlert(projectId, alertId);
+  await writeStoreAsync(readStore());
+  return res;
+}
+
+export async function mapPaymentToProjectMilestoneAsync(data: {
+  paymentId: string;
+  projectId: string;
+  milestoneId: string;
+}) {
+  await readStoreAsync();
+  const res = mapPaymentToProjectMilestone(data);
+  await writeStoreAsync(readStore());
+  return res;
+}
+
+export async function addProjectFeedItemAsync(projectId: string, item: Parameters<typeof addProjectFeedItem>[1]) {
+  await readStoreAsync();
+  const res = addProjectFeedItem(projectId, item);
+  await writeStoreAsync(readStore());
+  return res;
+}
+
+export async function updateClientProfileAsync({
+  clientId,
+  userId,
+  email,
+  name,
+  phone,
+  company,
+  designation,
+  businessProfile,
+  socials,
+}: {
+  clientId?: string;
+  userId?: string;
+  email?: string;
+  name?: string;
+  phone?: string;
+  company?: string;
+  designation?: string;
+  businessProfile?: BusinessProfile;
+  socials?: SocialLinks;
+}): Promise<{ client: StoredClient; user: StoredUserAccount | null }> {
+  const store = await readStoreAsync();
+  const cleanEmail = (email || "").toLowerCase().trim();
+
+  let client = store.clients.find(
+    (c) =>
+      (clientId && c.id === clientId) ||
+      (cleanEmail && c.email.toLowerCase().trim() === cleanEmail) ||
+      (userId && c.userId === userId)
+  );
+
+  if (!client) {
+    // If client doesn't exist yet, auto-create one
+    const newId = "cli_" + crypto.randomBytes(6).toString("hex");
+    client = {
+      id: newId,
+      userId,
+      name: name || cleanEmail.split("@")[0] || "Client",
+      email: cleanEmail,
+      phone: phone || "",
+      company: company || businessProfile?.companyName || "",
+      designation: designation || businessProfile?.designation || "",
+      businessProfile: businessProfile || {},
+      socials: socials || {},
+      status: "active",
+      notes: "Profile updated by client.",
+      totalPaid: 0,
+      projectIds: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    store.clients.push(client);
+  } else {
+    if (name) client.name = name.trim();
+    if (phone !== undefined) client.phone = phone.trim();
+    if (company !== undefined) client.company = company.trim();
+    if (designation !== undefined) client.designation = designation.trim();
+    if (businessProfile) {
+      client.businessProfile = {
+        ...(client.businessProfile || {}),
+        ...businessProfile,
+        verifiedAt: new Date().toISOString(),
+      };
+      if (businessProfile.companyName && !client.company) {
+        client.company = businessProfile.companyName;
+      }
+      if (businessProfile.designation && !client.designation) {
+        client.designation = businessProfile.designation;
+      }
+    }
+    if (socials) {
+      client.socials = {
+        ...(client.socials || {}),
+        ...socials,
+      };
+    }
+    client.updatedAt = new Date().toISOString();
+  }
+
+  // Update linked user if found
+  let user: StoredUserAccount | null = null;
+  const targetUserId = userId || client.userId;
+  if (targetUserId) {
+    user = store.users.find((u) => u.id === targetUserId) || null;
+  }
+  if (!user && cleanEmail) {
+    user = store.users.find((u) => u.email.toLowerCase().trim() === cleanEmail) || null;
+  }
+
+  if (user) {
+    if (name) user.name = name.trim();
+    if (phone !== undefined) user.phone = phone.trim();
+    if (company !== undefined) user.company = company.trim();
+    if (designation !== undefined) user.designation = designation.trim();
+    if (businessProfile) {
+      user.businessProfile = { ...(user.businessProfile || {}), ...businessProfile };
+    }
+    if (socials) {
+      user.socials = { ...(user.socials || {}), ...socials };
+    }
+  }
+
+  // Recalculate client trust score
+  const clientProjects = store.projects.filter((p) => p.clientId === client.id);
+  const clientPayments = store.payments.filter((p) => p.clientId === client.id);
+  const trust = computeClientTrust(client, clientProjects, clientPayments);
+  client.trustScore = trust.score;
+  client.trustLevel = trust.level;
+  client.trustFactors = trust.factors;
+
+  await writeStoreAsync(store);
+
+  return { client, user };
+}
+
+
+

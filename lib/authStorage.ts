@@ -13,6 +13,25 @@ export interface StoredUser {
   role?: string;
   phone?: string;
   company?: string;
+  designation?: string;
+  businessProfile?: {
+    stage?: string;
+    name?: string;
+    industry?: string;
+    teamSize?: string;
+    website?: string;
+    bio?: string;
+    registrationNumber?: string;
+    foundedYear?: string;
+  };
+  socials?: {
+    linkedin?: string;
+    github?: string;
+    twitter?: string;
+    telegram?: string;
+    website?: string;
+    other?: string;
+  };
   token?: string;
   createdAt: string;
 }

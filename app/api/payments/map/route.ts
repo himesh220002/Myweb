@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mapPaymentToProjectMilestone } from "@/lib/serverStore";
+import { mapPaymentToProjectMilestoneAsync } from "@/lib/serverStore";
 
 // POST /api/payments/map: Maps an unassigned payment to a project milestone
 export async function POST(req: NextRequest) {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const result = mapPaymentToProjectMilestone({
+    const result = await mapPaymentToProjectMilestoneAsync({
       paymentId,
       projectId,
       milestoneId,

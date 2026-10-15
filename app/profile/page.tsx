@@ -36,9 +36,21 @@ import {
   Info,
   Check,
   ListTodo,
+  Edit3,
+  Building2,
+  Briefcase,
+  Globe,
+  X,
+  Users,
+  Compass,
+  Share2,
+  MapPin,
+  Award,
+  Loader2,
 } from "lucide-react";
+import { FaLinkedin, FaGithub, FaTwitter, FaTelegram, FaGlobe } from "react-icons/fa";
 import { Outfit, JetBrains_Mono } from "next/font/google";
-import { getStoredUser, StoredUser, removeStoredUser, getStoredPaymentHistory } from "@/lib/authStorage";
+import { getStoredUser, StoredUser, saveStoredUser, removeStoredUser, getStoredPaymentHistory } from "@/lib/authStorage";
 import {
   printReceiptIsolated,
   downloadReceiptHtml,
@@ -64,46 +76,207 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<"projects" | "invoices">("projects");
   const [expandedFeeds, setExpandedFeeds] = useState<Record<string, boolean>>({});
 
+  // ── Profile & Business Update Modal State ──
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [modalTab, setModalTab] = useState<"role" | "company" | "socials">("role");
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
+  const [saveErrorMsg, setSaveErrorMsg] = useState<string | null>(null);
+
+  const [profileForm, setProfileForm] = useState({
+    name: "",
+    phone: "",
+    userRoleInCompany: "owner_founder",
+    designation: "",
+    companyName: "",
+    companyStage: "registered_business",
+    industry: "Software & SaaS",
+    teamSize: "2 - 10 people",
+    country: "India",
+    city: "",
+    companyBio: "",
+    linkedin: "",
+    github: "",
+    twitter: "",
+    website: "",
+    telegramOrDiscord: "",
+  });
+
   const toggleFeedExpansion = (projId: string) => {
     setExpandedFeeds((prev) => ({ ...prev, [projId]: !prev[projId] }));
+  };
+
+  const populateFormFromData = (data?: any) => {
+    const currentClient = data?.client || clientData?.client;
+    const currentUser = data?.user || user;
+    const bp = currentClient?.businessProfile || currentUser?.businessProfile;
+    const soc = currentClient?.socials || currentUser?.socials || bp?.socials;
+
+    setProfileForm({
+      name: currentUser?.name || currentClient?.name || "",
+      phone: currentUser?.phone || currentClient?.phone || "",
+      userRoleInCompany:
+        bp?.userRoleInCompany ||
+        (currentClient?.designation?.toLowerCase().includes("owner") ||
+          currentClient?.designation?.toLowerCase().includes("founder")
+          ? "owner_founder"
+          : "owner_founder"),
+      designation: currentClient?.designation || currentUser?.designation || bp?.designation || "",
+      companyName: currentClient?.company || bp?.companyName || "",
+      companyStage: bp?.companyStage || "registered_business",
+      industry: bp?.industry || "Software & SaaS",
+      teamSize: bp?.teamSize || "2 - 10 people",
+      country: bp?.country || "India",
+      city: bp?.city || "",
+      companyBio: bp?.companyBio || "",
+      linkedin: soc?.linkedin || "",
+      github: soc?.github || "",
+      twitter: soc?.twitter || "",
+      website: soc?.website || "",
+      telegramOrDiscord: soc?.telegramOrDiscord || "",
+    });
+  };
+
+  const loadData = async (targetEmail?: string) => {
+    try {
+      const stored = getStoredUser();
+      const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+      const queryEmail = urlParams?.get("email");
+      const effectiveEmail = targetEmail || user?.email || stored?.email || queryEmail || "";
+      const emailParam = effectiveEmail ? `&email=${encodeURIComponent(effectiveEmail)}` : "";
+      const res = await fetch(`/api/dashboard?view=client${emailParam}`);
+      const json = await res.json();
+      if (json.success && json.data) {
+        setClientData(json.data);
+        if (json.data.user) {
+          setUser(json.data.user);
+        }
+        populateFormFromData(json.data);
+      }
+    } catch (e) {
+      console.error("Profile data load error:", e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     const stored = getStoredUser();
     setUser(stored);
     setLocalHistory(getStoredPaymentHistory());
-
-    const loadData = async () => {
-      try {
-        const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-        const queryEmail = urlParams?.get("email");
-        const effectiveEmail = stored?.email || queryEmail || "";
-        const emailParam = effectiveEmail ? `&email=${encodeURIComponent(effectiveEmail)}` : "";
-        const res = await fetch(`/api/dashboard?view=client${emailParam}`);
-        const json = await res.json();
-        if (json.success && json.data) {
-          setClientData(json.data);
-          if (!stored && json.data.user) {
-            setUser(json.data.user);
-          }
-        }
-      } catch (e) {
-        console.error("Profile data load error:", e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadData();
   }, []);
 
   const handleLogout = async () => {
     try {
       await fetch("/api/auth", { method: "DELETE" });
-    } catch {}
+    } catch { }
     removeStoredUser();
     window.location.href = "/";
   };
+
+  const handleSaveProfile = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setSavingProfile(true);
+    setSaveErrorMsg(null);
+    setSaveSuccessMsg(null);
+
+    try {
+      const activeClient = clientData?.client;
+      const activeUser = user || clientData?.user;
+
+      const payload = {
+        clientId: activeClient?.id || activeUser?.id,
+        userId: activeUser?.id || activeClient?.userId,
+        email: activeUser?.email || activeClient?.email,
+        name: profileForm.name.trim(),
+        phone: profileForm.phone.trim(),
+        company: profileForm.companyName.trim(),
+        designation: profileForm.designation.trim(),
+        businessProfile: {
+          companyName: profileForm.companyName.trim(),
+          companyStage: profileForm.companyStage,
+          userRoleInCompany: profileForm.userRoleInCompany,
+          designation: profileForm.designation.trim(),
+          industry: profileForm.industry.trim(),
+          teamSize: profileForm.teamSize.trim(),
+          country: profileForm.country.trim(),
+          city: profileForm.city.trim(),
+          companyBio: profileForm.companyBio.trim(),
+          socials: {
+            linkedin: profileForm.linkedin.trim(),
+            github: profileForm.github.trim(),
+            twitter: profileForm.twitter.trim(),
+            website: profileForm.website.trim(),
+            telegramOrDiscord: profileForm.telegramOrDiscord.trim(),
+          },
+        },
+        socials: {
+          linkedin: profileForm.linkedin.trim(),
+          github: profileForm.github.trim(),
+          twitter: profileForm.twitter.trim(),
+          website: profileForm.website.trim(),
+          telegramOrDiscord: profileForm.telegramOrDiscord.trim(),
+        },
+      };
+
+      const res = await fetch("/api/clients", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const resData = await res.json();
+      if (!res.ok) {
+        throw new Error(resData.error || "Failed to update profile");
+      }
+
+      // Update stored user in localStorage
+      if (user) {
+        const updatedUser: StoredUser = {
+          ...user,
+          name: profileForm.name.trim() || user.name,
+          phone: profileForm.phone.trim() || user.phone,
+          company: profileForm.companyName.trim() || user.company,
+          designation: profileForm.designation.trim(),
+          businessProfile: payload.businessProfile,
+          socials: payload.socials,
+        };
+        saveStoredUser(updatedUser);
+        setUser(updatedUser);
+      }
+
+      // Reload client & dashboard data to recalculate live trust meter
+      await loadData();
+
+      setSaveSuccessMsg("Profile and business credentials updated! Trust Meter boosted.");
+      setTimeout(() => {
+        setIsEditModalOpen(false);
+        setSaveSuccessMsg(null);
+      }, 1200);
+    } catch (err: any) {
+      console.error("Save profile error:", err);
+      setSaveErrorMsg(err.message || "Failed to save profile. Please try again.");
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
+  // Dynamic preview bonus calculation
+  const hasRoleOrCompany = Boolean(
+    profileForm.companyName.trim() ||
+    profileForm.userRoleInCompany ||
+    profileForm.designation.trim() ||
+    profileForm.companyStage
+  );
+  const hasSocials = Boolean(
+    profileForm.linkedin.trim() ||
+    profileForm.github.trim() ||
+    profileForm.twitter.trim() ||
+    profileForm.website.trim() ||
+    profileForm.telegramOrDiscord.trim()
+  );
+  const previewBonus = hasRoleOrCompany && hasSocials ? 15 : hasRoleOrCompany || hasSocials ? 8 : 0;
 
   const handleDownloadBill = (payment: any, format: "pdf" | "html" | "txt") => {
     const receiptData: ReceiptData = {
@@ -139,7 +312,7 @@ export default function ProfilePage() {
   return (
     <div className={`min-h-screen bg-[#F8FAFC] text-slate-800 pt-20 sm:pt-24 md:pt-28 pb-14 sm:pb-20 px-3 sm:px-6 md:px-8 font-sans ${outfit.className}`}>
       <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
-        
+
         {/* ─── 1. CLIENT ACCOUNT HEADER (Clean Light Design) ─── */}
         <div className="bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-7 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
@@ -157,13 +330,12 @@ export default function ProfilePage() {
                     Active Client
                   </span>
                   {/* Trust Meter Rating Badge */}
-                  <span className={`text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shrink-0 border ${jetmono.className} ${
-                    clientData?.trustInfo?.level === "VIP"
-                      ? "bg-indigo-50 text-indigo-700 border-indigo-200"
-                      : clientData?.trustInfo?.level === "Trusted"
+                  <span className={`text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shrink-0 border ${jetmono.className} ${clientData?.trustInfo?.level === "VIP"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : clientData?.trustInfo?.level === "Trusted"
                       ? "bg-blue-50 text-blue-700 border-blue-200"
                       : "bg-slate-50 text-slate-700 border-slate-200"
-                  }`}>
+                    }`}>
                     <Shield className="w-3.5 h-3.5 text-blue-600" />
                     <span>{clientData?.trustInfo?.level || "Trusted"} Client ({clientData?.trustInfo?.score || 85}/100 Trust)</span>
                   </span>
@@ -174,16 +346,28 @@ export default function ProfilePage() {
                 </p>
                 <div className={`flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-400 pt-0.5 ${jetmono.className}`}>
                   <span>Client ID: <code className="text-slate-700 font-semibold">{user?.id || clientData?.client?.id || "usr_client"}</code></span>
-                  {user?.phone && (
+                  {(user?.phone || clientData?.client?.phone) && (
                     <span className="flex items-center gap-1">
-                      • Phone: <strong className="text-slate-700">{user.phone}</strong>
+                      • Phone: <strong className="text-slate-700">{user?.phone || clientData?.client?.phone}</strong>
                     </span>
                   )}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+            {/* Header Action Buttons: Edit Profile & Logout */}
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-end gap-2 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+              <button
+                type="button"
+                onClick={() => {
+                  populateFormFromData();
+                  setIsEditModalOpen(true);
+                }}
+                className="w-full sm:w-auto px-4 py-2 sm:py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition cursor-pointer shadow-xs active:scale-95"
+              >
+                <Edit3 className="w-4 h-4 text-slate-300" />
+                <span>Update Profile &amp; Business</span>
+              </button>
               <button
                 type="button"
                 onClick={handleLogout}
@@ -194,6 +378,195 @@ export default function ProfilePage() {
               </button>
             </div>
           </div>
+
+          {/* ── Business Profile & Social Connectivity Summary Strip ── */}
+          {(() => {
+            const currentClient = clientData?.client;
+            const currentUser = clientData?.user || user;
+            const bp = currentClient?.businessProfile || currentUser?.businessProfile;
+            const soc = currentClient?.socials || currentUser?.socials || bp?.socials;
+            const hasRoleOrCompany = Boolean(
+              currentClient?.company ||
+              bp?.companyName ||
+              currentClient?.designation ||
+              bp?.designation ||
+              bp?.companyStage
+            );
+            const hasSocials = Boolean(
+              soc?.linkedin || soc?.github || soc?.twitter || soc?.website || soc?.telegramOrDiscord
+            );
+
+            const stageLabels: Record<string, { label: string; badge: string; color: string }> = {
+              unformed_idea: {
+                label: "Idea Stage (Entity Not Formed Yet)",
+                badge: "Unformed / Stealth Idea",
+                color: "bg-amber-50 text-amber-800 border-amber-200",
+              },
+              pre_incorporation: {
+                label: "Pre-incorporation / Early Prototype",
+                badge: "Pre-incorporation Venture",
+                color: "bg-purple-50 text-purple-800 border-purple-200",
+              },
+              registered_business: {
+                label: "Registered Business / Startup",
+                badge: "Registered Business",
+                color: "bg-emerald-50 text-emerald-800 border-emerald-200",
+              },
+              enterprise: {
+                label: "Enterprise / Established Brand",
+                badge: "Enterprise Corp",
+                color: "bg-blue-50 text-blue-800 border-blue-200",
+              },
+            };
+
+            const roleLabels: Record<string, string> = {
+              owner_founder: "Owner / Founder",
+              employee_lead: "Employee / Tech Lead",
+              solo_creator: "Solo Creator / Builder",
+              other: "Partner / External Lead",
+            };
+
+            const stageMeta = bp?.companyStage ? stageLabels[bp.companyStage] || stageLabels.registered_business : null;
+            const roleMeta = bp?.userRoleInCompany ? roleLabels[bp.userRoleInCompany] : null;
+
+            if (hasRoleOrCompany || hasSocials) {
+              return (
+                <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-50/80 p-4 rounded-xl border border-slate-200/80">
+                  <div className="space-y-1.5 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap text-xs sm:text-sm">
+                      <div className="flex items-center gap-1.5 font-bold text-slate-900">
+                        <Building2 className="w-4 h-4 text-slate-600 shrink-0" />
+                        <span>{bp?.companyName || currentClient?.company || "Venture Details"}</span>
+                      </div>
+                      {(currentClient?.designation || bp?.designation) && (
+                        <span className="text-slate-500 font-medium">
+                          • {currentClient?.designation || bp?.designation}
+                        </span>
+                      )}
+                      {roleMeta && (
+                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-200/70 text-slate-700 ${jetmono.className}`}>
+                          {roleMeta}
+                        </span>
+                      )}
+                      {stageMeta && (
+                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${stageMeta.color} ${jetmono.className}`}>
+                          {stageMeta.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                      {bp?.industry && <span>Industry: <strong className="text-slate-700">{bp.industry}</strong></span>}
+                      {bp?.teamSize && <span>• Team: <strong className="text-slate-700">{bp.teamSize}</strong></span>}
+                      {(bp?.city || bp?.country) && (
+                        <span>• Location: <strong className="text-slate-700">{[bp.city, bp.country].filter(Boolean).join(", ")}</strong></span>
+                      )}
+                    </div>
+
+                    {/* Social links */}
+                    {hasSocials && (
+                      <div className="flex flex-wrap items-center gap-2 pt-1.5">
+                        <span className={`text-[10px] font-bold text-slate-400 uppercase tracking-wider ${jetmono.className}`}>Connectivities:</span>
+                        {soc?.linkedin && (
+                          <a
+                            href={soc.linkedin.startsWith("http") ? soc.linkedin : `https://${soc.linkedin}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[11px] font-medium bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 text-blue-700 px-2 py-0.5 rounded-md transition shadow-2xs"
+                          >
+                            <FaLinkedin className="w-3 h-3 text-blue-600" />
+                            <span>LinkedIn</span>
+                            <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                          </a>
+                        )}
+                        {soc?.github && (
+                          <a
+                            href={soc.github.startsWith("http") ? soc.github : `https://${soc.github}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[11px] font-medium bg-white hover:bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-800 px-2 py-0.5 rounded-md transition shadow-2xs"
+                          >
+                            <FaGithub className="w-3 h-3 text-slate-900" />
+                            <span>GitHub</span>
+                            <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                          </a>
+                        )}
+                        {soc?.twitter && (
+                          <a
+                            href={soc.twitter.startsWith("http") ? soc.twitter : `https://${soc.twitter}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[11px] font-medium bg-white hover:bg-sky-50 border border-slate-200 hover:border-sky-300 text-sky-700 px-2 py-0.5 rounded-md transition shadow-2xs"
+                          >
+                            <FaTwitter className="w-3 h-3 text-sky-500" />
+                            <span>X / Twitter</span>
+                            <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                          </a>
+                        )}
+                        {soc?.website && (
+                          <a
+                            href={soc.website.startsWith("http") ? soc.website : `https://${soc.website}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[11px] font-medium bg-white hover:bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-700 px-2 py-0.5 rounded-md transition shadow-2xs"
+                          >
+                            <FaGlobe className="w-3 h-3 text-slate-600" />
+                            <span>Website</span>
+                            <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                          </a>
+                        )}
+                        {soc?.telegramOrDiscord && (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md shadow-2xs">
+                            <FaTelegram className="w-3 h-3 text-sky-600" />
+                            <span>{soc.telegramOrDiscord}</span>
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Trust Boost Active Badge */}
+                  <div className="flex md:flex-col items-center md:items-end justify-between gap-1.5 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-200">
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 ${jetmono.className}`}>
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>+15 Trust Boost Active</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        populateFormFromData();
+                        setIsEditModalOpen(true);
+                      }}
+                      className="text-xs text-blue-600 hover:text-blue-800 font-semibold underline underline-offset-2 cursor-pointer"
+                    >
+                      Edit Details &rarr;
+                    </button>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-blue-50/60 p-4 rounded-xl border border-blue-200/70">
+                <div className="flex items-center gap-2.5 text-xs sm:text-sm text-blue-900">
+                  <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
+                  <span>
+                    <strong>Build Client Trust (+15 Points):</strong> Add your company details (even if unformed idea or in employee role) and connect socials to unlock verified client trust and expedited sprint kickoffs.
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    populateFormFromData();
+                    setIsEditModalOpen(true);
+                  }}
+                  className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shrink-0 transition cursor-pointer shadow-xs whitespace-nowrap"
+                >
+                  Complete Profile &rarr;
+                </button>
+              </div>
+            );
+          })()}
 
           {/* Admin Switcher Bar */}
           {(user?.role === "admin" || user?.email?.toLowerCase().includes("himesh") || user?.email?.toLowerCase().includes("satyam")) && (
@@ -218,7 +591,7 @@ export default function ProfilePage() {
             <span>Account Services &amp; Quick Actions</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-            
+
             {/* Option 1: Pay Invoices Online */}
             <Link
               href="/pay"
@@ -313,11 +686,10 @@ export default function ProfilePage() {
             <button
               type="button"
               onClick={() => setActiveTab("projects")}
-              className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold tracking-wide transition cursor-pointer flex items-center justify-center gap-2 rounded-xl ${
-                activeTab === "projects"
-                  ? "bg-slate-900 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900 bg-white border border-slate-200"
-              }`}
+              className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold tracking-wide transition cursor-pointer flex items-center justify-center gap-2 rounded-xl ${activeTab === "projects"
+                ? "bg-slate-900 text-white shadow-xs"
+                : "text-slate-600 hover:text-slate-900 bg-white border border-slate-200"
+                }`}
             >
               <FolderKanban className="w-4 h-4" />
               <span>Projects ({projects.length})</span>
@@ -326,11 +698,10 @@ export default function ProfilePage() {
             <button
               type="button"
               onClick={() => setActiveTab("invoices")}
-              className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold tracking-wide transition cursor-pointer flex items-center justify-center gap-2 rounded-xl ${
-                activeTab === "invoices"
-                  ? "bg-slate-900 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900 bg-white border border-slate-200"
-              }`}
+              className={`px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold tracking-wide transition cursor-pointer flex items-center justify-center gap-2 rounded-xl ${activeTab === "invoices"
+                ? "bg-slate-900 text-white shadow-xs"
+                : "text-slate-600 hover:text-slate-900 bg-white border border-slate-200"
+                }`}
             >
               <CreditCard className="w-4 h-4" />
               <span>Invoices ({allPayments.length})</span>
@@ -370,20 +741,18 @@ export default function ProfilePage() {
                       return (
                         <div
                           key={alt.id}
-                          className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white shadow-xs transition ${
-                            isHold || isDelayed
-                              ? "border-rose-200"
-                              : "border-amber-200"
-                          }`}
+                          className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white shadow-xs transition ${isHold || isDelayed
+                            ? "border-rose-200"
+                            : "border-amber-200"
+                            }`}
                         >
                           <div className="space-y-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <span
-                                className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${jetmono.className} ${
-                                  isHold || isDelayed
-                                    ? "bg-rose-50 text-rose-700 border border-rose-200"
-                                    : "bg-amber-50 text-amber-800 border border-amber-200"
-                                }`}
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${jetmono.className} ${isHold || isDelayed
+                                  ? "bg-rose-50 text-rose-700 border border-rose-200"
+                                  : "bg-amber-50 text-amber-800 border border-amber-200"
+                                  }`}
                               >
                                 {alt.type.replace(/_/g, " ")}
                               </span>
@@ -466,17 +835,16 @@ export default function ProfilePage() {
 
                             {/* Status Badge */}
                             <span
-                              className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1.5 ${jetmono.className} ${
-                                isBuilding
-                                  ? "bg-blue-50 text-blue-700 border border-blue-200"
-                                  : isHold
+                              className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-md flex items-center gap-1.5 ${jetmono.className} ${isBuilding
+                                ? "bg-blue-50 text-blue-700 border border-blue-200"
+                                : isHold
                                   ? "bg-rose-50 text-rose-700 border border-rose-200"
                                   : isCompleted
-                                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                                  : isDropped
-                                  ? "bg-slate-100 text-slate-600 border border-slate-200"
-                                  : "bg-amber-50 text-amber-700 border border-amber-200"
-                              }`}
+                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                    : isDropped
+                                      ? "bg-slate-100 text-slate-600 border border-slate-200"
+                                      : "bg-amber-50 text-amber-700 border border-amber-200"
+                                }`}
                             >
                               {isBuilding && <Sparkles className="w-3.5 h-3.5 text-blue-600" />}
                               {isHold && <PauseCircle className="w-3.5 h-3.5 text-rose-600" />}
@@ -520,7 +888,7 @@ export default function ProfilePage() {
                       {/* ── CURRENT WORKS, COMPLETED WORKS & UPCOMING TASKS SECTION ── */}
                       {(proj.currentWork || (proj.completedWork && proj.completedWork.length > 0) || (proj.upcomingTasks && proj.upcomingTasks.length > 0)) && (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                          
+
                           {/* Current Work Focus */}
                           {proj.currentWork && (
                             <div className="bg-blue-50/60 border border-blue-200/80 rounded-xl p-3.5 space-y-1.5">
@@ -598,11 +966,10 @@ export default function ProfilePage() {
                             return (
                               <div
                                 key={ms.id || idx}
-                                className={`p-4 rounded-xl border text-xs space-y-2.5 flex flex-col justify-between shadow-2xs ${
-                                  isPaid
-                                    ? "bg-emerald-50/50 border-emerald-200"
-                                    : "bg-slate-50/60 border-slate-200"
-                                }`}
+                                className={`p-4 rounded-xl border text-xs space-y-2.5 flex flex-col justify-between shadow-2xs ${isPaid
+                                  ? "bg-emerald-50/50 border-emerald-200"
+                                  : "bg-slate-50/60 border-slate-200"
+                                  }`}
                               >
                                 <div className="space-y-1.5">
                                   <div className="flex items-center justify-between gap-2">
@@ -610,11 +977,10 @@ export default function ProfilePage() {
                                       Stage #{idx + 1}
                                     </span>
                                     <span
-                                      className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${jetmono.className} ${
-                                        isPaid
-                                          ? "bg-emerald-100 text-emerald-800"
-                                          : "bg-slate-200 text-slate-700"
-                                      }`}
+                                      className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${jetmono.className} ${isPaid
+                                        ? "bg-emerald-100 text-emerald-800"
+                                        : "bg-slate-200 text-slate-700"
+                                        }`}
                                     >
                                       {isPaid ? "✓ PAID" : "PENDING"}
                                     </span>
@@ -680,28 +1046,26 @@ export default function ProfilePage() {
                               return (
                                 <div key={item.id || fIdx} className="relative pl-7 text-xs space-y-1">
                                   <div
-                                    className={`absolute left-1.5 top-1 -translate-x-1/2 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${
-                                      isPay
-                                        ? "bg-emerald-600 border-white"
-                                        : isMs
+                                    className={`absolute left-1.5 top-1 -translate-x-1/2 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${isPay
+                                      ? "bg-emerald-600 border-white"
+                                      : isMs
                                         ? "bg-indigo-600 border-white"
                                         : isAlt
-                                        ? "bg-amber-500 border-white"
-                                        : "bg-slate-600 border-white"
-                                    }`}
+                                          ? "bg-amber-500 border-white"
+                                          : "bg-slate-600 border-white"
+                                      }`}
                                   />
                                   <div className="flex items-center justify-between gap-2 flex-wrap">
                                     <div className="flex items-center gap-2">
                                       <span
-                                        className={`text-[9px] uppercase font-bold px-1.5 py-0.2 rounded ${jetmono.className} ${
-                                          isPay
-                                            ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                                            : isMs
+                                        className={`text-[9px] uppercase font-bold px-1.5 py-0.2 rounded ${jetmono.className} ${isPay
+                                          ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                                          : isMs
                                             ? "bg-indigo-50 text-indigo-800 border border-indigo-200"
                                             : isAlt
-                                            ? "bg-amber-50 text-amber-800 border border-amber-200"
-                                            : "bg-slate-100 text-slate-700 border border-slate-200"
-                                        }`}
+                                              ? "bg-amber-50 text-amber-800 border border-amber-200"
+                                              : "bg-slate-100 text-slate-700 border border-slate-200"
+                                          }`}
                                       >
                                         {item.type.replace("_", " ")}
                                       </span>
@@ -895,6 +1259,305 @@ export default function ProfilePage() {
         </div>
 
       </div>
+
+      {/* ─── 4. EDIT PROFILE & BUSINESS DETAILS MODAL ─── */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/50 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-3xl bg-white border border-slate-200/90 rounded-2xl shadow-2xl overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-150">
+
+            {/* Modal Header: Clean, Trust-Focused */}
+            <div className="p-4 sm:p-5 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                </div>
+                <div>
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight">
+                    Update Profile &amp; Build Trust
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Add quick credentials to unlock 100/100 Verified Client Trust.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsEditModalOpen(false)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition cursor-pointer"
+                title="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Real-time Dynamic Trust Meter Bar */}
+            <div className="px-4 sm:px-5 py-3 bg-gradient-to-r from-blue-50/70 via-slate-50 to-emerald-50/70 border-b border-slate-200 space-y-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-semibold text-slate-700 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Trust Meter:</span>
+                  <strong className="text-slate-900">
+                    {previewBonus === 15 ? "100/100 (VIP Client)" : previewBonus === 8 ? "93/100 (Trusted)" : "85/100 (Active)"}
+                  </strong>
+                </span>
+                <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${previewBonus === 15
+                  ? "bg-emerald-100/80 text-emerald-800 border-emerald-300"
+                  : previewBonus === 8
+                    ? "bg-blue-100/80 text-blue-800 border-blue-300"
+                    : "bg-slate-200/80 text-slate-700 border-slate-300"
+                  }`}>
+                  {previewBonus === 15
+                    ? "✓ +15 Points Max Boost"
+                    : previewBonus === 8
+                      ? "+8 Points (Add Socials for +15)"
+                      : "Fill 2 fields to boost"}
+                </span>
+              </div>
+
+              {/* Animated Progress Bar */}
+              <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-300 rounded-full ${previewBonus === 15
+                    ? "bg-gradient-to-r from-emerald-500 to-emerald-600 w-full"
+                    : previewBonus === 8
+                      ? "bg-gradient-to-r from-blue-500 to-indigo-500 w-[93%]"
+                      : "bg-gradient-to-r from-slate-400 to-blue-500 w-[85%]"
+                    }`}
+                />
+              </div>
+            </div>
+
+            {/* Modal Form: Single Scroll, Zero Clutter */}
+            <form onSubmit={handleSaveProfile} className="p-4 sm:p-5 space-y-4 max-h-[68vh] overflow-y-auto">
+              {saveSuccessMsg && (
+                <div className="p-2.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{saveSuccessMsg}</span>
+                </div>
+              )}
+
+              {saveErrorMsg && (
+                <div className="p-2.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                  <span>{saveErrorMsg}</span>
+                </div>
+              )}
+
+              {/* SECTION 1: ROLE & YOU */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                    1. Your Role
+                  </label>
+                  <span className="text-[11px] text-slate-400">1 click select</span>
+                </div>
+
+                {/* Role Chips: Compact & Clear */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                  {[
+                    { id: "owner_founder", label: "👑 Founder / Owner" },
+                    { id: "employee_lead", label: "💼 Employee / Lead" },
+                    { id: "solo_creator", label: "🚀 Solo Builder" },
+                    { id: "other", label: "🤝 Partner" },
+                  ].map((r) => (
+                    <button
+                      key={r.id}
+                      type="button"
+                      onClick={() => setProfileForm({ ...profileForm, userRoleInCompany: r.id as any })}
+                      className={`px-2.5 py-2 rounded-xl border text-xs font-semibold text-center transition cursor-pointer flex items-center justify-center gap-1.5 ${profileForm.userRoleInCompany === r.id
+                        ? "bg-slate-900 text-white border-slate-900 shadow-2xs"
+                        : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700"
+                        }`}
+                    >
+                      <span>{r.label}</span>
+                      {profileForm.userRoleInCompany === r.id && (
+                        <Check className="w-3 h-3 text-emerald-400 shrink-0" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Name & Title Inputs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-600 mb-0.5">
+                      Full Name <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={profileForm.name}
+                      onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+                      placeholder="Name"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-lg text-slate-800 focus:outline-none focus:border-slate-400 focus:bg-white transition"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-600 mb-0.5">
+                      Official Title / Designation
+                    </label>
+                    <input
+                      type="text"
+                      value={profileForm.designation}
+                      onChange={(e) => setProfileForm({ ...profileForm, designation: e.target.value })}
+                      placeholder="Founder"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-lg text-slate-800 focus:outline-none focus:border-slate-400 focus:bg-white transition"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 2: COMPANY & STAGE */}
+              <div className="space-y-2.5 pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                    2. Company &amp; Venture Stage
+                  </label>
+                  <span className="text-[11px] text-slate-400">Works for unformed ideas too</span>
+                </div>
+
+                {/* Stage Chips */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                  {[
+                    { id: "unformed_idea", label: "💡 Idea Stage" },
+                    { id: "pre_incorporation", label: "🚀 Stealth / MVP" },
+                    { id: "registered_business", label: "🏢 Registered Co." },
+                    { id: "enterprise", label: "🌐 Enterprise" },
+                  ].map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setProfileForm({ ...profileForm, companyStage: s.id as any })}
+                      className={`px-2.5 py-2 rounded-xl border text-xs font-semibold text-center transition cursor-pointer flex items-center justify-center gap-1.5 ${profileForm.companyStage === s.id
+                        ? "bg-slate-900 text-white border-slate-900 shadow-2xs"
+                        : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700"
+                        }`}
+                    >
+                      <span>{s.label}</span>
+                      {profileForm.companyStage === s.id && (
+                        <Check className="w-3 h-3 text-emerald-400 shrink-0" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Company Name & Website Inputs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-600 mb-0.5">
+                      Company or Project Name
+                    </label>
+                    <input
+                      type="text"
+                      value={profileForm.companyName}
+                      onChange={(e) => setProfileForm({ ...profileForm, companyName: e.target.value })}
+                      placeholder="Company/project Name"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-lg text-slate-800 focus:outline-none focus:border-slate-400 focus:bg-white transition"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-600 mb-0.5">
+                      Website URL
+                    </label>
+                    <input
+                      type="text"
+                      value={profileForm.website}
+                      onChange={(e) => setProfileForm({ ...profileForm, website: e.target.value })}
+                      placeholder="url"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-lg text-slate-800 focus:outline-none focus:border-slate-400 focus:bg-white transition"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION 3: SOCIALS (INSTANT TRUST FACTOR BOOST) */}
+              <div className="space-y-2 pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <span>3. Social Connectivities</span>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-semibold">+15 Boost</span>
+                  </label>
+                  <span className="text-[11px] text-slate-400">Paste any 1 or more</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {/* LinkedIn */}
+                  <div className="relative">
+                    <FaLinkedin className="w-3.5 h-3.5 text-blue-600 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      value={profileForm.linkedin}
+                      onChange={(e) => setProfileForm({ ...profileForm, linkedin: e.target.value })}
+                      placeholder="linkedin.com/in/..."
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-slate-400 focus:bg-white transition"
+                    />
+                  </div>
+
+                  {/* Twitter / X */}
+                  <div className="relative">
+                    <FaTwitter className="w-3.5 h-3.5 text-sky-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      value={profileForm.twitter}
+                      onChange={(e) => setProfileForm({ ...profileForm, twitter: e.target.value })}
+                      placeholder="x.com/username"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-slate-400 focus:bg-white transition"
+                    />
+                  </div>
+
+                  {/* GitHub */}
+                  <div className="relative">
+                    <FaGithub className="w-3.5 h-3.5 text-slate-800 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      value={profileForm.github}
+                      onChange={(e) => setProfileForm({ ...profileForm, github: e.target.value })}
+                      placeholder="github.com/..."
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-slate-400 focus:bg-white transition"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Actions Footer */}
+              <div className="pt-3 border-t border-slate-200 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Verified Identity Protected</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsEditModalOpen(false)}
+                    className="px-3.5 py-1.5 border border-slate-200 hover:bg-slate-100 text-slate-600 rounded-lg text-xs font-semibold transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={savingProfile}
+                    className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
+                  >
+                    {savingProfile ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>Save &amp; Boost Trust</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

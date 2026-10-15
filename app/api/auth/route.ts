@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { signSessionToken, verifySessionToken } from "@/lib/jwt";
 import {
-  registerUser,
-  authenticateUser,
-  findUserById,
-  findUserByEmail,
+  registerUserAsync,
+  authenticateUserAsync,
+  findUserByIdAsync,
+  findUserByEmailAsync,
 } from "@/lib/serverStore";
 
 /**
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const newUser = registerUser({
+      const newUser = await registerUserAsync({
         name,
         email: cleanEmail,
         password,
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const authenticatedUser = authenticateUser(cleanEmail, password);
+      const authenticatedUser = await authenticateUserAsync(cleanEmail, password);
 
       const sessionToken = await signSessionToken({
         userId: authenticatedUser.id,
@@ -158,7 +158,9 @@ export async function GET(req: NextRequest) {
     }
 
     // Fetch authoritative user from persistent store
-    const userAccount = payload.userId ? findUserById(payload.userId) : findUserByEmail(payload.email);
+    const userAccount = payload.userId
+      ? await findUserByIdAsync(payload.userId)
+      : await findUserByEmailAsync(payload.email);
 
     return NextResponse.json({
       authenticated: true,

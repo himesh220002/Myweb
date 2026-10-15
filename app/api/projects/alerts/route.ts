@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addProjectAlert, dismissProjectAlert, ProjectAlertType } from "@/lib/serverStore";
+import { addProjectAlertAsync, dismissProjectAlertAsync, ProjectAlertType } from "@/lib/serverStore";
 import { sendEmail } from "@/lib/email";
 
 // POST /api/projects/alerts: Emit new alert on a project
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { project, alert } = addProjectAlert(projectId, {
+    const { project, alert } = await addProjectAlertAsync(projectId, {
       type: type as ProjectAlertType,
       title,
       message,
@@ -148,7 +148,7 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    const updatedProject = dismissProjectAlert(projectId, alertId);
+    const updatedProject = await dismissProjectAlertAsync(projectId, alertId);
 
     return NextResponse.json({
       success: true,

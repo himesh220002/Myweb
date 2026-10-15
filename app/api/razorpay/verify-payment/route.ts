@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyPaymentSignature, getRazorpayClient } from "@/lib/razorpay";
 import { sendEmail } from "@/lib/email";
 import { signReceiptToken } from "@/lib/jwt";
-import { recordPayment } from "@/lib/serverStore";
+import { recordPaymentAsync } from "@/lib/serverStore";
 
 export async function POST(req: NextRequest) {
   try {
@@ -371,7 +371,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-      recordedPayment = recordPayment({
+      recordedPayment = await recordPaymentAsync({
         paymentId: razorpay_payment_id,
         orderId: razorpay_order_id,
         amount: numAmount,
