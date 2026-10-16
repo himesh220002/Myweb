@@ -26,6 +26,8 @@ import {
   saveStoredUser,
   removeStoredUser,
   getStoredPaymentHistory,
+  getUnreadReceiptCount,
+  markProfileAsVisited,
   StoredUser,
 } from "@/lib/authStorage";
 import {
@@ -44,6 +46,7 @@ export default function ProfileDropdown({ isMobile = false }: { isMobile?: boole
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<StoredUser | null>(null);
   const [history, setHistory] = useState<ReceiptData[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Modals inside dropdown
   const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -65,6 +68,7 @@ export default function ProfileDropdown({ isMobile = false }: { isMobile?: boole
     const refreshData = () => {
       setUser(getStoredUser());
       setHistory(getStoredPaymentHistory());
+      setUnreadCount(getUnreadReceiptCount());
     };
 
     refreshData();
@@ -79,12 +83,14 @@ export default function ProfileDropdown({ isMobile = false }: { isMobile?: boole
 
     window.addEventListener("cyphertech_auth_change", refreshData);
     window.addEventListener("cyphertech_history_change", refreshData);
+    window.addEventListener("cyphertech_notifications_change", refreshData);
     window.addEventListener("cyphertech_open_auth", handleOpenAuthModal);
     window.addEventListener("storage", refreshData);
 
     return () => {
       window.removeEventListener("cyphertech_auth_change", refreshData);
       window.removeEventListener("cyphertech_history_change", refreshData);
+      window.removeEventListener("cyphertech_notifications_change", refreshData);
       window.removeEventListener("cyphertech_open_auth", handleOpenAuthModal);
       window.removeEventListener("storage", refreshData);
     };
@@ -190,10 +196,10 @@ export default function ProfileDropdown({ isMobile = false }: { isMobile?: boole
           </span>
         )}
 
-        {/* History counter indicator if unauthenticated but has receipts in localStorage */}
-        {!user && history.length > 0 && (
-          <span className="absolute -top-1 -right-1 bg-amber-500 text-black text-[9px] font-black px-1 rounded-full border border-[#0F1923] shadow-xs">
-            {history.length}
+        {/* Unread notification counter indicator if there are new unread receipts / items */}
+        {unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.2 rounded-full border border-[#0F1923] shadow-xs animate-in zoom-in-50 duration-200">
+            {unreadCount}
           </span>
         )}
       </button>
@@ -253,12 +259,20 @@ export default function ProfileDropdown({ isMobile = false }: { isMobile?: boole
             {/* View Profile Action (Consolidates all options inside profile page) */}
             <Link
               href="/profile"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                markProfileAsVisited();
+                setIsOpen(false);
+              }}
               className="w-full flex items-center justify-between px-3.5 py-3 bg-[#0a131c] hover:bg-[#111A23] border border-[#1e2d3a] hover:border-[#FF4655]/60 text-xs font-bold text-white rounded transition group cursor-pointer"
             >
               <div className="flex items-center gap-2.5">
                 <User className="w-4 h-4 text-[#FF4655] group-hover:scale-110 transition-transform" />
                 <span className="tracking-wider uppercase font-mono">VIEW PROFILE</span>
+                {unreadCount > 0 && (
+                  <span className="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">
+                    {unreadCount} NEW
+                  </span>
+                )}
               </div>
               <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
             </Link>

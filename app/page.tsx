@@ -108,28 +108,28 @@ const SERVICES = [
     title: "High-Performance Web Apps",
     desc: "Server-rendered Next.js apps with streaming, edge caching and sub-second loads.",
     points: ["Next.js + TypeScript", "Streaming SSR & ISR", "98+ Lighthouse"],
-    image: "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800&q=80&auto=format&fit=crop",
+    image: "images/cloud connect speed image.avif",
     icon: Code2,
   },
   {
     title: "E-Commerce That Converts",
     desc: "Fast storefronts, frictionless checkout and search that actually sells.",
     points: ["Headless storefronts", "Stripe + payments", "SEO-ready catalog"],
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80&auto=format&fit=crop",
+    image: "images/ecomm.webp",
     icon: ShoppingBag,
   },
   {
     title: "Premium UI/UX Design",
     desc: "Clean, modern interfaces with thoughtful motion — designed to convert.",
     points: ["Design systems", "Prototypes in Figma", "Accessible & responsive"],
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80&auto=format&fit=crop",
+    image: "images/ui design with ai.webp",
     icon: Layout,
   },
   {
     title: "Cloud, APIs & Security",
     desc: "Solid backends, integrations and hardened security you don't have to think about.",
     points: ["Node / Postgres / Redis", "Auth, payments, AI APIs", "CI/CD + monitoring"],
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80&auto=format&fit=crop",
+    image: "images/cybersecurity-hacker.jpg",
     icon: Cloud,
   },
 ];
@@ -138,7 +138,8 @@ const ADVANTAGES = [
   {
     title: "Speed as a feature",
     desc: "Every page is tuned for Core Web Vitals — so visitors stay and Google ranks you higher.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop",
+    // image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop",
+    image: "images/codereview.png",
     icon: Zap,
     metrics: [
       { k: "<0.9s", v: "Avg. load" },
@@ -150,7 +151,7 @@ const ADVANTAGES = [
   {
     title: "Design that earns trust",
     desc: "Modern, calm interfaces with clear hierarchy — no noise, just what moves users forward.",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80&auto=format&fit=crop",
+    image: "images/Progressive web app minimal.png",
     icon: Layout,
     metrics: [
       { k: "2x", v: "Avg. conversion lift" },
@@ -162,7 +163,7 @@ const ADVANTAGES = [
   {
     title: "Security without friction",
     desc: "Bank-grade practices baked in from day one — auth, payments and data handled right.",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80&auto=format&fit=crop",
+    image: "images/cloud security.jpeg",
     icon: ShieldCheck,
     metrics: [
       { k: "AES", v: "256 encryption" },
@@ -695,9 +696,9 @@ export default function Home() {
                     </p>
                     <div className="grid grid-cols-3 gap-2 mt-5">
                       {a.metrics.map((m) => (
-                        <div key={m.k} className="rounded-2xl bg-black/30 border border-white/10 py-2.5 text-center">
-                          <p className="text-white text-[15px]" style={{ fontFamily: "var(--font-anton)" }}>{m.k}</p>
-                          <p className="text-[11px] text-white/50">{m.v}</p>
+                        <div key={m.k} className="rounded-lg bg-black/30 border border-white/10 py-2.5 text-center">
+                          <p className="text-white text-[14px]" >{m.k}</p>
+                          <p className="text-[10px] text-white/50">{m.v}</p>
                         </div>
                       ))}
                     </div>
@@ -727,7 +728,7 @@ export default function Home() {
               <h3 className="mt-2 text-2xl md:text-3xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
                 Modern tools, <span className="text-[#FF4655]">proven in production.</span>
               </h3>
-              <div className="mt-6 space-y-5">
+              <div className="mt-6 space-y-5 p-6">
                 {STACK.map((g) => (
                   <div key={g.group}>
                     <p className="text-xs font-bold tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
@@ -761,7 +762,7 @@ export default function Home() {
             <div className="h-full rounded-3xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-xl">
               <div className="relative h-56">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/skills_frontend_bg.png" alt="Delivery" className="absolute inset-0 w-full h-full object-cover" />
+                <img src="images/project delivery.png" alt="Delivery" className="absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0F1923] via-[#0F1923]/40 to-transparent" />
                 <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between">
                   <p className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-raj)" }}>
@@ -971,9 +972,9 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
-              { slug: "rsc-ecommerce", category: "Engineering", title: "Why React Server Components are the future of e-commerce", date: "Oct 12, 2026", image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80&auto=format&fit=crop" },
-              { slug: "micro-interactions", category: "Design", title: "The psychology of micro-interactions in SaaS dashboards", date: "Sep 28, 2026", image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80&auto=format&fit=crop" },
-              { slug: "scaling-agency", category: "Strategy", title: "Scaling your agency: from freelancer to firm transformation", date: "Sep 15, 2026", image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80&auto=format&fit=crop" },
+              { slug: "rsc-ecommerce", category: "Engineering", title: "Why React Server Components are the future of e-commerce", date: "Oct 12, 2026", image: "images/high performance webapps.jpg" },
+              { slug: "micro-interactions", category: "Design", title: "The psychology of micro-interactions in SaaS dashboards", date: "Sep 28, 2026", image: "images/B2B dash.webp" },
+              { slug: "scaling-agency", category: "Strategy", title: "Scaling your agency: from freelancer to firm transformation", date: "Sep 15, 2026", image: "images/project scale.webp" },
             ].map((post, i) => (
               <Reveal key={post.slug} delay={i * 0.08}>
                 <Link href={`/blog/${post.slug}`} className="group block rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl overflow-hidden hover:border-white/20 transition-colors">
@@ -1041,28 +1042,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════ PLAYZONE (kept, calmed) ══════════ */}
-      <section className="hidden lg:block relative px-6 pb-16">
-        <div className="max-w-6xl mx-auto rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 md:p-8">
-          <div className="text-center mb-6">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
-              TRAINING GROUND
-            </span>
-            <h2 className="mt-3 text-4xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
-              Play<span className="text-[#FF4655]">zone</span>
-            </h2>
-            <p className="mt-2 text-sm text-white/50" style={{ fontFamily: "var(--font-raj)" }}>
-              StarWarZ — hit PLAY for the full-page arena. ESC pauses, EXIT brings you back here.
-            </p>
-          </div>
-          <StarWarGame />
-        </div>
-      </section>
-
       {/* ══════════ FINAL CTA ══════════ */}
       <section className="relative px-6 pb-20">
         <Reveal className="max-w-7xl mx-auto">
-          <div className="relative rounded-3xl overflow-hidden bg-[#FF4655] px-8 py-12 md:p-14 text-center">
+          <div className="relative rounded-3xl overflow-hidden bg-red-500/70 backdrop-blur-xl px-8 py-12 md:p-14 text-center">
             <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/25" />
             <div className="relative">
               <h2 className="text-4xl md:text-5xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
@@ -1083,6 +1066,26 @@ export default function Home() {
           </div>
         </Reveal>
       </section>
+
+      {/* ══════════ PLAYZONE (kept, calmed) ══════════ */}
+      <section className="hidden lg:block relative px-6 pb-16">
+        <div className="max-w-6xl mx-auto rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl p-6 md:p-8">
+          <div className="text-center mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-[11px] tracking-[0.18em] text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
+              TRAINING GROUND
+            </span>
+            <h2 className="mt-3 text-4xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
+              Play<span className="text-[#FF4655]">zone</span>
+            </h2>
+            <p className="mt-2 text-sm text-white/50" style={{ fontFamily: "var(--font-raj)" }}>
+              StarWarZ — hit PLAY for the full-page arena. ESC pauses, EXIT brings you back here.
+            </p>
+          </div>
+          <StarWarGame />
+        </div>
+      </section>
+
+
     </div>
   );
 }

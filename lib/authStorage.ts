@@ -91,6 +91,52 @@ export function getStoredPaymentHistory(): ReceiptData[] {
   }
 }
 
+const READ_RECEIPTS_KEY = "cyphertech_read_receipt_ids";
+const PROFILE_VISITED_KEY = "cyphertech_profile_last_visited";
+
+export function getReadReceiptIds(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(READ_RECEIPTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+export function getUnreadReceiptCount(): number {
+  if (typeof window === "undefined") return 0;
+  const history = getStoredPaymentHistory();
+  if (history.length === 0) return 0;
+  const readIds = new Set(getReadReceiptIds());
+  return history.filter((item) => {
+    const id = item.paymentId || item.orderId || (item as any).id || (item.date ? `${item.planName}_${item.date}` : null);
+    return id ? !readIds.has(id) : false;
+  }).length;
+}
+
+export function markProfileAsVisited(): void {
+  if (typeof window === "undefined") return;
+  try {
+    // 1. Mark all current payment receipts as read
+    const history = getStoredPaymentHistory();
+    const allIds = history
+      .map((item) => item.paymentId || item.orderId || (item as any).id || (item.date ? `${item.planName}_${item.date}` : null))
+      .filter(Boolean) as string[];
+    const existingRead = getReadReceiptIds();
+    const merged = Array.from(new Set([...existingRead, ...allIds]));
+    localStorage.setItem(READ_RECEIPTS_KEY, JSON.stringify(merged));
+
+    // 2. Set last visited timestamp
+    localStorage.setItem(PROFILE_VISITED_KEY, Date.now().toString());
+
+    // 3. Dispatch notification change event so navbar and dropdown immediately clear the badge
+    window.dispatchEvent(new Event("cyphertech_notifications_change"));
+  } catch (e) {
+    console.error("Error marking profile as visited:", e);
+  }
+}
+
 export function addPaymentToHistory(receipt: ReceiptData): void {
   if (typeof window === "undefined") return;
   try {
@@ -103,7 +149,9 @@ export function addPaymentToHistory(receipt: ReceiptData): void {
     const updated = [receipt, ...filtered].slice(0, 30); // Keep last 30 receipts
     localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
 
+    // Fire history and notification events
     window.dispatchEvent(new Event("cyphertech_history_change"));
+    window.dispatchEvent(new Event("cyphertech_notifications_change"));
   } catch (e) {
     console.error("Error saving payment to history:", e);
   }

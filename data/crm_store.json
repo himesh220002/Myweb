@@ -8,10 +8,10 @@
       "passwordHash": "d5377cdb8a648a57989f19266e833b39:1bc90f527db8242158cd2d2a4182b4a7d3bf4c57fa03c034b10e76047cbe8d14194b8aecb33cae85c489924f582fbe9ff4ad43571d26693208bfd62388372fe5",
       "role": "client",
       "businessProfile": {
-        "companyName": "",
+        "companyName": "cyphertech",
         "companyStage": "registered_business",
         "userRoleInCompany": "owner_founder",
-        "designation": "",
+        "designation": "Founder",
         "industry": "Software & SaaS",
         "teamSize": "2 - 10 people",
         "country": "India",
@@ -21,18 +21,18 @@
           "linkedin": "https://linkedin.com/in/himesh-satyam",
           "github": "",
           "twitter": "",
-          "website": "",
+          "website": "cyphertech.online",
           "telegramOrDiscord": ""
         }
       },
-      "company": "",
-      "designation": "",
+      "company": "cyphertech",
+      "designation": "Founder",
       "phone": "9471283523",
       "socials": {
         "linkedin": "https://linkedin.com/in/himesh-satyam",
         "github": "",
         "twitter": "",
-        "website": "",
+        "website": "cyphertech.online",
         "telegramOrDiscord": ""
       }
     },
@@ -50,7 +50,7 @@
   "clients": [
     {
       "email": "harleyqn74@gmail.com",
-      "company": "",
+      "company": "cyphertech",
       "createdAt": "2026-10-15T08:41:55.706Z",
       "id": "cli_7eb046a6552f",
       "name": "Himesh satyam",
@@ -69,14 +69,14 @@
       },
       "trustLevel": "VIP",
       "trustScore": 95,
-      "updatedAt": "2026-10-15T16:08:21.402Z",
+      "updatedAt": "2026-10-15T17:19:50.481Z",
       "userId": "usr_060c44451631",
       "callConfirmed": true,
       "businessProfile": {
-        "companyName": "",
+        "companyName": "cyphertech",
         "companyStage": "registered_business",
         "userRoleInCompany": "owner_founder",
-        "designation": "",
+        "designation": "Founder",
         "industry": "Software & SaaS",
         "teamSize": "2 - 10 people",
         "country": "India",
@@ -86,17 +86,17 @@
           "linkedin": "https://linkedin.com/in/himesh-satyam",
           "github": "",
           "twitter": "",
-          "website": "",
+          "website": "cyphertech.online",
           "telegramOrDiscord": ""
         },
-        "verifiedAt": "2026-10-15T13:54:12.206Z"
+        "verifiedAt": "2026-10-15T17:19:50.390Z"
       },
-      "designation": "",
+      "designation": "Founder",
       "socials": {
         "linkedin": "https://linkedin.com/in/himesh-satyam",
         "github": "",
         "twitter": "",
-        "website": "",
+        "website": "cyphertech.online",
         "telegramOrDiscord": ""
       },
       "lastMeeting": {
@@ -201,7 +201,7 @@
       "receiptToken": "eyJhbGciOiJIUzI1NiJ9.eyJwYXltZW50SWQiOiJwYXlfVG9GRDNhME9sVHNQdnkiLCJvcmRlcklkIjoib3JkZXJfVG9GQ1pXUGFjR3dMNFMiLCJhbW91bnQiOiIxLjAwIiwiY3VycmVuY3kiOiJJTlIiLCJjdXN0b21lckVtYWlsIjoic2F0eWFtaGltZXNoQGdtYWlsLmNvbSIsImN1c3RvbWVyTmFtZSI6IkhpbWVzaCBzYXR5YW0iLCJjdXN0b21lclBob25lIjoiOTQ3MTI4MzUyMyIsInBsYW5OYW1lIjoiTGl2ZSBUZXN0IFZlcmlmaWNhdGlvbiDigJQg4oK5MS4wMCIsInN1YiI6Imd1ZXN0X3JlY2VpcHRfY2xhaW0iLCJpYXQiOjE3OTIwODA0OTgsImV4cCI6MTc5NDY3MjQ5OH0.9E849_SFRX_FlNB7-HhR__olR8AnO1nMk4hjL62X1hI",
       "refundClaimUrl": "https://cyphertech.online/refund?token=eyJhbGciOiJIUzI1NiJ9.eyJwYXltZW50SWQiOiJwYXlfVG9GRDNhME9sVHNQdnkiLCJvcmRlcklkIjoib3JkZXJfVG9GQ1pXUGFjR3dMNFMiLCJhbW91bnQiOiIxLjAwIiwiY3VycmVuY3kiOiJJTlIiLCJjdXN0b21lckVtYWlsIjoic2F0eWFtaGltZXNoQGdtYWlsLmNvbSIsImN1c3RvbWVyTmFtZSI6IkhpbWVzaCBzYXR5YW0iLCJjdXN0b21lclBob25lIjoiOTQ3MTI4MzUyMyIsInBsYW5OYW1lIjoiTGl2ZSBUZXN0IFZlcmlmaWNhdGlvbiDigJQg4oK5MS4wMCIsInN1YiI6Imd1ZXN0X3JlY2VpcHRfY2xhaW0iLCJpYXQiOjE3OTIwODA0OTgsImV4cCI6MTc5NDY3MjQ5OH0.9E849_SFRX_FlNB7-HhR__olR8AnO1nMk4hjL62X1hI",
       "status": "captured",
-      "testCallConfirmed": false,
+      "testCallConfirmed": true,
       "userId": "usr_c8b0209d25b7"
     }
   ]

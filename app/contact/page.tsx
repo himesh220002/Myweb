@@ -183,14 +183,14 @@ export default function ContactPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FF4655] text-white" style={{ clipPath: CLIP_BTN }}>
               <Swords className="w-3.5 h-3.5" />
               <span className="text-[11px] font-black tracking-[0.18em]" style={{ fontFamily: "var(--font-mono)" }}>
-                // COMMS // CONTACT
+                COMMS // CONTACT
               </span>
             </div>
             <span
               className="inline-flex items-center gap-2 text-[11px] tracking-[0.16em] text-[#768079] border border-[#1e2d3a] px-3 py-1.5 bg-[#111A23]/60"
               style={{ fontFamily: "var(--font-mono)", clipPath: CLIP_BTN }}
             >
-              <Radio className="w-3 h-3 text-[#00E5FF] animate-pulse" /> // ENCRYPTED CHANNEL
+              <Radio className="w-3 h-3 text-[#00E5FF] animate-pulse" /> ENCRYPTED CHANNEL
             </span>
             <span
               className="ml-auto hidden md:inline-flex items-center gap-1.5 text-[11px] tracking-widest text-[#768079]"
@@ -612,10 +612,10 @@ export default function ContactPage() {
                                   <type.icon className="w-5 h-5" />
                                 </div>
                                 <div>
-                                  <p className={`text-sm font-black tracking-wide leading-none ${active ? "text-white" : "text-[#ECE8E1]"}`} style={{ fontFamily: "var(--font-raj)" }}>
+                                  <p className={`text-sm font-black text-center tracking-wide leading-none ${active ? "text-white" : "text-[#ECE8E1]"}`} style={{ fontFamily: "var(--font-raj)" }}>
                                     {type.title.toUpperCase()}
                                   </p>
-                                  <p className={`text-[11px] tracking-[0.14em] mt-1 ${active ? "text-white/80" : "text-[#768079]"}`} style={{ fontFamily: "var(--font-mono)" }}>
+                                  <p className={`text-[11px] text-center tracking-[0.14em] mt-1 ${active ? "text-white/80" : "text-[#768079]"}`} style={{ fontFamily: "var(--font-mono)" }}>
                                     {type.sub}
                                   </p>
                                 </div>

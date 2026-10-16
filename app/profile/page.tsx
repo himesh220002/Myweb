@@ -50,7 +50,14 @@ import {
 } from "lucide-react";
 import { FaLinkedin, FaGithub, FaTwitter, FaTelegram, FaGlobe } from "react-icons/fa";
 import { Outfit, JetBrains_Mono } from "next/font/google";
-import { getStoredUser, StoredUser, saveStoredUser, removeStoredUser, getStoredPaymentHistory } from "@/lib/authStorage";
+import {
+  getStoredUser,
+  StoredUser,
+  saveStoredUser,
+  removeStoredUser,
+  getStoredPaymentHistory,
+  markProfileAsVisited,
+} from "@/lib/authStorage";
 import {
   printReceiptIsolated,
   downloadReceiptHtml,
@@ -174,10 +181,17 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
+    // Automatically mark all receipts and profile updates as read upon opening the profile page
+    markProfileAsVisited();
+
     const handleSync = () => {
       const stored = getStoredUser();
       setUser(stored);
-      setLocalHistory(getStoredPaymentHistory());
+      const hist = getStoredPaymentHistory();
+      setLocalHistory(hist);
+      if (hist.length > 0) {
+        markProfileAsVisited();
+      }
       if (!stored) {
         setClientData(null);
         setLoading(false);
