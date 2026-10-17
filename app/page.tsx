@@ -24,6 +24,7 @@ import RoadmapSection from "@/components/RoadmapSection";
 import StarWarGame from "@/components/StarWar/StarWarGame";
 import { PLANS as SHARED_PLANS, dualPrice } from "@/lib/pricing";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono, Orbitron } from "next/font/google";
+import Image from "next/image";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 const bebas = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-bebas" });
@@ -404,7 +405,7 @@ export default function Home() {
         <div className="fixed inset-0 z-0">
           {/* base 3D image — HIGH VISIBILITY */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/globenode.png" alt="3D space depth — valorant tactical abyss" className="w-full h-full object-cover object-center brightness-[1.15] contrast-[1.1] saturate-[1.15]" />
+          <Image src="/globenode.png" alt="3D space depth — valorant tactical abyss" className="w-full h-full object-cover object-center brightness-[1.15] contrast-[1.1] saturate-[1.15]" />
           {/* valorant color grade — LIGHT so depth shows */}
           <div className="absolute inset-0 bg-[#0F1923]/38" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0F1923]/18 via-[#0F1923]/10 to-[#0F1923]/85 " />
