@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Skull, Crosshair, ShieldCheck, Target, Radio, Swords, Zap, Layers, Cpu, Award, Calendar, MapPin, Mail, Globe, ExternalLink } from "lucide-react";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono } from "next/font/google";
 import VerifiedCredentialsDossier from "@/components/VerifiedCredentialsDossier";
+import Image from "next/image";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 const bebas = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-bebas" });
@@ -30,7 +31,7 @@ export default function AboutPage() {
     <div className={`${anton.variable} ${bebas.variable} ${rajdhani.variable} ${jetmono.variable} bg-[#0F1923] text-[#ECE8E1] min-h-screen selection:bg-[#FF4655]/30 relative overflow-hidden`}>
       <div className="fixed inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/herobackgroundtheme3.jpg" alt="" className="w-full h-screen object-cover object-center" />
+        <Image src="/herobackgroundtheme3.jpg" alt="" className="w-full h-screen object-cover object-center" />
         <div className="absolute inset-0 bg-[#0B131C]/62" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />

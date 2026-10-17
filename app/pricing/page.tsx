@@ -37,6 +37,7 @@ import {
   type Currency,
 } from "@/lib/pricing";
 import RazorpayCheckoutModal, { CheckoutItem } from "@/components/RazorpayCheckoutModal";
+import Image from "next/image";
 
 // ── VALORANT FONTS ──
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
@@ -244,7 +245,7 @@ export default function PricingPage() {
     >
       <div className="fixed inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/herobackgroundtheme3.jpg" alt="" className="w-full h-screen object-cover object-center" />
+        <Image src="/herobackgroundtheme3.jpg" alt="" className="w-full h-screen object-cover object-center" />
         <div className="absolute inset-0 bg-[#0B131C]/62" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />
@@ -694,11 +695,10 @@ export default function PricingPage() {
                                 accent: plan.accent,
                               })
                             }
-                            className={`w-full py-3.5 text-center text-xs font-black tracking-[0.16em] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(255,70,85,0.2)] ${
-                              plan.popular
+                            className={`w-full py-3.5 text-center text-xs font-black tracking-[0.16em] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(255,70,85,0.2)] ${plan.popular
                                 ? "bg-[#FF4655] text-white hover:bg-[#e03a49] border border-[#FF4655]"
                                 : "bg-[#ECE8E1] text-[#0F1923] hover:bg-white border border-[#ECE8E1] hover:border-white"
-                            }`}
+                              }`}
                             style={{ clipPath: CLIP_BTN, fontFamily: "var(--font-mono)" }}
                           >
                             PAY ONLINE // INITIATE <ArrowRight className="w-3.5 h-3.5" />

@@ -25,6 +25,7 @@ import { SiReact, SiNextdotjs, SiRedux, SiFramer, SiNodedotjs, SiGraphql, SiPost
 import { FaAws, FaUsers } from "react-icons/fa";
 import Link from "next/link";
 import { Anton, Bebas_Neue, Rajdhani, JetBrains_Mono } from "next/font/google";
+import Image from "next/image";
 
 // ── VALORANT FONTS ──
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
@@ -403,7 +404,7 @@ export default function ServicesPage() {
     >
       <div className="fixed inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/herobackgroundtheme2.jpg" alt="" className="w-full h-screen object-cover object-center" />
+        <Image src="/herobackgroundtheme2.jpg" alt="" className="w-full h-screen object-cover object-center" />
         <div className="absolute inset-0 bg-[#0B131C]/62" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />
