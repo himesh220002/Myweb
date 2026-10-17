@@ -825,7 +825,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {PLANS.map((plan, i) => {
               const active = activePlan === plan.id;
               return (
@@ -849,9 +849,9 @@ export default function Home() {
                     <p className="mt-2 text-3xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
                       {plan.pricePrimary}
                     </p>
-                    {/* <p className="mt-1 text-sm font-bold text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
-                        {plan.priceSecondary}
-                      </p> */}
+                    <p className="mt-1 text-sm font-bold text-white/70" style={{ fontFamily: "var(--font-mono)" }}>
+                      {plan.priceSecondary}
+                    </p>
                     <p className="mt-1 text-[11px] tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>
                       {plan.billingNote.toUpperCase()}
                     </p>
@@ -896,7 +896,7 @@ export default function Home() {
               Non-Disclosure-Agreement-FIRST // 48H PROPOSAL
             </span>
           </div>
-          <Reveal delay={0.15} className="mt-6">
+          <Reveal delay={0.15} className="hidden md:block mt-26">
             <div className="rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-5 flex flex-col md:flex-row items-center gap-4 justify-between">
               <div className="flex items-center gap-1 text-[#FF4655]">
                 {[...Array(5)].map((_, k) => (
