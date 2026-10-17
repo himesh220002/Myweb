@@ -352,7 +352,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className={`${anton.variable} ${bebas.variable} ${rajdhani.variable} ${jetmono.variable} fixed inset-0 z-40 bg-[#0F1923]/95 backdrop-blur-xl pt-[68px] px-4 pb-6 overflow-y-auto lg:hidden border-t border-[#1e2d3a]`}
+            className={`${anton.variable} ${bebas.variable} ${rajdhani.variable} ${jetmono.variable} fixed inset-0 z-40 bg-[#0F1923]/95 backdrop-blur-xl pt-[68px] px-4 pb-6 overflow-y-auto xl:hidden border-t border-[#1e2d3a]`}
           >
             {/* bg textures */}
             <div className="pointer-events-none absolute inset-0 top-[68px]">
