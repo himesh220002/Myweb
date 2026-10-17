@@ -384,7 +384,7 @@ export default function ClientsPageValorant() {
         <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#FF465520_1px,transparent_1px),linear-gradient(to_bottom,#FF465520_1px,transparent_1px)] bg-[size:48px_48px]" />
         <div className="fixed inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <Image src="/herobackgroundtheme4.jpg" alt="" className="w-full h-screen object-cover object-center" />
+          <Image src="/herobackgroundtheme4.jpg" alt="" fill className="w-full h-screen object-cover object-center" />
           <div className="absolute inset-0 bg-[#0B131C]/62" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0B131C] via-[#0B131C]/20 to-[#0B131C]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0B131C_85%)]" />

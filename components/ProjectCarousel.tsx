@@ -102,9 +102,9 @@ export default function ProjectCarousel({ images, title }: ProjectCarouselProps)
                   <motion.div
                     key={i}
                     className="absolute inset-0"
-                    initial={{ opacity: 0, scale: 1.04 }}
+                    initial={{ opacity: 0.5, scale: 1.04 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.02 }}
+                    exit={{ opacity: 0.5, scale: 1.02 }}
                     transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
                   >
                     <Image
