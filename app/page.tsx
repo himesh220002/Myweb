@@ -417,7 +417,7 @@ export default function Home() {
           <div className="absolute -top-10 left-1/3 w-[36rem] h-[36rem] bg-[#FF4655]/10 blur-[100px] rounded-full pointer-events-none" />
           <div className="absolute top-24 right-1/4 w-80 h-80 bg-[#00E5FF]/[0.07] blur-[80px] rounded-full pointer-events-none" />
           {/* scanline */}
-          <div className="absolute inset-0 opacity-[0.03] bg-[repeating-linear-gradient(to_bottom,transparent_0_2px,rgba(236,232,225,0.7)_2px_3px)] pointer-events-none" />
+          {/* <div className="absolute inset-0 opacity-[0.03] bg-[repeating-linear-gradient(to_bottom,transparent_0_2px,rgba(236,232,225,0.7)_2px_3px)] pointer-events-none" /> */}
         </div>
         {/* top rail stays */}
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#FF4655] z-10" />
@@ -488,7 +488,7 @@ export default function Home() {
               <div className="bg-[#0F1923] p-6" style={{ clipPath: CLIP_CARD }}>
                 <CornerBrackets color="rgba(255,70,85,0.4)" />
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-[11px] tracking-[0.18em] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>// AGENT DOSSIER</span>
+                  <span className="text-[11px] tracking-[0.18em] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>// AGENT</span>
                   <span className="w-2 h-2 bg-[#FF4655] animate-pulse" />
                 </div>
                 <div className="flex items-center gap-4">
@@ -508,7 +508,7 @@ export default function Home() {
                   ].map((s) => (
                     <div key={s.l} className="bg-[#0a131c] border border-[#1e2d3a] p-3 text-center" style={{ clipPath: CLIP_CARD }}>
                       <p className="text-[10px] tracking-widest text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>{s.l}</p>
-                      <p className="text-sm font-black text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>{s.v}</p>
+                      <p className="text-sm font-black text-[#ECE8E1]" style={{ fontFamily: "var(--font-mono)" }}>{s.v}</p>
                     </div>
                   ))}
                 </div>
@@ -522,7 +522,7 @@ export default function Home() {
               <Crosshair className="w-4 h-4 text-[#FF4655]" />
             </div>
             {/* second small card */}
-            <div className="absolute -bottom-6 -left-6 bg-[#0a131c] border border-[#1e2d3a] px-4 py-3 flex items-center gap-3" style={{ clipPath: CLIP_BTN }}>
+            <div className="absolute -bottom-10 -left-6 bg-[#0a131c] border border-[#1e2d3a] px-4 py-3 flex items-center gap-3" style={{ clipPath: CLIP_BTN }}>
               <Globe className="w-5 h-5 text-[#00E5FF]" />
               <div>
                 <p className="text-xs font-black tracking-wide text-[#ECE8E1]" style={{ fontFamily: "var(--font-raj)" }}>GLOBAL DEPLOYMENT</p>
@@ -728,7 +728,7 @@ export default function Home() {
               <h3 className="mt-2 text-2xl md:text-3xl text-white" style={{ fontFamily: "var(--font-anton)" }}>
                 Modern tools, <span className="text-[#FF4655]">proven in production.</span>
               </h3>
-              <div className="mt-6 space-y-5 p-6">
+              <div className="mt-6 space-y-5">
                 {STACK.map((g) => (
                   <div key={g.group}>
                     <p className="text-xs font-bold tracking-[0.14em] text-white/45" style={{ fontFamily: "var(--font-mono)" }}>

@@ -1,5 +1,5 @@
 export interface Project {
-    id: number;
+    id: number | string;
     title: string;
     description: string;
     image: string;
@@ -14,6 +14,10 @@ export interface Project {
     elaborations?: string[];
     category: string;
     lastUpdated: string;
+    priority?: number;
+    hidden?: boolean;
+    deploymentStatus?: "deployed" | "in_development" | "github_only";
+    videoUrl?: string;
 }
 
 export const projects: Project[] = [

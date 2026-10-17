@@ -71,6 +71,7 @@ import {
   downloadReceiptHtml,
   ReceiptData,
 } from "@/lib/receiptUtils";
+import PortfolioManager from "@/components/PortfolioManager";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -93,7 +94,7 @@ export default function AdminDashboardPage() {
   // CRM Dashboard Data State
   const [loading, setLoading] = useState(true);
   const [adminData, setAdminData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "payments" | "analytics">("projects");
+  const [activeTab, setActiveTab] = useState<"projects" | "portfolio" | "clients" | "payments" | "analytics">("projects");
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
   // Filters & Search
@@ -1151,7 +1152,20 @@ export default function AdminDashboardPage() {
                 }`}
               >
                 <FolderKanban className="w-4 h-4" />
-                <span>Projects ({adminData?.projects?.length || 0})</span>
+                <span>Client Sprints ({adminData?.projects?.length || 0})</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("portfolio")}
+                className={`shrink-0 px-4 py-2 text-xs sm:text-sm font-semibold transition cursor-pointer flex items-center gap-2 rounded-xl ${
+                  activeTab === "portfolio"
+                    ? "bg-slate-900 text-white shadow-xs"
+                    : "text-slate-600 hover:text-slate-900 bg-white border border-slate-200"
+                }`}
+              >
+                <Layers className="w-4 h-4 text-rose-500" />
+                <span>Portfolio Projects Manifest</span>
               </button>
 
               <button
@@ -1697,6 +1711,11 @@ export default function AdminDashboardPage() {
               })
             )}
           </div>
+        )}
+
+        {/* ─── TAB: PORTFOLIO PROJECTS MANIFEST (Drag to Rearrange, Head Position, Visibility, Editor) ─── */}
+        {activeTab === "portfolio" && (
+          <PortfolioManager onToast={(msg) => setSuccessToast(msg)} />
         )}
 
         {/* ─── TAB 2: CLIENT LEADS & DIRECTORY (Clean Light Style) ─── */}

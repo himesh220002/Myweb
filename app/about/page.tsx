@@ -97,7 +97,7 @@ export default function AboutPage() {
               ].map((s) => (
                 <div key={s.k} className="bg-[#0a131c] border border-[#1e2d3a] py-2 text-center" style={{ clipPath: CLIP_BTN }}>
                   <p className="text-[10px] tracking-[0.14em] text-[#768079]" style={{ fontFamily: "var(--font-mono)" }}>{s.k}</p>
-                  <p className="text-sm font-black text-[#ECE8E1]" style={{ fontFamily: "var(--font-anton)" }}>{s.v}</p>
+                  <p className="text-sm font-black text-[#ECE8E1]" style={{ fontFamily: "var(--font-mono)" }}>{s.v}</p>
                 </div>
               ))}
             </div>
